@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CloudRoyal</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         ШАПКА
+    ========================== -->
+
+    <header>
+
+        <h1>CloudRoyal</h1>
+
+        <p>
+            Добро пожаловать в наш магазин
+        </p>
+
+    </header>
+
+
+    <!-- =========================
+         ОСНОВНОЙ КОНТЕНТ
+    ========================== -->
+
+    <main>
+
+
+        <!-- БАННЕР -->
+
+        <section class="banner">
+
+            <h2>
+                CloudRoyal Premium Store
+            </h2>
+
+            <p>
+                Лучшие товары в одном месте
+            </p>
+
+            <button onclick="scrollToProducts()">
+                Открыть каталог
+            </button>
+
+        </section>
+
+
+        <!-- ЗАГОЛОВОК -->
+
+        <h2 class="section-title">
+            Популярные товары
+        </h2>
+
+
+        <!-- ПОИСК -->
+
+        <div class="search">
+
+            <input
+                type="text"
+                id="search"
+                placeholder="Поиск товара..."
+            >
+
+        </div>
+
+
+        <!-- КАТЕГОРИИ -->
+
+        <div class="categories">
+
+            <button>Все</button>
+
+            <button>Новинки</button>
+
+            <button>Популярное</button>
+
+            <button>Акции</button>
+
+        </div>
+
+
+        <!-- ТОВАРЫ -->
+
+        <div
+            class="products"
+            id="products"
+        >
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =========================
+         НИЖНЕЕ МЕНЮ
+    ========================== -->
+
+    <nav class="menu">
+
+
+        <!-- ГЛАВНАЯ -->
+
+        <button onclick="goHome()">
+
+            <span class="menu-icon">
+                🏠
+            </span>
+
+            <span>
+                Главная
+            </span>
+
+        </button>
+
+
+        <!-- КАТАЛОГ -->
+
+        <button onclick="scrollToProducts()">
+
+            <span class="menu-icon">
+                🔍
+            </span>
+
+            <span>
+                Каталог
+            </span>
+
+        </button>
+
+
+        <!-- ИЗБРАННОЕ -->
+
+        <button onclick="showFavorites()">
+
+            <span class="menu-icon">
+                ❤️
+            </span>
+
+            <span>
+                Избранное
+            </span>
+
+        </button>
+
+
+        <!-- КОРЗИНА -->
+
+        <button onclick="showCart()">
+
+            <span class="menu-icon">
+                🛒
+            </span>
+
+            <span>
+                Корзина
+            </span>
+
+        </button>
+
+
+        <!-- ПРОФИЛЬ -->
+
+        <button onclick="showProfile()">
+
+            <span class="menu-icon">
+                👤
+            </span>
+
+            <span>
+                Профиль
+            </span>
+
+        </button>
+
+
+    </nav>
+
+
+    <!-- =========================
+         ОКНО КОРЗИНЫ
+    ========================== -->
+
+    <div
+        id="cartWindow"
+        class="cart-window"
+    >
+
+        <h2>
+            🛒 Корзина
+        </h2>
+
+
+        <div id="cartItems"></div>
+
+
+        <h3 id="cartTotal">
+            Итого: 0 ₽
+        </h3>
+
+
+        <button
+            id="checkoutButton"
+            onclick="openCheckout()"
+        >
+            Оформить заказ
+        </button>
+
+
+        <button
+            class="secondary-button"
+            onclick="closeCart()"
+        >
+            Закрыть
+        </button>
+
+    </div>
+
+
+    <!-- =========================
+         ОКНО ОФОРМЛЕНИЯ
+    ========================== -->
+
+    <div
+        id="checkoutWindow"
+        class="cart-window"
+    >
+
+        <h2>
+            🛍️ Оформление заказа
+        </h2>
+
+
+        <input
+            type="text"
+            id="customerName"
+            placeholder="Ваше имя"
+        >
+
+
+        <input
+            type="tel"
+            id="customerPhone"
+            placeholder="Номер телефона"
+        >
+
+
+        <button onclick="submitOrder()">
+            Подтвердить заказ
+        </button>
+
+
+        <button
+            class="secondary-button"
+            onclick="closeCheckout()"
+        >
+            Отмена
+        </button>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>
