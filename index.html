@@ -17,19 +17,25 @@
         href="style.css"
     >
 
+    <!-- Telegram Mini App -->
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 </head>
 
 
 <body>
 
 
-    <!-- =========================
-         ШАПКА
-    ========================== -->
+    <!-- ========================= -->
+    <!-- ШАПКА -->
+    <!-- ========================= -->
 
     <header>
 
-        <h1>CloudRoyal</h1>
+        <h1>
+            CloudRoyal
+        </h1>
 
         <p>
             Добро пожаловать в наш магазин
@@ -38,9 +44,9 @@
     </header>
 
 
-    <!-- =========================
-         ОСНОВНОЙ КОНТЕНТ
-    ========================== -->
+    <!-- ========================= -->
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <!-- ========================= -->
 
     <main>
 
@@ -66,7 +72,7 @@
 
         <!-- ЗАГОЛОВОК -->
 
-        <h2 class="section-title">
+        <h2>
             Популярные товары
         </h2>
 
@@ -88,23 +94,37 @@
 
         <div class="categories">
 
-            <button>Все</button>
+            <button>
+                Все
+            </button>
 
-            <button>Новинки</button>
+            <button>
+                Новинки
+            </button>
 
-            <button>Популярное</button>
+            <button>
+                Популярное
+            </button>
 
-            <button>Акции</button>
+            <button>
+                Акции
+            </button>
 
         </div>
 
 
+        <!-- ========================= -->
         <!-- ТОВАРЫ -->
+        <!-- ========================= -->
 
         <div
             class="products"
             id="products"
         >
+
+            <!--
+                Товары сюда добавляет JavaScript
+            -->
 
         </div>
 
@@ -112,20 +132,16 @@
     </main>
 
 
-    <!-- =========================
-         НИЖНЕЕ МЕНЮ
-    ========================== -->
+    <!-- ========================= -->
+    <!-- НИЖНЕЕ МЕНЮ -->
+    <!-- ========================= -->
 
     <nav class="menu">
 
 
-        <!-- ГЛАВНАЯ -->
-
         <button onclick="goHome()">
 
-            <span class="menu-icon">
-                🏠
-            </span>
+            🏠
 
             <span>
                 Главная
@@ -134,13 +150,9 @@
         </button>
 
 
-        <!-- КАТАЛОГ -->
-
         <button onclick="scrollToProducts()">
 
-            <span class="menu-icon">
-                🔍
-            </span>
+            🔍
 
             <span>
                 Каталог
@@ -149,13 +161,9 @@
         </button>
 
 
-        <!-- ИЗБРАННОЕ -->
-
         <button onclick="showFavorites()">
 
-            <span class="menu-icon">
-                ❤️
-            </span>
+            ❤️
 
             <span>
                 Избранное
@@ -164,13 +172,9 @@
         </button>
 
 
-        <!-- КОРЗИНА -->
-
         <button onclick="showCart()">
 
-            <span class="menu-icon">
-                🛒
-            </span>
+            🛒
 
             <span>
                 Корзина
@@ -179,13 +183,9 @@
         </button>
 
 
-        <!-- ПРОФИЛЬ -->
-
         <button onclick="showProfile()">
 
-            <span class="menu-icon">
-                👤
-            </span>
+            👤
 
             <span>
                 Профиль
@@ -197,9 +197,9 @@
     </nav>
 
 
-    <!-- =========================
-         ОКНО КОРЗИНЫ
-    ========================== -->
+    <!-- ========================= -->
+    <!-- КОРЗИНА -->
+    <!-- ========================= -->
 
     <div
         id="cartWindow"
@@ -219,27 +219,21 @@
         </h3>
 
 
-        <button
-            id="checkoutButton"
-            onclick="openCheckout()"
-        >
+        <button onclick="openCheckout()">
             Оформить заказ
         </button>
 
 
-        <button
-            class="secondary-button"
-            onclick="closeCart()"
-        >
+        <button onclick="closeCart()">
             Закрыть
         </button>
 
     </div>
 
 
-    <!-- =========================
-         ОКНО ОФОРМЛЕНИЯ
-    ========================== -->
+    <!-- ========================= -->
+    <!-- ОФОРМЛЕНИЕ ЗАКАЗА -->
+    <!-- ========================= -->
 
     <div
         id="checkoutWindow"
@@ -259,7 +253,7 @@
 
 
         <input
-            type="tel"
+            type="text"
             id="customerPhone"
             placeholder="Номер телефона"
         >
@@ -270,17 +264,16 @@
         </button>
 
 
-        <button
-            class="secondary-button"
-            onclick="closeCheckout()"
-        >
-            Отмена
+        <button onclick="closeCheckout()">
+            Назад
         </button>
 
     </div>
 
 
+    <!-- ========================= -->
     <!-- JAVASCRIPT -->
+    <!-- ========================= -->
 
     <script src="script.js"></script>
 
