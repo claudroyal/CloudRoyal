@@ -1830,12 +1830,268 @@ function getInputValue(id) {
 }
 
 
-/* =========================================================
+/* =========================
    SUBMIT ORDER
-========================================================= */
+========================= */
 
 async function submitOrder() {
 
+    const nameInput =
+        document.getElementById("customerName");
+
+    const phoneInput =
+        document.getElementById("customerPhone");
+
+    if (!nameInput || !phoneInput) {
+        alert("Помилка: не знайдено поля форми.");
+        return;
+    }
+
+    const name =
+        nameInput.value.trim();
+
+    const phone =
+        phoneInput.value.trim();
+
+
+    /* =========================
+       ПРОВЕРКА
+    ========================= */
+
+    if (!name) {
+
+        alert("Введи своє ім'я.");
+
+        nameInput.focus();
+
+        return;
+
+    }
+
+
+    if (!phone) {
+
+        alert("Введи номер телефону.");
+
+        phoneInput.focus();
+
+        return;
+
+    }
+
+
+    if (cart.length === 0) {
+
+        alert("Кошик порожній.");
+
+        closeCheckout();
+
+        return;
+
+    }
+
+
+    /* =========================
+       URL GOOGLE APPS SCRIPT
+    ========================= */
+
+    const GOOGLE_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbzdPzlm5ombh8jDmfM7FtRXdR1YpMo4qudhGsY3NyHs0v5OcRlRbasSJljCxFwuI_xP/exec";
+
+
+    /* =========================
+       ТОВАРИ З КОШИКА
+    ========================= */
+
+    const orderItems = cart.map(item => {
+
+        const product =
+            products.find(
+                product => product.id === item.id
+            );
+
+        if (!product) {
+            return null;
+        }
+
+        return {
+
+            id: product.id,
+
+            brand: product.brand,
+
+            name: product.name,
+
+            volume: product.volume,
+
+            nicotine: product.nicotine,
+
+            price: product.price,
+
+            quantity: item.quantity,
+
+            subtotal:
+                product.price *
+                item.quantity
+
+        };
+
+    }).filter(Boolean);
+
+
+    /* =========================
+       ЗАМОВЛЕННЯ
+    ========================= */
+
+    const order = {
+
+        name: name,
+
+        phone: phone,
+
+        comment: "",
+
+        items: orderItems,
+
+        total: getCartTotal(),
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+
+    /* =========================
+       КНОПКА
+    ========================= */
+
+    const button =
+        document.querySelector(
+            "#checkoutOverlay .checkout-button.large"
+        );
+
+
+    if (button) {
+
+        button.disabled = true;
+
+        button.dataset.originalText =
+            button.innerHTML;
+
+        button.innerHTML =
+            "Відправляємо замовлення...";
+
+    }
+
+
+    try {
+
+        /* =========================
+           ВІДПРАВКА В GOOGLE SHEETS
+        ========================= */
+
+        const response =
+            await fetch(
+                GOOGLE_SCRIPT_URL,
+                {
+
+                    method: "POST",
+
+                    mode: "no-cors",
+
+                    headers: {
+
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+
+                    },
+
+                    body:
+                        JSON.stringify(order)
+
+                }
+            );
+
+
+        /* =========================
+           TELEGRAM HAPTIC
+        ========================= */
+
+        if (tg) {
+
+            try {
+
+                tg.HapticFeedback
+                    .notificationOccurred(
+                        "success"
+                    );
+
+            } catch (error) {}
+
+        }
+
+
+        /* =========================
+           УСПІШНЕ ЗАМОВЛЕННЯ
+        ========================= */
+
+        alert(
+            "Дякуємо! Замовлення прийнято."
+        );
+
+
+        /* =========================
+           ОЧИЩЕННЯ КОШИКА
+        ========================= */
+
+        cart = [];
+
+        saveStorage();
+
+        updateCartCounter();
+
+        closeCheckout();
+
+        renderCart();
+
+
+        /* =========================
+           ОЧИЩЕННЯ ФОРМИ
+        ========================= */
+
+        nameInput.value = "";
+
+        phoneInput.value = "";
+
+
+    } catch (error) {
+
+        console.error(
+            "Помилка відправки замовлення:",
+            error
+        );
+
+
+        alert(
+            "Не вдалося відправити замовлення. Спробуй ще раз."
+        );
+
+
+    } finally {
+
+        if (button) {
+
+            button.disabled = false;
+
+            button.innerHTML =
+                button.dataset.originalText ||
+                'Підтвердити замовлення <span>→</span>';
+
+        }
+
+    }
+
+}
     /* =====================================================
        GET CUSTOMER DATA
     ===================================================== */
