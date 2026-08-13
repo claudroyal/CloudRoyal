@@ -1787,3 +1787,370 @@ document.addEventListener(
     "DOMContentLoaded",
     init
 );
+/* =========================
+   SUBMIT ORDER
+========================= */
+
+async function submitOrder() {
+
+    const nameInput =
+        document.getElementById("customerName");
+
+    const phoneInput =
+        document.getElementById("customerPhone");
+
+    const commentInput =
+        document.getElementById("customerComment");
+
+
+    const name =
+        nameInput
+            ? nameInput.value.trim()
+            : "";
+
+    const phone =
+        phoneInput
+            ? phoneInput.value.trim()
+            : "";
+
+    const comment =
+        commentInput
+            ? commentInput.value.trim()
+            : "";
+
+
+    /* =========================
+       ПРОВЕРКА ИМЕНИ
+    ========================= */
+
+    if (!name) {
+
+        alert("Введи своє ім'я.");
+
+        if (nameInput) {
+            nameInput.focus();
+        }
+
+        return;
+
+    }
+
+
+    /* =========================
+       ПРОВЕРКА ТЕЛЕФОНА
+    ========================= */
+
+    if (!phone) {
+
+        alert("Введи номер телефону.");
+
+        if (phoneInput) {
+            phoneInput.focus();
+        }
+
+        return;
+
+    }
+
+
+    /* =========================
+       ПРОВЕРКА КОРЗИНЫ
+    ========================= */
+
+    if (!cart || cart.length === 0) {
+
+        alert("Кошик порожній.");
+
+        return;
+
+    }
+
+
+    /* =========================
+       ПОДГОТОВКА ТОВАРОВ
+    ========================= */
+
+    const orderItems =
+        cart.map(item => {
+
+            const product =
+                products.find(
+                    product =>
+                        product.id === item.id
+                );
+
+
+            if (!product) {
+                return null;
+            }
+
+
+            return {
+
+                product:
+                    product.brand +
+                    " — " +
+                    product.name,
+
+                quantity:
+                    item.quantity,
+
+                price:
+                    product.price
+
+            };
+
+        })
+        .filter(item => item !== null);
+
+
+    if (orderItems.length === 0) {
+
+        alert(
+            "Не вдалося визначити товари в кошику."
+        );
+
+        return;
+
+    }
+
+
+    /* =========================
+       СУММА
+    ========================= */
+
+    const total =
+        getCartTotal();
+
+
+    /* =========================
+       ДАННЫЕ ЗАКАЗА
+    ========================= */
+
+    const order = {
+
+        name:
+            name,
+
+        phone:
+            phone,
+
+        comment:
+            comment,
+
+        items:
+            orderItems,
+
+        total:
+            total
+
+    };
+
+
+    /* =========================
+       URL GOOGLE APPS SCRIPT
+    ========================= */
+
+    const API_URL =
+        "https://script.google.com/macros/s/AKfycbzdPzlm5ombh8jDmfM7FtRXdR1YpMo4qudhGsY3NyHs0v5OcRlRbasSJljCxFwuI_xP/exec";
+
+
+    /* =========================
+       КНОПКА
+    ========================= */
+
+    const buttons =
+        document.querySelectorAll(
+            "#checkoutOverlay button"
+        );
+
+
+    buttons.forEach(button => {
+
+        if (
+            button.textContent
+                .toLowerCase()
+                .includes("замов")
+            ||
+            button.textContent
+                .toLowerCase()
+                .includes("підтверд")
+        ) {
+
+            button.disabled = true;
+
+            button.dataset.originalText =
+                button.textContent;
+
+            button.textContent =
+                "Відправляємо...";
+
+        }
+
+    });
+
+
+    try {
+
+        /* =========================
+           ОТПРАВКА
+        ========================= */
+
+        const response =
+            await fetch(
+                API_URL,
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+
+                    },
+
+                    body:
+                        JSON.stringify(order)
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        /* =========================
+           ПРОВЕРКА ОТВЕТА
+        ========================= */
+
+        if (
+            !result ||
+            !result.success
+        ) {
+
+            throw new Error(
+                result &&
+                result.error
+                    ? result.error
+                    : "Помилка відправлення"
+            );
+
+        }
+
+
+        /* =========================
+           TELEGRAM HAPTIC
+        ========================= */
+
+        if (tg) {
+
+            try {
+
+                tg.HapticFeedback
+                    .notificationOccurred(
+                        "success"
+                    );
+
+            } catch (error) {}
+
+        }
+
+
+        /* =========================
+           УСПЕШНЫЙ ЗАКАЗ
+        ========================= */
+
+        alert(
+
+            "Дякуємо за замовлення! 🎉\n\n" +
+
+            "Номер замовлення: #" +
+            result.orderNumber
+
+        );
+
+
+        /* =========================
+           ОЧИЩАЕМ КОРЗИНУ
+        ========================= */
+
+        cart = [];
+
+
+        saveStorage();
+
+
+        updateCartCounter();
+
+
+        renderCart();
+
+
+        /* =========================
+           ОЧИЩАЕМ ФОРМУ
+        ========================= */
+
+        if (nameInput) {
+            nameInput.value = "";
+        }
+
+        if (phoneInput) {
+            phoneInput.value = "";
+        }
+
+        if (commentInput) {
+            commentInput.value = "";
+        }
+
+
+        /* =========================
+           ЗАКРЫВАЕМ ОКНО
+        ========================= */
+
+        closeCheckout();
+
+
+    } catch (error) {
+
+        console.error(
+            "CLOUDROYAL ORDER ERROR:",
+            error
+        );
+
+
+        alert(
+
+            "Не вдалося відправити замовлення.\n\n" +
+
+            "Спробуй ще раз."
+
+        );
+
+
+    } finally {
+
+        /* =========================
+           ВОЗВРАЩАЕМ КНОПКИ
+        ========================= */
+
+        buttons.forEach(button => {
+
+            if (
+                button.dataset.originalText
+            ) {
+
+                button.disabled = false;
+
+                button.textContent =
+                    button.dataset.originalText;
+
+            }
+
+        });
+
+    }
+
+}
