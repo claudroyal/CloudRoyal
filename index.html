@@ -2,7 +2,6 @@
 <html lang="uk">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -12,7 +11,7 @@
 
     <meta
         name="theme-color"
-        content="#191c1e"
+        content="#0b0b0f"
     >
 
     <title>CloudRoyal</title>
@@ -23,118 +22,114 @@
     >
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
 </head>
 
 
 <body>
 
 
-    <!-- =========================
-         ГЛАВНАЯ
-    ========================== -->
+<!-- =========================================
+     HEADER
+========================================= -->
 
-    <div id="homePage">
+<header class="header">
 
-        <header>
+    <div class="header-left">
 
-            <h1>
+        <div class="logo-mark">
+            C
+        </div>
+
+        <div>
+
+            <div class="logo">
                 CloudRoyal
-            </h1>
-
-            <p>
-                Преміальний магазин
-            </p>
-
-        </header>
-
-
-        <main>
-
-            <section class="banner">
-
-                <h2>
-                    CloudRoyal
-                </h2>
-
-                <p>
-                    Обери свій товар та замовляй зручно
-                </p>
-
-                <button onclick="openCatalog()">
-                    Відкрити каталог
-                </button>
-
-            </section>
-
-
-            <div class="home-section-header">
-
-                <h2>
-                    Популярне
-                </h2>
-
-                <button
-                    class="text-button"
-                    onclick="openCategory('popular')"
-                >
-                    Дивитись все →
-                </button>
-
             </div>
 
-
-            <div
-                class="products"
-                id="homeProducts"
-            ></div>
-
-
-            <div class="home-section-header">
-
-                <h2>
-                    Знижки
-                </h2>
-
-                <button
-                    class="text-button"
-                    onclick="openCategory('sale')"
-                >
-                    Дивитись все →
-                </button>
-
+            <div class="logo-subtitle">
+                premium store
             </div>
 
-
-            <div
-                class="products"
-                id="homeSaleProducts"
-            ></div>
-
-        </main>
+        </div>
 
     </div>
 
 
-
-    <!-- =========================
-         КАТАЛОГ
-    ========================== -->
-
-    <div
-        id="catalogPage"
-        class="page"
+    <button
+        class="header-cart"
+        onclick="openCart()"
     >
 
-        <div class="catalog-header">
+        <span>
+            🛒
+        </span>
+
+        <b id="cartCount">
+            0
+        </b>
+
+    </button>
+
+</header>
+
+
+
+<!-- =========================================
+     MAIN
+========================================= -->
+
+<main id="mainContent">
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-label">
+                CLOUDROYAL STORE
+            </div>
+
+            <h1>
+                Твій вибір.
+                <br>
+                Твій смак.
+            </h1>
+
+            <p>
+                Преміальні рідини та пристрої
+                в одному місці.
+            </p>
+
 
             <button
-                class="back-button"
-                onclick="closeCatalog()"
+                class="hero-button"
+                onclick="openLiquids()"
             >
-                ←
+
+                Перейти до рідин
+
+                <span>
+                    →
+                </span>
+
             </button>
 
+        </div>
+
+
+        <div class="hero-glow"></div>
+
+    </section>
+
+
+
+    <!-- QUICK CATEGORIES -->
+
+    <section class="quick-section">
+
+        <div class="section-heading">
 
             <h2>
                 Каталог
@@ -143,226 +138,610 @@
         </div>
 
 
-        <div class="catalog-list">
+        <div class="quick-categories">
 
 
             <button
-                class="category-row"
-                onclick="openCategory('liquid')"
+                class="quick-card"
+                onclick="openLiquids()"
             >
+
+                <span class="quick-icon">
+                    ◉
+                </span>
 
                 <span>
                     Рідина
                 </span>
 
-                <span class="arrow">
-                    →
-                </span>
+                <small>
+                    Смаки
+                </small>
 
             </button>
 
 
             <button
-                class="category-row"
+                class="quick-card"
                 onclick="openCategory('pod')"
             >
 
-                <span>
-                    POD-Системи
+                <span class="quick-icon">
+                    ◈
                 </span>
 
-                <span class="arrow">
-                    →
+                <span>
+                    POD-системи
                 </span>
+
+                <small>
+                    Пристрої
+                </small>
 
             </button>
 
 
             <button
-                class="category-row"
+                class="quick-card"
                 onclick="openCategory('cartridges')"
             >
+
+                <span class="quick-icon">
+                    ◆
+                </span>
 
                 <span>
                     Картриджі
                 </span>
 
-                <span class="arrow">
-                    →
-                </span>
+                <small>
+                    Аксесуари
+                </small>
 
             </button>
 
+        </div>
+
+    </section>
+
+
+
+    <!-- NEW -->
+
+    <section class="product-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-kicker">
+                    NEW
+                </span>
+
+                <h2>
+                    Новинки
+                </h2>
+
+            </div>
+
 
             <button
-                class="category-row"
+                class="view-all"
                 onclick="openCategory('new')"
             >
-
-                <span>
-                    Новинки
-                </span>
-
-                <span class="arrow">
-                    →
-                </span>
-
+                Все →
             </button>
+
+        </div>
+
+
+        <div
+            class="products"
+            id="newProducts"
+        ></div>
+
+    </section>
+
+
+
+    <!-- POPULAR -->
+
+    <section class="product-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-kicker">
+                    CHOICE
+                </span>
+
+                <h2>
+                    Популярне
+                </h2>
+
+            </div>
 
 
             <button
-                class="category-row"
+                class="view-all"
                 onclick="openCategory('popular')"
             >
-
-                <span>
-                    Популярне
-                </span>
-
-                <span class="arrow">
-                    →
-                </span>
-
+                Все →
             </button>
+
+        </div>
+
+
+        <div
+            class="products"
+            id="popularProducts"
+        ></div>
+
+    </section>
+
+
+
+    <!-- SALE -->
+
+    <section class="product-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-kicker sale-kicker">
+                    SALE
+                </span>
+
+                <h2>
+                    Знижки
+                </h2>
+
+            </div>
 
 
             <button
-                class="category-row"
+                class="view-all"
                 onclick="openCategory('sale')"
             >
+                Все →
+            </button>
+
+        </div>
+
+
+        <div
+            class="products"
+            id="saleProducts"
+        ></div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================================
+     CATALOG PAGE
+========================================= -->
+
+<section
+    id="catalogPage"
+    class="page"
+>
+
+    <div class="page-header">
+
+        <button
+            class="back-button"
+            onclick="goHome()"
+        >
+            ←
+        </button>
+
+        <h1>
+            Каталог
+        </h1>
+
+    </div>
+
+
+    <div class="catalog-content">
+
+
+        <!-- LIQUID -->
+
+        <div class="catalog-main-card">
+
+            <button
+                class="catalog-main-button"
+                onclick="openLiquids()"
+            >
+
+                <div>
+
+                    <strong>
+                        Рідина
+                    </strong>
+
+                    <small>
+                        Обери бренд
+                    </small>
+
+                </div>
+
 
                 <span>
-                    Знижки
-                </span>
-
-                <span class="arrow">
                     →
                 </span>
 
             </button>
 
 
-        </div>
-
-    </div>
-
-
-
-    <!-- =========================
-         СТРАНИЦА КАТЕГОРИИ
-    ========================== -->
-
-    <div
-        id="categoryPage"
-        class="page"
-    >
-
-        <div class="catalog-header">
-
-            <button
-                class="back-button"
-                onclick="closeCategory()"
-            >
-                ←
-            </button>
-
-
-            <h2 id="categoryTitle">
-                Категорія
-            </h2>
-
-        </div>
-
-
-        <main>
-
             <div
-                class="products category-products"
-                id="categoryProducts"
-            ></div>
+                id="liquidBrands"
+                class="brands"
+            >
 
-        </main>
+                <button
+                    onclick="openBrand('CHASER')"
+                >
+                    CHASER
+                </button>
+
+                <button
+                    onclick="openBrand('MOOD DUCK')"
+                >
+                    MOOD DUCK
+                </button>
+
+                <button
+                    onclick="openBrand('PUNCH')"
+                >
+                    PUNCH
+                </button>
+
+                <button
+                    onclick="openBrand('OCTOBAR')"
+                >
+                    OCTOBAR
+                </button>
+
+                <button
+                    onclick="openBrand('FLAVORLAB')"
+                >
+                    FLAVORLAB
+                </button>
+
+                <button
+                    onclick="openBrand('LUCKY')"
+                >
+                    LUCKY
+                </button>
+
+                <button
+                    onclick="openBrand('REFROST')"
+                >
+                    REFROST
+                </button>
+
+                <button
+                    onclick="openBrand('HYPE')"
+                >
+                    HYPE
+                </button>
+
+                <button
+                    onclick="openBrand('3GER')"
+                >
+                    3GER
+                </button>
+
+                <button
+                    onclick="openBrand('ALCHEMIST')"
+                >
+                    ALCHEMIST
+                </button>
+
+                <button
+                    onclick="openBrand('INBOTTLE')"
+                >
+                    INBOTTLE
+                </button>
+
+
+                <button
+                    class="show-all-brands"
+                    onclick="openCategory('liquid')"
+                >
+                    Показати всі
+                    <span>→</span>
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- OTHER CATEGORIES -->
+
+        <button
+            class="catalog-row"
+            onclick="openCategory('pod')"
+        >
+
+            <span>
+                POD-системи
+            </span>
+
+            <span>
+                →
+            </span>
+
+        </button>
+
+
+        <button
+            class="catalog-row"
+            onclick="openCategory('cartridges')"
+        >
+
+            <span>
+                Картриджі
+            </span>
+
+            <span>
+                →
+            </span>
+
+        </button>
+
+
+        <button
+            class="catalog-row"
+            onclick="openCategory('new')"
+        >
+
+            <span>
+                Новинки
+            </span>
+
+            <span>
+                →
+            </span>
+
+        </button>
+
+
+        <button
+            class="catalog-row"
+            onclick="openCategory('popular')"
+        >
+
+            <span>
+                Популярне
+            </span>
+
+            <span>
+                →
+            </span>
+
+        </button>
+
+
+        <button
+            class="catalog-row"
+            onclick="openCategory('sale')"
+        >
+
+            <span>
+                Знижки
+            </span>
+
+            <span class="sale-text">
+                →
+            </span>
+
+        </button>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     CATEGORY PAGE
+========================================= -->
+
+<section
+    id="categoryPage"
+    class="page"
+>
+
+    <div class="page-header">
+
+        <button
+            class="back-button"
+            onclick="openCatalog()"
+        >
+            ←
+        </button>
+
+        <h1 id="categoryTitle">
+            Категорія
+        </h1>
 
     </div>
 
 
+    <div class="category-toolbar">
 
-    <!-- =========================
-         ИЗБРАННОЕ
-    ========================== -->
+        <div
+            id="categoryDescription"
+            class="category-description"
+        ></div>
+
+    </div>
+
 
     <div
-        id="favoritesPage"
-        class="page"
+        id="categoryProducts"
+        class="products page-products"
+    ></div>
+
+</section>
+
+
+
+<!-- =========================================
+     BRAND PAGE
+========================================= -->
+
+<section
+    id="brandPage"
+    class="page"
+>
+
+    <div class="page-header">
+
+        <button
+            class="back-button"
+            onclick="openLiquids()"
+        >
+            ←
+        </button>
+
+        <h1 id="brandTitle">
+            Бренд
+        </h1>
+
+    </div>
+
+
+    <div
+        id="brandProducts"
+        class="products page-products"
+    ></div>
+
+</section>
+
+
+
+<!-- =========================================
+     FAVORITES
+========================================= -->
+
+<section
+    id="favoritesPage"
+    class="page"
+>
+
+    <div class="page-header">
+
+        <button
+            class="back-button"
+            onclick="goHome()"
+        >
+            ←
+        </button>
+
+        <h1>
+            Обране
+        </h1>
+
+    </div>
+
+
+    <div
+        id="favoriteProducts"
+        class="products page-products"
+    ></div>
+
+</section>
+
+
+
+<!-- =========================================
+     CART
+========================================= -->
+
+<div
+    id="cartOverlay"
+    class="overlay"
+    onclick="closeCart(event)"
+>
+
+    <div
+        class="cart-sheet"
+        onclick="event.stopPropagation()"
     >
 
-        <div class="catalog-header">
+        <div class="sheet-handle"></div>
 
-            <button
-                class="back-button"
-                onclick="goHome()"
-            >
-                ←
-            </button>
 
+        <div class="sheet-header">
 
             <h2>
-                Обране
+                Кошик
             </h2>
 
-        </div>
-
-
-        <main>
-
-            <div
-                class="products"
-                id="favoriteProducts"
-            ></div>
-
-        </main>
-
-    </div>
-
-
-
-    <!-- =========================
-         КОРЗИНА
-    ========================== -->
-
-    <div
-        id="cartWindow"
-        class="modal"
-    >
-
-        <div class="modal-content">
-
             <button
-                class="modal-close"
                 onclick="closeCart()"
             >
                 ×
             </button>
 
-
-            <h2>
-                🛒 Кошик
-            </h2>
+        </div>
 
 
-            <div id="cartItems"></div>
+        <div
+            id="cartItems"
+            class="cart-items"
+        ></div>
 
 
-            <div
-                id="cartTotal"
-                class="cart-total"
-            >
-                Разом: 0 ₴
+        <div
+            id="cartEmpty"
+            class="cart-empty"
+        >
+
+            <div>
+                🛒
+            </div>
+
+            <strong>
+                Кошик порожній
+            </strong>
+
+            <span>
+                Додай товари з каталогу
+            </span>
+
+        </div>
+
+
+        <div class="cart-bottom">
+
+            <div class="cart-total-row">
+
+                <span>
+                    Разом
+                </span>
+
+                <strong id="cartTotal">
+                    0 ₴
+                </strong>
+
             </div>
 
 
             <button
-                class="main-button"
+                class="checkout-button"
                 onclick="openCheckout()"
             >
                 Оформити замовлення
@@ -372,48 +751,69 @@
 
     </div>
 
+</div>
 
 
-    <!-- =========================
-         ОФОРМЛЕНИЕ
-    ========================== -->
+
+<!-- =========================================
+     CHECKOUT
+========================================= -->
+
+<div
+    id="checkoutOverlay"
+    class="overlay"
+    onclick="closeCheckout(event)"
+>
 
     <div
-        id="checkoutWindow"
-        class="modal"
+        class="checkout-sheet"
+        onclick="event.stopPropagation()"
     >
 
-        <div class="modal-content">
+        <div class="sheet-handle"></div>
+
+
+        <div class="sheet-header">
+
+            <h2>
+                Замовлення
+            </h2>
 
             <button
-                class="modal-close"
                 onclick="closeCheckout()"
             >
                 ×
             </button>
 
+        </div>
 
-            <h2>
-                Оформлення
-            </h2>
 
+        <div class="checkout-form">
+
+            <label>
+                Ім'я
+            </label>
 
             <input
                 id="customerName"
                 type="text"
-                placeholder="Ваше ім'я"
+                placeholder="Як до вас звертатися?"
             >
 
+
+            <label>
+                Телефон
+            </label>
 
             <input
                 id="customerPhone"
                 type="tel"
-                placeholder="Номер телефону"
+                placeholder="+380..."
             >
 
 
             <button
-                class="main-button"
+                class="checkout-button"
                 onclick="submitOrder()"
             >
                 Підтвердити замовлення
@@ -423,72 +823,99 @@
 
     </div>
 
-
-
-    <!-- =========================
-         НИЖНЕЕ МЕНЮ
-    ========================== -->
-
-    <nav class="menu">
-
-
-        <button onclick="goHome()">
-
-            <span class="menu-icon">
-                🏠
-            </span>
-
-            <span>
-                Головна
-            </span>
-
-        </button>
-
-
-        <button onclick="openCatalog()">
-
-            <span class="menu-icon">
-                🔍
-            </span>
-
-            <span>
-                Каталог
-            </span>
-
-        </button>
-
-
-        <button onclick="showFavorites()">
-
-            <span class="menu-icon">
-                ❤️
-            </span>
-
-            <span>
-                Обране
-            </span>
-
-        </button>
-
-
-        <button onclick="showCart()">
-
-            <span class="menu-icon">
-                🛒
-            </span>
-
-            <span>
-                Кошик
-            </span>
-
-        </button>
-
-
-    </nav>
+</div>
 
 
 
-    <script src="script.js"></script>
+<!-- =========================================
+     TOAST
+========================================= -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+
+<!-- =========================================
+     BOTTOM NAV
+========================================= -->
+
+<nav class="bottom-nav">
+
+
+    <button
+        onclick="goHome()"
+        class="nav-item active"
+        id="navHome"
+    >
+
+        <span class="nav-icon">
+            ⌂
+        </span>
+
+        <span>
+            Головна
+        </span>
+
+    </button>
+
+
+    <button
+        onclick="openCatalog()"
+        class="nav-item"
+        id="navCatalog"
+    >
+
+        <span class="nav-icon">
+            ≡
+        </span>
+
+        <span>
+            Каталог
+        </span>
+
+    </button>
+
+
+    <button
+        onclick="showFavorites()"
+        class="nav-item"
+        id="navFavorites"
+    >
+
+        <span class="nav-icon">
+            ♡
+        </span>
+
+        <span>
+            Обране
+        </span>
+
+    </button>
+
+
+    <button
+        onclick="openCart()"
+        class="nav-item"
+    >
+
+        <span class="nav-icon">
+            🛒
+        </span>
+
+        <span>
+            Кошик
+        </span>
+
+    </button>
+
+
+</nav>
+
+
+<script src="script.js"></script>
 
 </body>
 
