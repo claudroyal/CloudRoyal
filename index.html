@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 
 <head>
 
@@ -10,14 +10,17 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="theme-color"
+        content="#191c1e"
+    >
+
     <title>CloudRoyal</title>
 
     <link
         rel="stylesheet"
         href="style.css"
     >
-
-    <!-- Telegram Mini App -->
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
@@ -27,132 +30,426 @@
 <body>
 
 
-    <!-- ========================= -->
-    <!-- ШАПКА -->
-    <!-- ========================= -->
+    <!-- =========================
+         ГЛАВНАЯ
+    ========================== -->
 
-    <header>
+    <div id="homePage">
 
-        <h1>
-            CloudRoyal
-        </h1>
+        <header>
 
-        <p>
-            Добро пожаловать в наш магазин
-        </p>
-
-    </header>
-
-
-    <!-- ========================= -->
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
-    <!-- ========================= -->
-
-    <main>
-
-
-        <!-- БАННЕР -->
-
-        <section class="banner">
-
-            <h2>
-                CloudRoyal Premium Store
-            </h2>
+            <h1>
+                CloudRoyal
+            </h1>
 
             <p>
-                Лучшие товары в одном месте
+                Преміальний магазин
             </p>
 
-            <button onclick="scrollToProducts()">
-                Открыть каталог
+        </header>
+
+
+        <main>
+
+            <section class="banner">
+
+                <h2>
+                    CloudRoyal
+                </h2>
+
+                <p>
+                    Обери свій товар та замовляй зручно
+                </p>
+
+                <button onclick="openCatalog()">
+                    Відкрити каталог
+                </button>
+
+            </section>
+
+
+            <div class="home-section-header">
+
+                <h2>
+                    Популярне
+                </h2>
+
+                <button
+                    class="text-button"
+                    onclick="openCategory('popular')"
+                >
+                    Дивитись все →
+                </button>
+
+            </div>
+
+
+            <div
+                class="products"
+                id="homeProducts"
+            ></div>
+
+
+            <div class="home-section-header">
+
+                <h2>
+                    Знижки
+                </h2>
+
+                <button
+                    class="text-button"
+                    onclick="openCategory('sale')"
+                >
+                    Дивитись все →
+                </button>
+
+            </div>
+
+
+            <div
+                class="products"
+                id="homeSaleProducts"
+            ></div>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================
+         КАТАЛОГ
+    ========================== -->
+
+    <div
+        id="catalogPage"
+        class="page"
+    >
+
+        <div class="catalog-header">
+
+            <button
+                class="back-button"
+                onclick="closeCatalog()"
+            >
+                ←
             </button>
 
-        </section>
+
+            <h2>
+                Каталог
+            </h2>
+
+        </div>
 
 
-        <!-- ЗАГОЛОВОК -->
-
-        <h2>
-            Популярные товары
-        </h2>
+        <div class="catalog-list">
 
 
-        <!-- ПОИСК -->
-
-        <div class="search">
-
-            <input
-                type="text"
-                id="search"
-                placeholder="Поиск товара..."
+            <button
+                class="category-row"
+                onclick="openCategory('liquid')"
             >
 
+                <span>
+                    Рідина
+                </span>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </button>
+
+
+            <button
+                class="category-row"
+                onclick="openCategory('pod')"
+            >
+
+                <span>
+                    POD-Системи
+                </span>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </button>
+
+
+            <button
+                class="category-row"
+                onclick="openCategory('cartridges')"
+            >
+
+                <span>
+                    Картриджі
+                </span>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </button>
+
+
+            <button
+                class="category-row"
+                onclick="openCategory('new')"
+            >
+
+                <span>
+                    Новинки
+                </span>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </button>
+
+
+            <button
+                class="category-row"
+                onclick="openCategory('popular')"
+            >
+
+                <span>
+                    Популярне
+                </span>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </button>
+
+
+            <button
+                class="category-row"
+                onclick="openCategory('sale')"
+            >
+
+                <span>
+                    Знижки
+                </span>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         СТРАНИЦА КАТЕГОРИИ
+    ========================== -->
+
+    <div
+        id="categoryPage"
+        class="page"
+    >
+
+        <div class="catalog-header">
+
+            <button
+                class="back-button"
+                onclick="closeCategory()"
+            >
+                ←
+            </button>
+
+
+            <h2 id="categoryTitle">
+                Категорія
+            </h2>
+
         </div>
 
 
-        <!-- КАТЕГОРИИ -->
+        <main>
 
-        <div class="categories">
+            <div
+                class="products category-products"
+                id="categoryProducts"
+            ></div>
 
-            <button>
-                Все
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================
+         ИЗБРАННОЕ
+    ========================== -->
+
+    <div
+        id="favoritesPage"
+        class="page"
+    >
+
+        <div class="catalog-header">
+
+            <button
+                class="back-button"
+                onclick="goHome()"
+            >
+                ←
             </button>
 
-            <button>
-                Новинки
-            </button>
 
-            <button>
-                Популярное
-            </button>
-
-            <button>
-                Акции
-            </button>
+            <h2>
+                Обране
+            </h2>
 
         </div>
 
 
-        <!-- ========================= -->
-        <!-- ТОВАРЫ -->
-        <!-- ========================= -->
+        <main>
 
-        <div
-            class="products"
-            id="products"
-        >
+            <div
+                class="products"
+                id="favoriteProducts"
+            ></div>
 
-            <!--
-                Товары сюда добавляет JavaScript
-            -->
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================
+         КОРЗИНА
+    ========================== -->
+
+    <div
+        id="cartWindow"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+            <button
+                class="modal-close"
+                onclick="closeCart()"
+            >
+                ×
+            </button>
+
+
+            <h2>
+                🛒 Кошик
+            </h2>
+
+
+            <div id="cartItems"></div>
+
+
+            <div
+                id="cartTotal"
+                class="cart-total"
+            >
+                Разом: 0 ₴
+            </div>
+
+
+            <button
+                class="main-button"
+                onclick="openCheckout()"
+            >
+                Оформити замовлення
+            </button>
 
         </div>
 
+    </div>
 
-    </main>
 
 
-    <!-- ========================= -->
-    <!-- НИЖНЕЕ МЕНЮ -->
-    <!-- ========================= -->
+    <!-- =========================
+         ОФОРМЛЕНИЕ
+    ========================== -->
+
+    <div
+        id="checkoutWindow"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+            <button
+                class="modal-close"
+                onclick="closeCheckout()"
+            >
+                ×
+            </button>
+
+
+            <h2>
+                Оформлення
+            </h2>
+
+
+            <input
+                id="customerName"
+                type="text"
+                placeholder="Ваше ім'я"
+            >
+
+
+            <input
+                id="customerPhone"
+                type="tel"
+                placeholder="Номер телефону"
+            >
+
+
+            <button
+                class="main-button"
+                onclick="submitOrder()"
+            >
+                Підтвердити замовлення
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         НИЖНЕЕ МЕНЮ
+    ========================== -->
 
     <nav class="menu">
 
 
         <button onclick="goHome()">
 
-            🏠
+            <span class="menu-icon">
+                🏠
+            </span>
 
             <span>
-                Главная
+                Головна
             </span>
 
         </button>
 
 
-        <button onclick="scrollToProducts()">
+        <button onclick="openCatalog()">
 
-            🔍
+            <span class="menu-icon">
+                🔍
+            </span>
 
             <span>
                 Каталог
@@ -163,10 +460,12 @@
 
         <button onclick="showFavorites()">
 
-            ❤️
+            <span class="menu-icon">
+                ❤️
+            </span>
 
             <span>
-                Избранное
+                Обране
             </span>
 
         </button>
@@ -174,21 +473,12 @@
 
         <button onclick="showCart()">
 
-            🛒
-
-            <span>
-                Корзина
+            <span class="menu-icon">
+                🛒
             </span>
 
-        </button>
-
-
-        <button onclick="showProfile()">
-
-            👤
-
             <span>
-                Профиль
+                Кошик
             </span>
 
         </button>
@@ -197,86 +487,8 @@
     </nav>
 
 
-    <!-- ========================= -->
-    <!-- КОРЗИНА -->
-    <!-- ========================= -->
-
-    <div
-        id="cartWindow"
-        class="cart-window"
-    >
-
-        <h2>
-            🛒 Корзина
-        </h2>
-
-
-        <div id="cartItems"></div>
-
-
-        <h3 id="cartTotal">
-            Итого: 0 ₽
-        </h3>
-
-
-        <button onclick="openCheckout()">
-            Оформить заказ
-        </button>
-
-
-        <button onclick="closeCart()">
-            Закрыть
-        </button>
-
-    </div>
-
-
-    <!-- ========================= -->
-    <!-- ОФОРМЛЕНИЕ ЗАКАЗА -->
-    <!-- ========================= -->
-
-    <div
-        id="checkoutWindow"
-        class="cart-window"
-    >
-
-        <h2>
-            🛍️ Оформление заказа
-        </h2>
-
-
-        <input
-            type="text"
-            id="customerName"
-            placeholder="Ваше имя"
-        >
-
-
-        <input
-            type="text"
-            id="customerPhone"
-            placeholder="Номер телефона"
-        >
-
-
-        <button onclick="submitOrder()">
-            Подтвердить заказ
-        </button>
-
-
-        <button onclick="closeCheckout()">
-            Назад
-        </button>
-
-    </div>
-
-
-    <!-- ========================= -->
-    <!-- JAVASCRIPT -->
-    <!-- ========================= -->
 
     <script src="script.js"></script>
-
 
 </body>
 
