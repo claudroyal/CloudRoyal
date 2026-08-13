@@ -5,24 +5,24 @@
 let tg = null;
 
 if (window.Telegram && window.Telegram.WebApp) {
-
     tg = window.Telegram.WebApp;
 
     tg.ready();
-
     tg.expand();
 
-    tg.setHeaderColor("#08080d");
+    if (tg.setHeaderColor) {
+        tg.setHeaderColor("#08080d");
+    }
 
-    tg.setBackgroundColor("#08080d");
+    if (tg.setBackgroundColor) {
+        tg.setBackgroundColor("#08080d");
+    }
 
-    if (tg.initDataUnsafe.user) {
-
+    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
         console.log(
             "Пользователь Telegram:",
             tg.initDataUnsafe.user.first_name
         );
-
     }
 }
 
@@ -36,25 +36,29 @@ const products = [
     {
         name: "Cloud Device",
         price: "2990 ₽",
-        category: "Новинки"
+        category: "Новинки",
+        icon: "☁️"
     },
 
     {
         name: "Royal Edition",
         price: "4990 ₽",
-        category: "Популярное"
+        category: "Популярное",
+        icon: "👑"
     },
 
     {
         name: "Cloud Pro",
         price: "3590 ₽",
-        category: "Акции"
+        category: "Акции",
+        icon: "⚡"
     },
 
     {
         name: "Cloud Premium",
         price: "5990 ₽",
-        category: "Популярное"
+        category: "Популярное",
+        icon: "💎"
     }
 
 ];
@@ -92,7 +96,7 @@ const search =
 
 
 // =========================
-// СОХРАНИТЬ КОРЗИНУ
+// СОХРАНЕНИЕ
 // =========================
 
 function saveCart() {
@@ -104,10 +108,6 @@ function saveCart() {
 
 }
 
-
-// =========================
-// СОХРАНИТЬ ИЗБРАННОЕ
-// =========================
 
 function saveFavorites() {
 
@@ -124,6 +124,10 @@ function saveFavorites() {
 // =========================
 
 function showProducts(list) {
+
+    if (!container) {
+        return;
+    }
 
     container.innerHTML = "";
 
@@ -151,7 +155,7 @@ function showProducts(list) {
     }
 
 
-    list.forEach(product => {
+    list.forEach((product, index) => {
 
         const isFavorite =
             favorites.some(
@@ -162,7 +166,10 @@ function showProducts(list) {
 
         container.innerHTML += `
 
-            <div class="product">
+            <div
+                class="product"
+                style="animation-delay:${index * 40}ms"
+            >
 
                 <button
                     class="favorite-button"
@@ -170,6 +177,13 @@ function showProducts(list) {
                 >
                     ${isFavorite ? "❤️" : "♡"}
                 </button>
+
+
+                <div class="product-visual">
+
+                    ${product.icon}
+
+                </div>
 
 
                 <h3>
@@ -190,7 +204,7 @@ function showProducts(list) {
                 <button
                     onclick="addToCart('${product.name}')"
                 >
-                    Добавить в корзину
+                    В корзину
                 </button>
 
             </div>
@@ -203,7 +217,7 @@ function showProducts(list) {
 
 
 // =========================
-// ПОКАЗЫВАЕМ ТОВАРЫ
+// ПЕРВОНАЧАЛЬНЫЙ ПОКАЗ
 // =========================
 
 showProducts(products);
@@ -272,7 +286,6 @@ categoryButtons.forEach(button => {
                 showProducts(products);
 
                 return;
-
             }
 
 
@@ -334,7 +347,6 @@ function toggleFavorite(name) {
 
     saveFavorites();
 
-
     showProducts(products);
 
 }
@@ -371,7 +383,6 @@ function showFavorites() {
         `;
 
         return;
-
     }
 
 
@@ -423,6 +434,16 @@ function addToCart(name) {
 
 
     saveCart();
+
+
+    // Вибрация Telegram
+
+    if (tg && tg.HapticFeedback) {
+
+        tg.HapticFeedback
+            .impactOccurred("light");
+
+    }
 
 
     alert(
@@ -491,7 +512,12 @@ function renderCart() {
 
         items.innerHTML = `
 
-            <p>
+            <p
+                style="
+                    text-align:center;
+                    color:#aaa5bd;
+                "
+            >
                 Корзина пока пустая.
             </p>
 
@@ -503,7 +529,6 @@ function renderCart() {
 
 
         return;
-
     }
 
 
@@ -535,8 +560,10 @@ function renderCart() {
                 <div class="cart-item">
 
                     <h3>
+                        ${item.icon || "🛍️"}
                         ${item.name}
                     </h3>
+
 
                     <p>
                         Цена:
@@ -720,9 +747,37 @@ function goHome() {
 
 function showProfile() {
 
-    alert(
-        "Профиль CloudRoyal скоро будет доступен."
-    );
+    if (
+        tg &&
+        tg.initDataUnsafe &&
+        tg.initDataUnsafe.user
+    ) {
+
+        const user =
+            tg.initDataUnsafe.user;
+
+
+        alert(
+
+            "👤 " +
+            (
+                user.first_name ||
+                "Пользователь"
+            ) +
+
+            "\n\n" +
+
+            "CloudRoyal"
+
+        );
+
+    } else {
+
+        alert(
+            "Профиль CloudRoyal скоро будет доступен."
+        );
+
+    }
 
 }
 
@@ -740,7 +795,6 @@ function openCheckout() {
         );
 
         return;
-
     }
 
 
@@ -821,7 +875,6 @@ function submitOrder() {
         );
 
         return;
-
     }
 
 
@@ -833,25 +886,23 @@ function submitOrder() {
         phoneElement.value.trim();
 
 
-    if (name === "") {
+    if (!name) {
 
         alert(
             "Введите ваше имя."
         );
 
         return;
-
     }
 
 
-    if (phone === "") {
+    if (!phone) {
 
         alert(
             "Введите номер телефона."
         );
 
         return;
-
     }
 
 
@@ -881,13 +932,17 @@ function submitOrder() {
 
     const order = {
 
-        customerName: name,
+        customerName:
+            name,
 
-        phone: phone,
+        phone:
+            phone,
 
-        items: cart,
+        items:
+            cart,
 
-        total: sum,
+        total:
+            sum,
 
         date:
             new Date().toLocaleString(
@@ -908,6 +963,7 @@ function submitOrder() {
         "Спасибо, " +
         name +
         "!\n\n" +
+
         "Заказ на сумму " +
         sum +
         " ₽ принят."
