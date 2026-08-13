@@ -1,133 +1,488 @@
-// =========================
+// ========================================
 // TELEGRAM MINI APP
-// =========================
+// ========================================
 
 let tg = null;
 
-if (window.Telegram && window.Telegram.WebApp) {
+if (
+    window.Telegram &&
+    window.Telegram.WebApp
+) {
+
     tg = window.Telegram.WebApp;
 
     tg.ready();
+
     tg.expand();
 
-    if (tg.setHeaderColor) {
-        tg.setHeaderColor("#08080d");
-    }
-
-    if (tg.setBackgroundColor) {
-        tg.setBackgroundColor("#08080d");
-    }
-
-    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        console.log(
-            "Пользователь Telegram:",
-            tg.initDataUnsafe.user.first_name
-        );
-    }
 }
 
 
-// =========================
+// ========================================
 // ТОВАРЫ
-// =========================
+// ========================================
 
 const products = [
 
     {
-        name: "Cloud Device",
-        price: "2990 ₽",
-        category: "Новинки",
-        icon: "☁️"
+        id: 1,
+
+        name: "Рідина Premium",
+
+        price: 350,
+
+        oldPrice: null,
+
+        category: "liquid",
+
+        categoryName: "Рідина",
+
+        icon: "💧",
+
+        isNew: true,
+
+        isPopular: true,
+
+        isSale: false
     },
 
-    {
-        name: "Royal Edition",
-        price: "4990 ₽",
-        category: "Популярное",
-        icon: "👑"
-    },
 
     {
-        name: "Cloud Pro",
-        price: "3590 ₽",
-        category: "Акции",
-        icon: "⚡"
+        id: 2,
+
+        name: "Рідина Cloud",
+
+        price: 320,
+
+        oldPrice: 400,
+
+        category: "liquid",
+
+        categoryName: "Рідина",
+
+        icon: "☁️",
+
+        isNew: false,
+
+        isPopular: true,
+
+        isSale: true
     },
 
+
     {
-        name: "Cloud Premium",
-        price: "5990 ₽",
-        category: "Популярное",
-        icon: "💎"
+        id: 3,
+
+        name: "POD Royal",
+
+        price: 1200,
+
+        oldPrice: null,
+
+        category: "pod",
+
+        categoryName: "POD-Системи",
+
+        icon: "⚡",
+
+        isNew: true,
+
+        isPopular: true,
+
+        isSale: false
+    },
+
+
+    {
+        id: 4,
+
+        name: "POD Cloud",
+
+        price: 1500,
+
+        oldPrice: 1900,
+
+        category: "pod",
+
+        categoryName: "POD-Системи",
+
+        icon: "👑",
+
+        isNew: false,
+
+        isPopular: true,
+
+        isSale: true
+    },
+
+
+    {
+        id: 5,
+
+        name: "Картридж Royal",
+
+        price: 300,
+
+        oldPrice: null,
+
+        category: "cartridges",
+
+        categoryName: "Картриджі",
+
+        icon: "🔋",
+
+        isNew: true,
+
+        isPopular: false,
+
+        isSale: false
+    },
+
+
+    {
+        id: 6,
+
+        name: "Картридж Cloud",
+
+        price: 250,
+
+        oldPrice: 350,
+
+        category: "cartridges",
+
+        categoryName: "Картриджі",
+
+        icon: "🔌",
+
+        isNew: false,
+
+        isPopular: true,
+
+        isSale: true
+    },
+
+
+    {
+        id: 7,
+
+        name: "Рідина Royal Ice",
+
+        price: 450,
+
+        oldPrice: null,
+
+        category: "liquid",
+
+        categoryName: "Рідина",
+
+        icon: "❄️",
+
+        isNew: true,
+
+        isPopular: false,
+
+        isSale: false
+    },
+
+
+    {
+        id: 8,
+
+        name: "POD Premium",
+
+        price: 1700,
+
+        oldPrice: 2100,
+
+        category: "pod",
+
+        categoryName: "POD-Системи",
+
+        icon: "💜",
+
+        isNew: true,
+
+        isPopular: true,
+
+        isSale: true
     }
 
 ];
 
 
-// =========================
+// ========================================
 // КОРЗИНА
-// =========================
+// ========================================
 
 let cart =
     JSON.parse(
-        localStorage.getItem("cloudRoyalCart")
+        localStorage.getItem(
+            "cloudRoyalCart"
+        )
     ) || [];
 
 
-// =========================
+// ========================================
 // ИЗБРАННОЕ
-// =========================
+// ========================================
 
 let favorites =
     JSON.parse(
-        localStorage.getItem("cloudRoyalFavorites")
+        localStorage.getItem(
+            "cloudRoyalFavorites"
+        )
     ) || [];
 
 
-// =========================
-// ЭЛЕМЕНТЫ
-// =========================
+// ========================================
+// ЦЕНА
+// ========================================
 
-const container =
-    document.getElementById("products");
+function formatPrice(price) {
 
-const search =
-    document.getElementById("search");
-
-
-// =========================
-// СОХРАНЕНИЕ
-// =========================
-
-function saveCart() {
-
-    localStorage.setItem(
-        "cloudRoyalCart",
-        JSON.stringify(cart)
+    return (
+        Number(price)
+            .toLocaleString("uk-UA")
+        + " ₴"
     );
 
 }
 
 
-function saveFavorites() {
+// ========================================
+// СКРЫТЬ ВСЕ СТРАНИЦЫ
+// ========================================
 
-    localStorage.setItem(
-        "cloudRoyalFavorites",
-        JSON.stringify(favorites)
-    );
+function hideAllPages() {
+
+    document.getElementById(
+        "homePage"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "catalogPage"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "categoryPage"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "favoritesPage"
+    ).style.display = "none";
 
 }
 
 
-// =========================
-// ПОКАЗ ТОВАРОВ
-// =========================
+// ========================================
+// ГЛАВНАЯ
+// ========================================
 
-function showProducts(list) {
+function goHome() {
 
-    if (!container) {
-        return;
+    hideAllPages();
+
+    document.getElementById(
+        "homePage"
+    ).style.display = "block";
+
+}
+
+
+// ========================================
+// КАТАЛОГ
+// ========================================
+
+function openCatalog() {
+
+    hideAllPages();
+
+    document.getElementById(
+        "catalogPage"
+    ).style.display = "block";
+
+}
+
+
+function closeCatalog() {
+
+    goHome();
+
+}
+
+
+// ========================================
+// КАТЕГОРИЯ
+// ========================================
+
+function openCategory(category) {
+
+    const categoryPage =
+        document.getElementById(
+            "categoryPage"
+        );
+
+
+    const title =
+        document.getElementById(
+            "categoryTitle"
+        );
+
+
+    const container =
+        document.getElementById(
+            "categoryProducts"
+        );
+
+
+    let categoryName = "";
+
+    let filtered = [];
+
+
+    // РІДИНА
+
+    if (category === "liquid") {
+
+        categoryName = "Рідина";
+
+        filtered =
+            products.filter(
+                product =>
+                    product.category ===
+                    "liquid"
+            );
+
     }
+
+
+    // POD
+
+    else if (category === "pod") {
+
+        categoryName =
+            "POD-Системи";
+
+        filtered =
+            products.filter(
+                product =>
+                    product.category ===
+                    "pod"
+            );
+
+    }
+
+
+    // КАРТРИДЖІ
+
+    else if (
+        category === "cartridges"
+    ) {
+
+        categoryName =
+            "Картриджі";
+
+        filtered =
+            products.filter(
+                product =>
+                    product.category ===
+                    "cartridges"
+            );
+
+    }
+
+
+    // НОВИНКИ
+
+    else if (category === "new") {
+
+        categoryName =
+            "Новинки";
+
+        filtered =
+            products.filter(
+                product =>
+                    product.isNew === true
+            );
+
+    }
+
+
+    // ПОПУЛЯРНЕ
+
+    else if (
+        category === "popular"
+    ) {
+
+        categoryName =
+            "Популярне";
+
+        filtered =
+            products.filter(
+                product =>
+                    product.isPopular === true
+            );
+
+    }
+
+
+    // ЗНИЖКИ
+
+    else if (category === "sale") {
+
+        categoryName =
+            "Знижки";
+
+        filtered =
+            products.filter(
+                product =>
+                    product.isSale === true
+            );
+
+    }
+
+
+    title.textContent =
+        categoryName;
+
+
+    renderProducts(
+        filtered,
+        container
+    );
+
+
+    hideAllPages();
+
+
+    categoryPage.style.display =
+        "block";
+
+}
+
+
+// ========================================
+// НАЗАД ИЗ КАТЕГОРИИ
+// ========================================
+
+function closeCategory() {
+
+    openCatalog();
+
+}
+
+
+// ========================================
+// КАРТОЧКИ ТОВАРОВ
+// ========================================
+
+function renderProducts(
+    list,
+    container
+) {
 
     container.innerHTML = "";
 
@@ -138,14 +493,7 @@ function showProducts(list) {
 
             <div class="empty-message">
 
-                <h3>
-                    Товары не найдены
-                </h3>
-
-                <p>
-                    Попробуйте изменить поиск
-                    или категорию.
-                </p>
+                Товарів поки немає.
 
             </div>
 
@@ -155,33 +503,109 @@ function showProducts(list) {
     }
 
 
-    list.forEach((product, index) => {
+    list.forEach(product => {
 
-        const isFavorite =
-            favorites.some(
-                item =>
-                    item.name === product.name
+        const favorite =
+            favorites.includes(
+                product.id
             );
+
+
+        let badges = "";
+
+
+        // НОВИНКА
+
+        if (product.isNew) {
+
+            badges += `
+
+                <span class="badge new">
+                    НОВИНКА
+                </span>
+
+            `;
+
+        }
+
+
+        // СКИДКА
+
+        if (
+            product.isSale &&
+            product.oldPrice
+        ) {
+
+            const discount =
+                Math.round(
+                    (
+                        1 -
+                        product.price /
+                        product.oldPrice
+                    ) * 100
+                );
+
+
+            badges += `
+
+                <span class="badge sale">
+                    -${discount}%
+                </span>
+
+            `;
+
+        }
+
+
+        // СТАРАЯ ЦЕНА
+
+        const oldPrice =
+            product.oldPrice
+                ? `
+
+                    <span class="old-price">
+                        ${formatPrice(
+                            product.oldPrice
+                        )}
+                    </span>
+
+                `
+                : "";
 
 
         container.innerHTML += `
 
-            <div
-                class="product"
-                style="animation-delay:${index * 40}ms"
-            >
+            <div class="product">
+
 
                 <button
                     class="favorite-button"
-                    onclick="toggleFavorite('${product.name}')"
+                    onclick="
+                        toggleFavorite(
+                            ${product.id}
+                        )
+                    "
                 >
-                    ${isFavorite ? "❤️" : "♡"}
+                    ${
+                        favorite
+                            ? "❤️"
+                            : "♡"
+                    }
                 </button>
 
 
                 <div class="product-visual">
 
+
                     ${product.icon}
+
+
+                    <div class="product-badges">
+
+                        ${badges}
+
+                    </div>
+
 
                 </div>
 
@@ -192,20 +616,31 @@ function showProducts(list) {
 
 
                 <p>
-                    ${product.category}
+                    ${product.categoryName}
                 </p>
 
 
                 <h2>
-                    ${product.price}
+
+                    ${oldPrice}
+
+                    ${formatPrice(
+                        product.price
+                    )}
+
                 </h2>
 
 
                 <button
-                    onclick="addToCart('${product.name}')"
+                    onclick="
+                        addToCart(
+                            ${product.id}
+                        )
+                    "
                 >
-                    В корзину
+                    🛒 В кошик
                 </button>
+
 
             </div>
 
@@ -216,203 +651,30 @@ function showProducts(list) {
 }
 
 
-// =========================
-// ПЕРВОНАЧАЛЬНЫЙ ПОКАЗ
-// =========================
-
-showProducts(products);
-
-
-// =========================
-// ПОИСК
-// =========================
-
-if (search) {
-
-    search.addEventListener(
-        "input",
-        () => {
-
-            const value =
-                search.value
-                    .toLowerCase()
-                    .trim();
-
-
-            const filtered =
-                products.filter(
-                    product =>
-                        product.name
-                            .toLowerCase()
-                            .includes(value)
-                );
-
-
-            showProducts(filtered);
-
-        }
-    );
-
-}
-
-
-// =========================
-// КАТЕГОРИИ
-// =========================
-
-const categoryButtons =
-    document.querySelectorAll(
-        ".categories button"
-    );
-
-
-categoryButtons.forEach(button => {
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            const category =
-                button.textContent.trim();
-
-
-            if (search) {
-                search.value = "";
-            }
-
-
-            if (category === "Все") {
-
-                showProducts(products);
-
-                return;
-            }
-
-
-            const filtered =
-                products.filter(
-                    product =>
-                        product.category ===
-                        category
-                );
-
-
-            showProducts(filtered);
-
-        }
-    );
-
-});
-
-
-// =========================
-// ИЗБРАННОЕ
-// =========================
-
-function toggleFavorite(name) {
-
-    const product =
-        products.find(
-            item =>
-                item.name === name
-        );
-
-
-    if (!product) {
-        return;
-    }
-
-
-    const exists =
-        favorites.some(
-            item =>
-                item.name === name
-        );
-
-
-    if (exists) {
-
-        favorites =
-            favorites.filter(
-                item =>
-                    item.name !== name
-            );
-
-    } else {
-
-        favorites.push(product);
-
-    }
-
-
-    saveFavorites();
-
-    showProducts(products);
-
-}
-
-
-// =========================
-// ПОКАЗАТЬ ИЗБРАННОЕ
-// =========================
-
-function showFavorites() {
-
-    if (search) {
-        search.value = "";
-    }
-
-
-    if (favorites.length === 0) {
-
-        container.innerHTML = `
-
-            <div class="empty-message">
-
-                <h3>
-                    ❤️ Избранное пустое
-                </h3>
-
-                <p>
-                    Нажмите ♡ на товаре,
-                    чтобы добавить его сюда.
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-    }
-
-
-    showProducts(favorites);
-
-}
-
-
-// =========================
+// ========================================
 // ДОБАВИТЬ В КОРЗИНУ
-// =========================
+// ========================================
 
-function addToCart(name) {
+function addToCart(id) {
 
     const product =
         products.find(
             item =>
-                item.name === name
+                item.id === id
         );
 
 
     if (!product) {
+
         return;
+
     }
 
 
     const existing =
         cart.find(
             item =>
-                item.name === name
+                item.id === id
         );
 
 
@@ -420,7 +682,9 @@ function addToCart(name) {
 
         existing.quantity++;
 
-    } else {
+    }
+
+    else {
 
         cart.push({
 
@@ -436,42 +700,195 @@ function addToCart(name) {
     saveCart();
 
 
-    // Вибрация Telegram
-
-    if (tg && tg.HapticFeedback) {
+    if (
+        tg &&
+        tg.HapticFeedback
+    ) {
 
         tg.HapticFeedback
-            .impactOccurred("light");
+            .impactOccurred(
+                "light"
+            );
 
     }
 
 
-    alert(
-        product.name +
-        " добавлен в корзину"
+    showToast(
+        "Товар додано до кошика"
     );
 
 }
 
 
-// =========================
-// ОТКРЫТЬ КОРЗИНУ
-// =========================
+// ========================================
+// СОХРАНЕНИЕ КОРЗИНЫ
+// ========================================
 
-function showCart() {
+function saveCart() {
 
-    const box =
-        document.getElementById(
-            "cartWindow"
-        );
+    localStorage.setItem(
+        "cloudRoyalCart",
+        JSON.stringify(cart)
+    );
+
+}
 
 
-    if (!box) {
-        return;
+// ========================================
+// СОХРАНЕНИЕ ИЗБРАННОГО
+// ========================================
+
+function saveFavorites() {
+
+    localStorage.setItem(
+        "cloudRoyalFavorites",
+        JSON.stringify(favorites)
+    );
+
+}
+
+
+// ========================================
+// ИЗБРАННОЕ
+// ========================================
+
+function toggleFavorite(id) {
+
+    if (
+        favorites.includes(id)
+    ) {
+
+        favorites =
+            favorites.filter(
+                item =>
+                    item !== id
+            );
+
+    }
+
+    else {
+
+        favorites.push(id);
+
     }
 
 
-    box.style.display = "block";
+    saveFavorites();
+
+
+    renderHome();
+
+
+    const categoryPage =
+        document.getElementById(
+            "categoryPage"
+        );
+
+
+    if (
+        categoryPage.style.display ===
+        "block"
+    ) {
+
+        const title =
+            document.getElementById(
+                "categoryTitle"
+            ).textContent;
+
+
+        const map = {
+
+            "Рідина": "liquid",
+
+            "POD-Системи": "pod",
+
+            "Картриджі": "cartridges",
+
+            "Новинки": "new",
+
+            "Популярне": "popular",
+
+            "Знижки": "sale"
+
+        };
+
+
+        if (map[title]) {
+
+            openCategory(
+                map[title]
+            );
+
+        }
+
+    }
+
+
+    if (
+        document.getElementById(
+            "favoritesPage"
+        ).style.display ===
+        "block"
+    ) {
+
+        showFavorites();
+
+    }
+
+}
+
+
+// ========================================
+// ИЗБРАННОЕ
+// ========================================
+
+function showFavorites() {
+
+    hideAllPages();
+
+
+    const page =
+        document.getElementById(
+            "favoritesPage"
+        );
+
+
+    const container =
+        document.getElementById(
+            "favoriteProducts"
+        );
+
+
+    const favoriteProducts =
+        products.filter(
+            product =>
+                favorites.includes(
+                    product.id
+                )
+        );
+
+
+    renderProducts(
+        favoriteProducts,
+        container
+    );
+
+
+    page.style.display =
+        "block";
+
+}
+
+
+// ========================================
+// КОРЗИНА
+// ========================================
+
+function showCart() {
+
+    document.getElementById(
+        "cartWindow"
+    ).style.display = "flex";
 
 
     renderCart();
@@ -479,114 +896,116 @@ function showCart() {
 }
 
 
-// =========================
+function closeCart() {
+
+    document.getElementById(
+        "cartWindow"
+    ).style.display = "none";
+
+}
+
+
+// ========================================
 // ОТРИСОВКА КОРЗИНЫ
-// =========================
+// ========================================
 
 function renderCart() {
 
-    const items =
+    const container =
         document.getElementById(
             "cartItems"
         );
 
 
-    const total =
+    const totalElement =
         document.getElementById(
             "cartTotal"
         );
 
 
-    if (!items || !total) {
-        return;
-    }
-
-
-    items.innerHTML = "";
-
-
-    let sum = 0;
+    container.innerHTML = "";
 
 
     if (cart.length === 0) {
 
-        items.innerHTML = `
+        container.innerHTML = `
 
-            <p
-                style="
-                    text-align:center;
-                    color:#aaa5bd;
-                "
-            >
-                Корзина пока пустая.
-            </p>
+            <div class="empty-message">
+
+                🛒<br><br>
+
+                Кошик порожній
+
+            </div>
 
         `;
 
 
-        total.innerHTML =
-            "Итого: 0 ₽";
+        totalElement.textContent =
+            "Разом: 0 ₴";
 
 
         return;
+
     }
+
+
+    let total = 0;
 
 
     cart.forEach(
         (item, index) => {
 
-            const price =
-                Number(
-                    item.price.replace(
-                        /\D/g,
-                        ""
-                    )
-                );
-
-
-            const quantity =
-                item.quantity || 1;
-
-
             const itemTotal =
-                price * quantity;
+                item.price *
+                item.quantity;
 
 
-            sum += itemTotal;
+            total += itemTotal;
 
 
-            items.innerHTML += `
+            container.innerHTML += `
 
                 <div class="cart-item">
 
                     <h3>
-                        ${item.icon || "🛍️"}
+                        ${item.icon}
                         ${item.name}
                     </h3>
 
 
                     <p>
-                        Цена:
-                        ${item.price}
+                        ${formatPrice(
+                            item.price
+                        )}
+                        / шт.
                     </p>
 
 
                     <div class="quantity">
 
                         <button
-                            onclick="decreaseQuantity(${index})"
+                            onclick="
+                                decreaseQuantity(
+                                    ${index}
+                                )
+                            "
                         >
                             −
                         </button>
 
 
                         <span>
-                            ${quantity}
+                            ${item.quantity}
                         </span>
 
 
                         <button
-                            onclick="increaseQuantity(${index})"
+                            onclick="
+                                increaseQuantity(
+                                    ${index}
+                                )
+                            "
                         >
                             +
                         </button>
@@ -595,8 +1014,10 @@ function renderCart() {
 
 
                     <p>
-                        Сумма:
-                        ${itemTotal} ₽
+                        Сума:
+                        ${formatPrice(
+                            itemTotal
+                        )}
                     </p>
 
                 </div>
@@ -607,53 +1028,55 @@ function renderCart() {
     );
 
 
-    total.innerHTML =
-        "Итого: " +
-        sum +
-        " ₽";
+    totalElement.textContent =
+        "Разом: " +
+        formatPrice(total);
 
 }
 
 
-// =========================
+// ========================================
 // + КОЛИЧЕСТВО
-// =========================
+// ========================================
 
 function increaseQuantity(index) {
 
     if (!cart[index]) {
+
         return;
+
     }
 
 
-    cart[index].quantity =
-        (cart[index].quantity || 1) + 1;
+    cart[index].quantity++;
 
 
     saveCart();
-
 
     renderCart();
 
 }
 
 
-// =========================
-// − КОЛИЧЕСТВО
-// =========================
+// ========================================
+// - КОЛИЧЕСТВО
+// ========================================
 
 function decreaseQuantity(index) {
 
     if (!cart[index]) {
+
         return;
+
     }
 
 
-    cart[index].quantity =
-        (cart[index].quantity || 1) - 1;
+    cart[index].quantity--;
 
 
-    if (cart[index].quantity <= 0) {
+    if (
+        cart[index].quantity <= 0
+    ) {
 
         cart.splice(index, 1);
 
@@ -662,311 +1085,130 @@ function decreaseQuantity(index) {
 
     saveCart();
 
-
     renderCart();
 
 }
 
 
-// =========================
-// ЗАКРЫТЬ КОРЗИНУ
-// =========================
-
-function closeCart() {
-
-    const box =
-        document.getElementById(
-            "cartWindow"
-        );
-
-
-    if (!box) {
-        return;
-    }
-
-
-    box.style.display = "none";
-
-}
-
-
-// =========================
-// ОТКРЫТЬ КАТАЛОГ
-// =========================
-
-function scrollToProducts() {
-
-    const productsBlock =
-        document.getElementById(
-            "products"
-        );
-
-
-    if (!productsBlock) {
-        return;
-    }
-
-
-    productsBlock.scrollIntoView({
-
-        behavior: "smooth"
-
-    });
-
-}
-
-
-// =========================
-// ГЛАВНАЯ
-// =========================
-
-function goHome() {
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
-
-
-    if (search) {
-        search.value = "";
-    }
-
-
-    showProducts(products);
-
-}
-
-
-// =========================
-// ПРОФИЛЬ
-// =========================
-
-function showProfile() {
-
-    if (
-        tg &&
-        tg.initDataUnsafe &&
-        tg.initDataUnsafe.user
-    ) {
-
-        const user =
-            tg.initDataUnsafe.user;
-
-
-        alert(
-
-            "👤 " +
-            (
-                user.first_name ||
-                "Пользователь"
-            ) +
-
-            "\n\n" +
-
-            "CloudRoyal"
-
-        );
-
-    } else {
-
-        alert(
-            "Профиль CloudRoyal скоро будет доступен."
-        );
-
-    }
-
-}
-
-
-// =========================
-// ОФОРМЛЕНИЕ ЗАКАЗА
-// =========================
+// ========================================
+// ОФОРМЛЕНИЕ
+// ========================================
 
 function openCheckout() {
 
     if (cart.length === 0) {
 
         alert(
-            "Сначала добавьте товар в корзину."
+            "Кошик порожній."
         );
 
         return;
-    }
-
-
-    const cartWindow =
-        document.getElementById(
-            "cartWindow"
-        );
-
-
-    const checkoutWindow =
-        document.getElementById(
-            "checkoutWindow"
-        );
-
-
-    if (cartWindow) {
-
-        cartWindow.style.display =
-            "none";
 
     }
 
 
-    if (checkoutWindow) {
+    closeCart();
 
-        checkoutWindow.style.display =
-            "block";
 
-    }
+    document.getElementById(
+        "checkoutWindow"
+    ).style.display = "flex";
 
 }
 
-
-// =========================
-// ЗАКРЫТЬ ОФОРМЛЕНИЕ
-// =========================
 
 function closeCheckout() {
 
-    const checkoutWindow =
-        document.getElementById(
-            "checkoutWindow"
-        );
-
-
-    if (checkoutWindow) {
-
-        checkoutWindow.style.display =
-            "none";
-
-    }
+    document.getElementById(
+        "checkoutWindow"
+    ).style.display = "none";
 
 }
 
 
-// =========================
-// ПОДТВЕРДИТЬ ЗАКАЗ
-// =========================
+// ========================================
+// ЗАКАЗ
+// ========================================
 
 function submitOrder() {
 
-    const nameElement =
+    const name =
         document.getElementById(
             "customerName"
-        );
-
-
-    const phoneElement =
-        document.getElementById(
-            "customerPhone"
-        );
-
-
-    if (!nameElement || !phoneElement) {
-
-        alert(
-            "Форма заказа не найдена."
-        );
-
-        return;
-    }
-
-
-    const name =
-        nameElement.value.trim();
+        ).value.trim();
 
 
     const phone =
-        phoneElement.value.trim();
+        document.getElementById(
+            "customerPhone"
+        ).value.trim();
 
 
     if (!name) {
 
         alert(
-            "Введите ваше имя."
+            "Введіть ваше ім'я."
         );
 
         return;
+
     }
 
 
     if (!phone) {
 
         alert(
-            "Введите номер телефона."
+            "Введіть номер телефону."
         );
 
         return;
+
     }
 
 
-    let sum = 0;
+    let total = 0;
 
 
     cart.forEach(item => {
 
-        const price =
-            Number(
-                item.price.replace(
-                    /\D/g,
-                    ""
-                )
-            );
-
-
-        const quantity =
-            item.quantity || 1;
-
-
-        sum +=
-            price * quantity;
+        total +=
+            item.price *
+            item.quantity;
 
     });
 
 
-    const order = {
+    const orderText =
 
-        customerName:
-            name,
+        "Нове замовлення\n\n" +
 
-        phone:
-            phone,
+        "Ім'я: " +
+        name +
+        "\n" +
 
-        items:
-            cart,
+        "Телефон: " +
+        phone +
+        "\n\n" +
 
-        total:
-            sum,
-
-        date:
-            new Date().toLocaleString(
-                "ru-RU"
-            )
-
-    };
+        "Сума: " +
+        formatPrice(total);
 
 
     console.log(
-        "Заказ CloudRoyal:",
-        order
+        orderText
     );
 
 
     alert(
 
-        "Спасибо, " +
+        "Дякуємо, " +
         name +
         "!\n\n" +
 
-        "Заказ на сумму " +
-        sum +
-        " ₽ принят."
+        "Замовлення прийнято.\n" +
+
+        "Сума: " +
+        formatPrice(total)
 
     );
 
@@ -977,11 +1219,163 @@ function submitOrder() {
     saveCart();
 
 
-    nameElement.value = "";
+    document.getElementById(
+        "customerName"
+    ).value = "";
 
-    phoneElement.value = "";
+
+    document.getElementById(
+        "customerPhone"
+    ).value = "";
 
 
     closeCheckout();
 
 }
+
+
+// ========================================
+// ГЛАВНАЯ СТРАНИЦА
+// ========================================
+
+function renderHome() {
+
+    const popular =
+        products.filter(
+            product =>
+                product.isPopular === true
+        );
+
+
+    const sale =
+        products.filter(
+            product =>
+                product.isSale === true
+        );
+
+
+    renderProducts(
+
+        popular.slice(0, 4),
+
+        document.getElementById(
+            "homeProducts"
+        )
+
+    );
+
+
+    renderProducts(
+
+        sale.slice(0, 4),
+
+        document.getElementById(
+            "homeSaleProducts"
+        )
+
+    );
+
+}
+
+
+// ========================================
+// УВЕДОМЛЕНИЕ
+// ========================================
+
+function showToast(message) {
+
+    let toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    if (!toast) {
+
+        toast =
+            document.createElement(
+                "div"
+            );
+
+
+        toast.id = "toast";
+
+
+        toast.style.position =
+            "fixed";
+
+        toast.style.left =
+            "50%";
+
+        toast.style.bottom =
+            "90px";
+
+        toast.style.transform =
+            "translateX(-50%)";
+
+        toast.style.zIndex =
+            "5000";
+
+        toast.style.padding =
+            "11px 16px";
+
+        toast.style.borderRadius =
+            "10px";
+
+        toast.style.background =
+            "#2a2431";
+
+        toast.style.border =
+            "1px solid #583c70";
+
+        toast.style.color =
+            "#ffffff";
+
+        toast.style.fontSize =
+            "13px";
+
+        toast.style.boxShadow =
+            "0 10px 30px rgba(0,0,0,.4)";
+
+
+        document.body.appendChild(
+            toast
+        );
+
+    }
+
+
+    toast.textContent =
+        message;
+
+
+    toast.style.display =
+        "block";
+
+
+    clearTimeout(
+        window.cloudRoyalToast
+    );
+
+
+    window.cloudRoyalToast =
+        setTimeout(
+            () => {
+
+                toast.style.display =
+                    "none";
+
+            },
+            1800
+        );
+
+}
+
+
+// ========================================
+// ЗАПУСК
+// ========================================
+
+renderHome();
+
+goHome();
