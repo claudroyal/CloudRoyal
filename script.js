@@ -1,12 +1,19 @@
 /* =========================================================
    CLOUDROYAL
-   FULL JAVASCRIPT
-   HTML + CSS + Google Apps Script + Telegram
+   FULL SCRIPT
+
+   САЙТ
+      ↓
+   GOOGLE APPS SCRIPT
+      ↓
+   GOOGLE SHEETS
+      ↓
+   TELEGRAM
 ========================================================= */
 
 
 /* =========================================================
-   TELEGRAM
+   TELEGRAM WEB APP
 ========================================================= */
 
 const tg =
@@ -14,7 +21,6 @@ const tg =
     window.Telegram.WebApp
         ? window.Telegram.WebApp
         : null;
-
 
 if (tg) {
 
@@ -36,7 +42,7 @@ if (tg) {
 
 
 /* =========================================================
-   GOOGLE APPS SCRIPT
+   GOOGLE APPS SCRIPT API
 ========================================================= */
 
 const API_URL =
@@ -48,6 +54,10 @@ const API_URL =
 ========================================================= */
 
 const products = [
+
+    /* =========================
+       LIQUIDS
+    ========================= */
 
     {
         id: 1,
@@ -210,9 +220,9 @@ const products = [
     },
 
 
-    /* =====================================================
+    /* =========================
        POD SYSTEMS
-    ===================================================== */
+    ========================= */
 
     {
         id: 101,
@@ -245,9 +255,9 @@ const products = [
     },
 
 
-    /* =====================================================
+    /* =========================
        CARTRIDGES
-    ===================================================== */
+    ========================= */
 
     {
         id: 201,
@@ -302,29 +312,29 @@ let favorites = [];
    DOM
 ========================================================= */
 
-let productsContainer;
+let productsContainer = null;
 
-let searchInput;
+let searchInput = null;
 
-let clearSearchButton;
+let clearSearchButton = null;
 
-let productsCount;
+let productsCount = null;
 
-let emptyState;
+let emptyState = null;
 
-let catalogTitle;
+let catalogTitle = null;
 
-let cartCount;
+let cartCount = null;
 
-let navCartCount;
+let navCartCount = null;
 
-let cartItems;
+let cartItems = null;
 
-let cartTotal;
+let cartTotal = null;
 
-let cartEmpty;
+let cartEmpty = null;
 
-let cartFooter;
+let cartFooter = null;
 
 
 /* =========================================================
@@ -385,7 +395,6 @@ function loadStorage() {
                 "cloudroyal_cart"
             );
 
-
         const savedFavorites =
             localStorage.getItem(
                 "cloudroyal_favorites"
@@ -396,7 +405,6 @@ function loadStorage() {
 
             const parsedCart =
                 JSON.parse(savedCart);
-
 
             if (Array.isArray(parsedCart)) {
 
@@ -411,7 +419,6 @@ function loadStorage() {
 
             const parsedFavorites =
                 JSON.parse(savedFavorites);
-
 
             if (Array.isArray(parsedFavorites)) {
 
@@ -450,7 +457,6 @@ function saveStorage() {
             "cloudroyal_cart",
             JSON.stringify(cart)
         );
-
 
         localStorage.setItem(
             "cloudroyal_favorites",
@@ -578,7 +584,9 @@ function updateCategoryButtons() {
     ) {
 
         buttons[index]
-            .classList.add("active");
+            .classList.add(
+                "active"
+            );
 
     }
 
@@ -619,7 +627,7 @@ function updateCatalogTitle() {
 
     const label =
         document.querySelector(
-            ".products-section .section-label"
+            ".catalog-section .section-label"
         );
 
 
@@ -747,7 +755,6 @@ function toggleBrands() {
         document.getElementById(
             "brands"
         );
-
 
     const button =
         document.getElementById(
@@ -979,7 +986,9 @@ function renderProducts() {
     }
 
 
-    if (filtered.length === 0) {
+    if (
+        filtered.length === 0
+    ) {
 
         if (emptyState) {
 
@@ -988,7 +997,6 @@ function renderProducts() {
             );
 
         }
-
 
         return;
 
@@ -1086,7 +1094,9 @@ function createProductCard(product) {
 
         badgeHTML = `
 
-            <span class="product-badge ${badgeClass}">
+            <span
+                class="product-badge ${badgeClass}"
+            >
                 ${product.badgeText || "NEW"}
             </span>
 
@@ -1103,12 +1113,17 @@ function createProductCard(product) {
 
     const nicotineHTML =
         product.nicotine
-            ? `<span>${product.nicotine}</span>`
+            ? `
+                <span>
+                    ${product.nicotine}
+                </span>
+              `
             : "";
 
 
     const oldPriceHTML =
         product.oldPrice
+
             ? `
                 <span class="old-price">
                     ${formatPrice(
@@ -1116,6 +1131,7 @@ function createProductCard(product) {
                     )}
                 </span>
               `
+
             : `
                 <span class="old-price">
                     &nbsp;
@@ -1130,11 +1146,21 @@ function createProductCard(product) {
             ${badgeHTML}
 
             <button
-                class="favorite-btn ${favorite ? "active" : ""}"
-                onclick="toggleFavorite(${product.id})"
+                class="favorite-btn ${
+                    favorite
+                        ? "active"
+                        : ""
+                }"
+                onclick="toggleFavorite(
+                    ${product.id}
+                )"
                 aria-label="Обране"
             >
-                ${favorite ? "♥" : "♡"}
+                ${
+                    favorite
+                        ? "♥"
+                        : "♡"
+                }
             </button>
 
             <div class="product-placeholder">
@@ -1182,7 +1208,9 @@ function createProductCard(product) {
 
                 <button
                     class="add-button"
-                    onclick="addToCart(${product.id})"
+                    onclick="addToCart(
+                        ${product.id}
+                    )"
                     aria-label="Додати до кошика"
                 >
                     +
@@ -1384,7 +1412,6 @@ function updateCartCounter() {
         cartCount.textContent =
             count;
 
-
         cartCount.style.display =
             count > 0
                 ? "flex"
@@ -1397,7 +1424,6 @@ function updateCartCounter() {
 
         navCartCount.textContent =
             count;
-
 
         navCartCount.style.display =
             count > 0
@@ -1440,7 +1466,7 @@ function getCartTotal() {
             return total +
                 (
                     Number(
-                        product.price
+                        product.price || 0
                     ) *
                     Number(
                         item.quantity || 0
@@ -1542,7 +1568,9 @@ function renderCart() {
         "";
 
 
-    if (cart.length === 0) {
+    if (
+        cart.length === 0
+    ) {
 
         if (cartEmpty) {
 
@@ -1654,11 +1682,9 @@ function renderCart() {
                         −
                     </button>
 
-
                     <span>
                         ${item.quantity}
                     </span>
-
 
                     <button
                         onclick="changeQuantity(
@@ -1760,7 +1786,9 @@ function closeCheckout() {
    CHECKOUT OVERLAY
 ========================================================= */
 
-function closeCheckoutByOverlay(event) {
+function closeCheckoutByOverlay(
+    event
+) {
 
     if (
         event &&
@@ -1809,7 +1837,7 @@ function getInputValue(id) {
 async function submitOrder() {
 
     /* =====================================================
-       INPUTS
+       GET CUSTOMER DATA
     ===================================================== */
 
     const name =
@@ -1823,11 +1851,6 @@ async function submitOrder() {
             "customerPhone"
         );
 
-
-    /*
-       Коментар необов'язковий.
-       Якщо поля немає — помилки не буде.
-    */
 
     const comment =
         getInputValue(
@@ -1844,6 +1867,7 @@ async function submitOrder() {
         alert(
             "Введи своє ім'я."
         );
+
 
         const input =
             document.getElementById(
@@ -1868,6 +1892,7 @@ async function submitOrder() {
         alert(
             "Введи номер телефону."
         );
+
 
         const input =
             document.getElementById(
@@ -1902,48 +1927,50 @@ async function submitOrder() {
 
 
     /* =====================================================
-       PREPARE ITEMS
+       PREPARE PRODUCTS
     ===================================================== */
 
     const orderItems =
         cart
-            .map(item => {
+            .map(
+                item => {
 
-                const product =
-                    products.find(
-                        product =>
-                            product.id ===
-                            item.id
-                    );
+                    const product =
+                        products.find(
+                            product =>
+                                product.id ===
+                                item.id
+                        );
 
 
-                if (!product) {
+                    if (!product) {
 
-                    return null;
+                        return null;
+
+                    }
+
+
+                    return {
+
+                        product:
+                            product.brand +
+                            " — " +
+                            product.name,
+
+                        quantity:
+                            Number(
+                                item.quantity || 1
+                            ),
+
+                        price:
+                            Number(
+                                product.price || 0
+                            )
+
+                    };
 
                 }
-
-
-                return {
-
-                    product:
-                        product.brand +
-                        " — " +
-                        product.name,
-
-                    quantity:
-                        Number(
-                            item.quantity || 1
-                        ),
-
-                    price:
-                        Number(
-                            product.price || 0
-                        )
-
-                };
-
-            })
+            )
             .filter(
                 item =>
                     item !== null
@@ -1972,7 +1999,7 @@ async function submitOrder() {
 
 
     /* =====================================================
-       ORDER OBJECT
+       ORDER DATA
     ===================================================== */
 
     const order = {
@@ -2005,7 +2032,8 @@ async function submitOrder() {
         );
 
 
-    let submitButton = null;
+    let submitButton =
+        null;
 
 
     if (checkoutOverlay) {
@@ -2056,9 +2084,11 @@ async function submitOrder() {
         submitButton.disabled =
             true;
 
+
         submitButton.dataset
             .originalText =
                 submitButton.textContent;
+
 
         submitButton.textContent =
             "Відправляємо...";
@@ -2067,7 +2097,7 @@ async function submitOrder() {
 
 
     /* =====================================================
-       SEND
+       SEND TO GOOGLE APPS SCRIPT
     ===================================================== */
 
     try {
@@ -2081,6 +2111,12 @@ async function submitOrder() {
                         "POST",
 
                     headers: {
+
+                        /*
+                         * text/plain використовується
+                         * спеціально, щоб браузер
+                         * не робив зайвий CORS preflight.
+                         */
 
                         "Content-Type":
                             "text/plain;charset=utf-8"
@@ -2097,7 +2133,7 @@ async function submitOrder() {
 
 
         /* =================================================
-           RESPONSE
+           READ RESPONSE
         ================================================= */
 
         const responseText =
@@ -2117,9 +2153,10 @@ async function submitOrder() {
         } catch (jsonError) {
 
             console.error(
-                "Invalid server response:",
+                "Google Apps Script response:",
                 responseText
             );
+
 
             throw new Error(
                 "Сервер повернув некоректну відповідь."
@@ -2129,7 +2166,7 @@ async function submitOrder() {
 
 
         /* =================================================
-           SERVER ERROR
+           CHECK SERVER RESULT
         ================================================= */
 
         if (
@@ -2170,18 +2207,23 @@ async function submitOrder() {
 
 
         /* =================================================
-           SUCCESS MESSAGE
+           ORDER NUMBER
         ================================================= */
 
         const orderNumber =
             result.orderNumber;
 
 
+        /* =================================================
+           SUCCESS
+        ================================================= */
+
         alert(
 
             "Дякуємо за замовлення! 🎉\n\n" +
 
             "Номер замовлення: #" +
+
             orderNumber
 
         );
@@ -2268,7 +2310,7 @@ async function submitOrder() {
 
             "Не вдалося відправити замовлення.\n\n" +
 
-            "Спробуй ще раз."
+            "Перевір підключення та спробуй ще раз."
 
         );
 
@@ -2318,7 +2360,8 @@ function toggleFavorite(productId) {
         favorites =
             favorites.filter(
                 id =>
-                    id !== productId
+                    id !==
+                    productId
             );
 
     } else {
@@ -2390,7 +2433,9 @@ function closeFavorites() {
    FAVORITES OVERLAY
 ========================================================= */
 
-function closeFavoritesByOverlay(event) {
+function closeFavoritesByOverlay(
+    event
+) {
 
     if (
         event &&
@@ -2568,7 +2613,9 @@ function closeProfile() {
    PROFILE OVERLAY
 ========================================================= */
 
-function closeProfileByOverlay(event) {
+function closeProfileByOverlay(
+    event
+) {
 
     if (
         event &&
@@ -2604,7 +2651,7 @@ function goHome() {
 
 
 /* =========================================================
-   SCROLL CATALOG
+   SCROLL TO CATALOG
 ========================================================= */
 
 function scrollToCatalog() {
@@ -2644,10 +2691,8 @@ function resetFilters() {
     currentFilter =
         "all";
 
-
     currentBrand =
         "all";
-
 
     searchValue =
         "";
