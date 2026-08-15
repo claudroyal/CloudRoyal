@@ -1,20 +1,12 @@
-/* =========================================================
+/* =====================================================
    CLOUDROYAL
-   FULL SCRIPT
+   PRODUCTS + CART + FAVORITES + ORDER SYSTEM
+===================================================== */
 
-   САЙТ
-      ↓
-   GOOGLE APPS SCRIPT
-      ↓
-   GOOGLE SHEETS
-      ↓
+
+/* =====================================================
    TELEGRAM
-========================================================= */
-
-
-/* =========================================================
-   TELEGRAM WEB APP
-========================================================= */
+===================================================== */
 
 const tg =
     window.Telegram &&
@@ -22,36 +14,27 @@ const tg =
         ? window.Telegram.WebApp
         : null;
 
+
 if (tg) {
 
-    try {
+    tg.ready();
 
-        tg.ready();
-        tg.expand();
-
-    } catch (error) {
-
-        console.warn(
-            "Telegram WebApp error:",
-            error
-        );
-
-    }
+    tg.expand();
 
 }
 
 
-/* =========================================================
-   GOOGLE APPS SCRIPT API
-========================================================= */
+/* =====================================================
+   GOOGLE APPS SCRIPT
+===================================================== */
 
-const API_URL =
-    "https://script.google.com/macros/s/AKfycbzdPzlm5ombh8jDmfM7FtRXdR1YpMo4qudhGsY3NyHs0v5OcRlRbasSJljCxFwuI_xP/exec";
+const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbz5JMG8qKeK5uRZMG40w2TfTVQ2ugAS0I4SoQcCyJCBavtgQ3QLishybC0h40LqUWsE/exec";
 
 
-/* =========================================================
+/* =====================================================
    PRODUCTS
-========================================================= */
+===================================================== */
 
 const products = [
 
@@ -65,7 +48,7 @@ const products = [
         brand: "CHASER",
         name: "Classic Berry",
         volume: "30 ml",
-        nicotine: "20 mg",
+        nicotine: "0 mg",
         price: 350,
         oldPrice: 400,
         badge: "sale",
@@ -80,7 +63,7 @@ const products = [
         brand: "MOOD DUCK",
         name: "Sweet Apple",
         volume: "30 ml",
-        nicotine: "20 mg",
+        nicotine: "0 mg",
         price: 360,
         oldPrice: null,
         badge: "new",
@@ -95,7 +78,7 @@ const products = [
         brand: "PUNCH",
         name: "Cherry Punch",
         volume: "30 ml",
-        nicotine: "20 mg",
+        nicotine: "0 mg",
         price: 370,
         oldPrice: null,
         badge: "new",
@@ -110,7 +93,7 @@ const products = [
         brand: "OCTOBAR",
         name: "Tropical Mix",
         volume: "30 ml",
-        nicotine: "20 mg",
+        nicotine: "0 mg",
         price: 390,
         oldPrice: 430,
         badge: "sale",
@@ -125,7 +108,7 @@ const products = [
         brand: "FLAVORLAB",
         name: "Blueberry Ice",
         volume: "30 ml",
-        nicotine: "20 mg",
+        nicotine: "0 mg",
         price: 340,
         oldPrice: null,
         badge: null,
@@ -139,7 +122,7 @@ const products = [
         brand: "LUCKY",
         name: "Watermelon",
         volume: "30 ml",
-        nicotine: "20 mg",
+        nicotine: "0 mg",
         price: 330,
         oldPrice: null,
         badge: null,
@@ -153,7 +136,7 @@ const products = [
         brand: "REFROST",
         name: "Frozen Berries",
         volume: "30 ml",
-        nicotine: "20 mg",
+        nicotine: "0 mg",
         price: 350,
         oldPrice: 390,
         badge: "sale",
@@ -168,7 +151,7 @@ const products = [
         brand: "HYPE",
         name: "Mango Passion",
         volume: "30 ml",
-        nicotine: "20 mg",
+        nicotine: "0 mg",
         price: 360,
         oldPrice: null,
         badge: null,
@@ -182,7 +165,7 @@ const products = [
         brand: "3GER",
         name: "Grape Soda",
         volume: "30 ml",
-        nicotine: "20 mg",
+        nicotine: "0 mg",
         price: 380,
         oldPrice: null,
         badge: null,
@@ -196,7 +179,7 @@ const products = [
         brand: "ALCHEMIST",
         name: "Strawberry Cream",
         volume: "30 ml",
-        nicotine: "20 mg",
+        nicotine: "0 mg",
         price: 400,
         oldPrice: 450,
         badge: "sale",
@@ -211,7 +194,7 @@ const products = [
         brand: "INBOTTLE",
         name: "Lemon Lime",
         volume: "30 ml",
-        nicotine: "20 mg",
+        nicotine: "0 mg",
         price: 350,
         oldPrice: null,
         badge: null,
@@ -221,7 +204,7 @@ const products = [
 
 
     /* =========================
-       POD SYSTEMS
+       POD
     ========================= */
 
     {
@@ -291,9 +274,9 @@ const products = [
 ];
 
 
-/* =========================================================
+/* =====================================================
    STATE
-========================================================= */
+===================================================== */
 
 let currentCategory = "liquid";
 
@@ -308,83 +291,50 @@ let cart = [];
 let favorites = [];
 
 
-/* =========================================================
+/* =====================================================
    DOM
-========================================================= */
+===================================================== */
 
-let productsContainer = null;
+const productsContainer =
+    document.getElementById("products");
 
-let searchInput = null;
+const searchInput =
+    document.getElementById("search");
 
-let clearSearchButton = null;
+const clearSearchButton =
+    document.getElementById("clearSearch");
 
-let productsCount = null;
+const productsCount =
+    document.getElementById("productsCount");
 
-let emptyState = null;
+const emptyState =
+    document.getElementById("emptyState");
 
-let catalogTitle = null;
+const catalogTitle =
+    document.getElementById("catalogTitle");
 
-let cartCount = null;
+const cartCount =
+    document.getElementById("cartCount");
 
-let navCartCount = null;
+const navCartCount =
+    document.getElementById("navCartCount");
 
-let cartItems = null;
+const cartItems =
+    document.getElementById("cartItems");
 
-let cartTotal = null;
+const cartTotal =
+    document.getElementById("cartTotal");
 
-let cartEmpty = null;
+const cartEmpty =
+    document.getElementById("cartEmpty");
 
-let cartFooter = null;
-
-
-/* =========================================================
-   GET DOM
-========================================================= */
-
-function getDOMElements() {
-
-    productsContainer =
-        document.getElementById("products");
-
-    searchInput =
-        document.getElementById("search");
-
-    clearSearchButton =
-        document.getElementById("clearSearch");
-
-    productsCount =
-        document.getElementById("productsCount");
-
-    emptyState =
-        document.getElementById("emptyState");
-
-    catalogTitle =
-        document.getElementById("catalogTitle");
-
-    cartCount =
-        document.getElementById("cartCount");
-
-    navCartCount =
-        document.getElementById("navCartCount");
-
-    cartItems =
-        document.getElementById("cartItems");
-
-    cartTotal =
-        document.getElementById("cartTotal");
-
-    cartEmpty =
-        document.getElementById("cartEmpty");
-
-    cartFooter =
-        document.getElementById("cartFooter");
-
-}
+const cartFooter =
+    document.getElementById("cartFooter");
 
 
-/* =========================================================
+/* =====================================================
    STORAGE
-========================================================= */
+===================================================== */
 
 function loadStorage() {
 
@@ -403,38 +353,21 @@ function loadStorage() {
 
         if (savedCart) {
 
-            const parsedCart =
+            cart =
                 JSON.parse(savedCart);
-
-            if (Array.isArray(parsedCart)) {
-
-                cart = parsedCart;
-
-            }
 
         }
 
 
         if (savedFavorites) {
 
-            const parsedFavorites =
+            favorites =
                 JSON.parse(savedFavorites);
-
-            if (Array.isArray(parsedFavorites)) {
-
-                favorites =
-                    parsedFavorites;
-
-            }
 
         }
 
-    } catch (error) {
 
-        console.warn(
-            "Storage error:",
-            error
-        );
+    } catch (error) {
 
         cart = [];
 
@@ -445,44 +378,33 @@ function loadStorage() {
 }
 
 
-/* =========================================================
+/* =====================================================
    SAVE STORAGE
-========================================================= */
+===================================================== */
 
 function saveStorage() {
 
-    try {
+    localStorage.setItem(
+        "cloudroyal_cart",
+        JSON.stringify(cart)
+    );
 
-        localStorage.setItem(
-            "cloudroyal_cart",
-            JSON.stringify(cart)
-        );
-
-        localStorage.setItem(
-            "cloudroyal_favorites",
-            JSON.stringify(favorites)
-        );
-
-    } catch (error) {
-
-        console.warn(
-            "Storage save error:",
-            error
-        );
-
-    }
+    localStorage.setItem(
+        "cloudroyal_favorites",
+        JSON.stringify(favorites)
+    );
 
 }
 
 
-/* =========================================================
-   FORMAT PRICE
-========================================================= */
+/* =====================================================
+   PRICE
+===================================================== */
 
 function formatPrice(price) {
 
     return (
-        Number(price || 0)
+        Number(price)
             .toLocaleString("uk-UA")
         + " ₴"
     );
@@ -490,9 +412,9 @@ function formatPrice(price) {
 }
 
 
-/* =========================================================
+/* =====================================================
    CATEGORY
-========================================================= */
+===================================================== */
 
 function openCategory(category) {
 
@@ -540,9 +462,9 @@ function openCategory(category) {
 }
 
 
-/* =========================================================
+/* =====================================================
    CATEGORY BUTTONS
-========================================================= */
+===================================================== */
 
 function updateCategoryButtons() {
 
@@ -584,26 +506,20 @@ function updateCategoryButtons() {
     ) {
 
         buttons[index]
-            .classList.add(
-                "active"
-            );
+            .classList.add("active");
 
     }
 
 }
 
 
-/* =========================================================
+/* =====================================================
    CATALOG TITLE
-========================================================= */
+===================================================== */
 
 function updateCatalogTitle() {
 
-    if (!catalogTitle) {
-
-        return;
-
-    }
+    if (!catalogTitle) return;
 
 
     const titles = {
@@ -627,7 +543,7 @@ function updateCatalogTitle() {
 
     const label =
         document.querySelector(
-            ".catalog-section .section-label"
+            ".products-section .section-label"
         );
 
 
@@ -657,9 +573,9 @@ function updateCatalogTitle() {
 }
 
 
-/* =========================================================
+/* =====================================================
    FILTER
-========================================================= */
+===================================================== */
 
 function setFilter(filter) {
 
@@ -673,9 +589,9 @@ function setFilter(filter) {
 }
 
 
-/* =========================================================
+/* =====================================================
    FILTER BUTTONS
-========================================================= */
+===================================================== */
 
 function updateFilterButtons() {
 
@@ -701,9 +617,9 @@ function updateFilterButtons() {
 }
 
 
-/* =========================================================
+/* =====================================================
    BRAND
-========================================================= */
+===================================================== */
 
 function setBrand(brand) {
 
@@ -717,9 +633,9 @@ function setBrand(brand) {
 }
 
 
-/* =========================================================
+/* =====================================================
    BRAND BUTTONS
-========================================================= */
+===================================================== */
 
 function updateBrandButtons() {
 
@@ -745,9 +661,9 @@ function updateBrandButtons() {
 }
 
 
-/* =========================================================
-   SHOW ALL BRANDS
-========================================================= */
+/* =====================================================
+   BRANDS
+===================================================== */
 
 function toggleBrands() {
 
@@ -762,10 +678,7 @@ function toggleBrands() {
         );
 
 
-    if (
-        !brands ||
-        !button
-    ) {
+    if (!brands || !button) {
 
         return;
 
@@ -786,9 +699,9 @@ function toggleBrands() {
 }
 
 
-/* =========================================================
+/* =====================================================
    SEARCH
-========================================================= */
+===================================================== */
 
 function setupSearch() {
 
@@ -827,9 +740,9 @@ function setupSearch() {
 }
 
 
-/* =========================================================
+/* =====================================================
    CLEAR SEARCH
-========================================================= */
+===================================================== */
 
 function clearSearch() {
 
@@ -858,104 +771,102 @@ function clearSearch() {
 }
 
 
-/* =========================================================
+/* =====================================================
    FILTER PRODUCTS
-========================================================= */
+===================================================== */
 
 function getFilteredProducts() {
 
-    return products.filter(
-        product => {
+    return products.filter(product => {
 
 
-            if (
-                product.category !==
-                currentCategory
-            ) {
+        if (
+            product.category !==
+            currentCategory
+        ) {
 
-                return false;
-
-            }
-
-
-            if (
-                currentBrand !== "all" &&
-                product.brand !==
-                currentBrand
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                currentFilter === "new" &&
-                !product.new
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                currentFilter === "popular" &&
-                !product.popular
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                currentFilter === "sale" &&
-                !product.oldPrice
-            ) {
-
-                return false;
-
-            }
-
-
-            if (searchValue) {
-
-                const text = (
-
-                    product.brand +
-                    " " +
-                    product.name +
-                    " " +
-                    product.volume
-
-                ).toLowerCase();
-
-
-                if (
-                    !text.includes(
-                        searchValue
-                    )
-                ) {
-
-                    return false;
-
-                }
-
-            }
-
-
-            return true;
+            return false;
 
         }
-    );
+
+
+        if (
+            currentBrand !== "all" &&
+            product.brand !==
+            currentBrand
+        ) {
+
+            return false;
+
+        }
+
+
+        if (
+            currentFilter === "new" &&
+            !product.new
+        ) {
+
+            return false;
+
+        }
+
+
+        if (
+            currentFilter === "popular" &&
+            !product.popular
+        ) {
+
+            return false;
+
+        }
+
+
+        if (
+            currentFilter === "sale" &&
+            !product.oldPrice
+        ) {
+
+            return false;
+
+        }
+
+
+        if (searchValue) {
+
+            const text = (
+
+                product.brand +
+                " " +
+                product.name +
+                " " +
+                product.volume
+
+            ).toLowerCase();
+
+
+            if (
+                !text.includes(
+                    searchValue
+                )
+            ) {
+
+                return false;
+
+            }
+
+        }
+
+
+        return true;
+
+    });
 
 }
 
 
-/* =========================================================
+/* =====================================================
    RENDER PRODUCTS
-========================================================= */
+===================================================== */
 
 function renderProducts() {
 
@@ -1012,24 +923,24 @@ function renderProducts() {
     }
 
 
-    filtered.forEach(
-        product => {
+    filtered.forEach(product => {
 
-            productsContainer.appendChild(
-                createProductCard(
-                    product
-                )
-            );
+        productsContainer.appendChild(
 
-        }
-    );
+            createProductCard(
+                product
+            )
+
+        );
+
+    });
 
 }
 
 
-/* =========================================================
+/* =====================================================
    PLURAL
-========================================================= */
+===================================================== */
 
 function pluralProducts(number) {
 
@@ -1062,9 +973,9 @@ function pluralProducts(number) {
 }
 
 
-/* =========================================================
+/* =====================================================
    PRODUCT CARD
-========================================================= */
+===================================================== */
 
 function createProductCard(product) {
 
@@ -1087,9 +998,7 @@ function createProductCard(product) {
         const badgeClass =
             product.badge === "sale"
                 ? "sale"
-                : product.badge === "popular"
-                    ? "popular"
-                    : "";
+                : "";
 
 
         badgeHTML = `
@@ -1123,7 +1032,6 @@ function createProductCard(product) {
 
     const oldPriceHTML =
         product.oldPrice
-
             ? `
                 <span class="old-price">
                     ${formatPrice(
@@ -1131,9 +1039,8 @@ function createProductCard(product) {
                     )}
                 </span>
               `
-
             : `
-                <span class="old-price">
+                <span class="old-price empty">
                     &nbsp;
                 </span>
               `;
@@ -1145,16 +1052,14 @@ function createProductCard(product) {
 
             ${badgeHTML}
 
+
             <button
+                type="button"
                 class="favorite-btn ${
-                    favorite
-                        ? "active"
-                        : ""
+                    favorite ? "active" : ""
                 }"
-                onclick="toggleFavorite(
-                    ${product.id}
-                )"
-                aria-label="Обране"
+                onclick="toggleFavorite(${product.id})"
+                aria-label="Додати в обране"
             >
                 ${
                     favorite
@@ -1163,8 +1068,13 @@ function createProductCard(product) {
                 }
             </button>
 
+
             <div class="product-placeholder">
-                ${product.brand}
+
+                <span>
+                    ${product.brand}
+                </span>
+
             </div>
 
         </div>
@@ -1172,13 +1082,16 @@ function createProductCard(product) {
 
         <div class="product-info">
 
+
             <div class="product-brand">
                 ${product.brand}
             </div>
 
+
             <h3 class="product-name">
                 ${product.name}
             </h3>
+
 
             <div class="product-meta">
 
@@ -1192,6 +1105,7 @@ function createProductCard(product) {
 
 
             <div class="product-bottom">
+
 
                 <div class="price-box">
 
@@ -1207,16 +1121,17 @@ function createProductCard(product) {
 
 
                 <button
+                    type="button"
                     class="add-button"
-                    onclick="addToCart(
-                        ${product.id}
-                    )"
+                    onclick="addToCart(${product.id})"
                     aria-label="Додати до кошика"
                 >
                     +
                 </button>
 
+
             </div>
+
 
         </div>
 
@@ -1228,17 +1143,16 @@ function createProductCard(product) {
 }
 
 
-/* =========================================================
+/* =====================================================
    ADD TO CART
-========================================================= */
+===================================================== */
 
 function addToCart(productId) {
 
     const product =
         products.find(
             item =>
-                item.id ===
-                productId
+                item.id === productId
         );
 
 
@@ -1252,8 +1166,7 @@ function addToCart(productId) {
     const existing =
         cart.find(
             item =>
-                item.id ===
-                productId
+                item.id === productId
         );
 
 
@@ -1265,11 +1178,9 @@ function addToCart(productId) {
 
         cart.push({
 
-            id:
-                productId,
+            id: productId,
 
-            quantity:
-                1
+            quantity: 1
 
         });
 
@@ -1297,17 +1208,16 @@ function addToCart(productId) {
 }
 
 
-/* =========================================================
+/* =====================================================
    REMOVE FROM CART
-========================================================= */
+===================================================== */
 
 function removeFromCart(productId) {
 
     cart =
         cart.filter(
             item =>
-                item.id !==
-                productId
+                item.id !== productId
         );
 
 
@@ -1320,9 +1230,9 @@ function removeFromCart(productId) {
 }
 
 
-/* =========================================================
-   CHANGE QUANTITY
-========================================================= */
+/* =====================================================
+   QUANTITY
+===================================================== */
 
 function changeQuantity(
     productId,
@@ -1370,25 +1280,18 @@ function changeQuantity(
 }
 
 
-/* =========================================================
-   GET CART COUNT
-========================================================= */
+/* =====================================================
+   CART COUNT
+===================================================== */
 
 function getCartCount() {
 
     return cart.reduce(
 
-        (
-            total,
-            item
-        ) => {
+        (total, item) =>
 
-            return total +
-                Number(
-                    item.quantity || 0
-                );
-
-        },
+            total +
+            item.quantity,
 
         0
 
@@ -1397,9 +1300,9 @@ function getCartCount() {
 }
 
 
-/* =========================================================
-   UPDATE CART COUNTER
-========================================================= */
+/* =====================================================
+   CART COUNTER
+===================================================== */
 
 function updateCartCounter() {
 
@@ -1411,6 +1314,7 @@ function updateCartCounter() {
 
         cartCount.textContent =
             count;
+
 
         cartCount.style.display =
             count > 0
@@ -1425,6 +1329,7 @@ function updateCartCounter() {
         navCartCount.textContent =
             count;
 
+
         navCartCount.style.display =
             count > 0
                 ? "flex"
@@ -1435,24 +1340,20 @@ function updateCartCounter() {
 }
 
 
-/* =========================================================
-   GET CART TOTAL
-========================================================= */
+/* =====================================================
+   CART TOTAL
+===================================================== */
 
 function getCartTotal() {
 
     return cart.reduce(
 
-        (
-            total,
-            item
-        ) => {
+        (total, item) => {
 
             const product =
                 products.find(
                     p =>
-                        p.id ===
-                        item.id
+                        p.id === item.id
                 );
 
 
@@ -1464,14 +1365,9 @@ function getCartTotal() {
 
 
             return total +
-                (
-                    Number(
-                        product.price || 0
-                    ) *
-                    Number(
-                        item.quantity || 0
-                    )
-                );
+
+                product.price *
+                item.quantity;
 
         },
 
@@ -1482,9 +1378,9 @@ function getCartTotal() {
 }
 
 
-/* =========================================================
+/* =====================================================
    SHOW CART
-========================================================= */
+===================================================== */
 
 function showCart() {
 
@@ -1508,9 +1404,9 @@ function showCart() {
 }
 
 
-/* =========================================================
+/* =====================================================
    CLOSE CART
-========================================================= */
+===================================================== */
 
 function closeCart() {
 
@@ -1531,15 +1427,13 @@ function closeCart() {
 }
 
 
-/* =========================================================
+/* =====================================================
    CART OVERLAY
-========================================================= */
+===================================================== */
 
 function closeCartByOverlay(event) {
 
     if (
-        event &&
-        event.target &&
         event.target.id ===
         "cartOverlay"
     ) {
@@ -1551,9 +1445,9 @@ function closeCartByOverlay(event) {
 }
 
 
-/* =========================================================
+/* =====================================================
    RENDER CART
-========================================================= */
+===================================================== */
 
 function renderCart() {
 
@@ -1588,14 +1482,6 @@ function renderCart() {
         }
 
 
-        if (cartTotal) {
-
-            cartTotal.textContent =
-                formatPrice(0);
-
-        }
-
-
         return;
 
     }
@@ -1617,95 +1503,111 @@ function renderCart() {
     }
 
 
-    cart.forEach(
-        item => {
+    cart.forEach(item => {
 
-            const product =
-                products.find(
-                    p =>
-                        p.id ===
-                        item.id
-                );
+        const product =
+            products.find(
+                p =>
+                    p.id === item.id
+            );
 
 
-            if (!product) {
+        if (!product) {
 
-                return;
+            return;
 
-            }
-
-
-            const element =
-                document.createElement(
-                    "div"
-                );
+        }
 
 
-            element.className =
-                "cart-item";
+        const element =
+            document.createElement(
+                "div"
+            );
 
 
-            element.innerHTML = `
+        element.className =
+            "cart-item";
 
-                <div class="cart-item-image">
+
+        element.innerHTML = `
+
+            <div class="cart-item-image">
+
+                <span>
+                    ${product.brand}
+                </span>
+
+            </div>
+
+
+            <div class="cart-item-info">
+
+                <div class="cart-item-brand">
                     ${product.brand}
                 </div>
 
-
-                <div class="cart-item-info">
-
-                    <div class="cart-item-brand">
-                        ${product.brand}
-                    </div>
-
-                    <div class="cart-item-name">
-                        ${product.name}
-                    </div>
-
-                    <div class="cart-item-price">
-                        ${formatPrice(
-                            product.price
-                        )}
-                    </div>
-
+                <div class="cart-item-name">
+                    ${product.name}
                 </div>
 
-
-                <div class="quantity">
-
-                    <button
-                        onclick="changeQuantity(
-                            ${product.id},
-                            -1
-                        )"
-                    >
-                        −
-                    </button>
-
-                    <span>
-                        ${item.quantity}
-                    </span>
-
-                    <button
-                        onclick="changeQuantity(
-                            ${product.id},
-                            1
-                        )"
-                    >
-                        +
-                    </button>
-
+                <div class="cart-item-price">
+                    ${formatPrice(
+                        product.price
+                    )}
                 </div>
 
-            `;
+            </div>
 
 
-            cartItems.appendChild(
-                element
-            );
+            <div class="quantity">
 
-        }
-    );
+                <button
+                    type="button"
+                    onclick="changeQuantity(
+                        ${product.id},
+                        -1
+                    )"
+                >
+                    −
+                </button>
+
+
+                <span>
+                    ${item.quantity}
+                </span>
+
+
+                <button
+                    type="button"
+                    onclick="changeQuantity(
+                        ${product.id},
+                        1
+                    )"
+                >
+                    +
+                </button>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="remove-cart-item"
+                onclick="removeFromCart(
+                    ${product.id}
+                )"
+            >
+                ×
+            </button>
+
+        `;
+
+
+        cartItems.appendChild(
+            element
+        );
+
+    });
 
 
     if (cartTotal) {
@@ -1720,9 +1622,9 @@ function renderCart() {
 }
 
 
-/* =========================================================
+/* =====================================================
    CHECKOUT
-========================================================= */
+===================================================== */
 
 function openCheckout() {
 
@@ -1731,7 +1633,7 @@ function openCheckout() {
     ) {
 
         alert(
-            "Кошик порожній."
+            "Спочатку додай товар у кошик."
         );
 
         return;
@@ -1759,9 +1661,9 @@ function openCheckout() {
 }
 
 
-/* =========================================================
+/* =====================================================
    CLOSE CHECKOUT
-========================================================= */
+===================================================== */
 
 function closeCheckout() {
 
@@ -1782,17 +1684,15 @@ function closeCheckout() {
 }
 
 
-/* =========================================================
+/* =====================================================
    CHECKOUT OVERLAY
-========================================================= */
+===================================================== */
 
 function closeCheckoutByOverlay(
     event
 ) {
 
     if (
-        event &&
-        event.target &&
         event.target.id ===
         "checkoutOverlay"
     ) {
@@ -1804,319 +1704,57 @@ function closeCheckoutByOverlay(
 }
 
 
-/* =========================================================
-   GET INPUT VALUE
-========================================================= */
-
-function getInputValue(id) {
-
-    const element =
-        document.getElementById(
-            id
-        );
-
-
-    if (!element) {
-
-        return "";
-
-    }
-
-
-    return String(
-        element.value || ""
-    ).trim();
-
-}
-
-
-/* =========================
+/* =====================================================
    SUBMIT ORDER
-========================= */
+===================================================== */
 
 async function submitOrder() {
 
     const nameInput =
-        document.getElementById("customerName");
-
-    const phoneInput =
-        document.getElementById("customerPhone");
-
-    if (!nameInput || !phoneInput) {
-        alert("Помилка: не знайдено поля форми.");
-        return;
-    }
-
-    const name =
-        nameInput.value.trim();
-
-    const phone =
-        phoneInput.value.trim();
-
-
-    /* =========================
-       ПРОВЕРКА
-    ========================= */
-
-    if (!name) {
-
-        alert("Введи своє ім'я.");
-
-        nameInput.focus();
-
-        return;
-
-    }
-
-
-    if (!phone) {
-
-        alert("Введи номер телефону.");
-
-        phoneInput.focus();
-
-        return;
-
-    }
-
-
-    if (cart.length === 0) {
-
-        alert("Кошик порожній.");
-
-        closeCheckout();
-
-        return;
-
-    }
-
-
-    /* =========================
-       URL GOOGLE APPS SCRIPT
-    ========================= */
-
-    const GOOGLE_SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbzdPzlm5ombh8jDmfM7FtRXdR1YpMo4qudhGsY3NyHs0v5OcRlRbasSJljCxFwuI_xP/exec";
-
-
-    /* =========================
-       ТОВАРИ З КОШИКА
-    ========================= */
-
-    const orderItems = cart.map(item => {
-
-        const product =
-            products.find(
-                product => product.id === item.id
-            );
-
-        if (!product) {
-            return null;
-        }
-
-        return {
-
-            id: product.id,
-
-            brand: product.brand,
-
-            name: product.name,
-
-            volume: product.volume,
-
-            nicotine: product.nicotine,
-
-            price: product.price,
-
-            quantity: item.quantity,
-
-            subtotal:
-                product.price *
-                item.quantity
-
-        };
-
-    }).filter(Boolean);
-
-
-    /* =========================
-       ЗАМОВЛЕННЯ
-    ========================= */
-
-    const order = {
-
-        name: name,
-
-        phone: phone,
-
-        comment: "",
-
-        items: orderItems,
-
-        total: getCartTotal(),
-
-        createdAt:
-            new Date().toISOString()
-
-    };
-
-
-    /* =========================
-       КНОПКА
-    ========================= */
-
-    const button =
-        document.querySelector(
-            "#checkoutOverlay .checkout-button.large"
-        );
-
-
-    if (button) {
-
-        button.disabled = true;
-
-        button.dataset.originalText =
-            button.innerHTML;
-
-        button.innerHTML =
-            "Відправляємо замовлення...";
-
-    }
-
-
-    try {
-
-        /* =========================
-           ВІДПРАВКА В GOOGLE SHEETS
-        ========================= */
-
-        const response =
-            await fetch(
-                GOOGLE_SCRIPT_URL,
-                {
-
-                    method: "POST",
-
-                    mode: "no-cors",
-
-                    headers: {
-
-                        "Content-Type":
-                            "text/plain;charset=utf-8"
-
-                    },
-
-                    body:
-                        JSON.stringify(order)
-
-                }
-            );
-
-
-        /* =========================
-           TELEGRAM HAPTIC
-        ========================= */
-
-        if (tg) {
-
-            try {
-
-                tg.HapticFeedback
-                    .notificationOccurred(
-                        "success"
-                    );
-
-            } catch (error) {}
-
-        }
-
-
-        /* =========================
-           УСПІШНЕ ЗАМОВЛЕННЯ
-        ========================= */
-
-        alert(
-            "Дякуємо! Замовлення прийнято."
-        );
-
-
-        /* =========================
-           ОЧИЩЕННЯ КОШИКА
-        ========================= */
-
-        cart = [];
-
-        saveStorage();
-
-        updateCartCounter();
-
-        closeCheckout();
-
-        renderCart();
-
-
-        /* =========================
-           ОЧИЩЕННЯ ФОРМИ
-        ========================= */
-
-        nameInput.value = "";
-
-        phoneInput.value = "";
-
-
-    } catch (error) {
-
-        console.error(
-            "Помилка відправки замовлення:",
-            error
-        );
-
-
-        alert(
-            "Не вдалося відправити замовлення. Спробуй ще раз."
-        );
-
-
-    } finally {
-
-        if (button) {
-
-            button.disabled = false;
-
-            button.innerHTML =
-                button.dataset.originalText ||
-                'Підтвердити замовлення <span>→</span>';
-
-        }
-
-    }
-
-}
-    /* =====================================================
-       GET CUSTOMER DATA
-    ===================================================== */
-
-    const name =
-        getInputValue(
+        document.getElementById(
             "customerName"
         );
 
 
-    const phone =
-        getInputValue(
+    const phoneInput =
+        document.getElementById(
             "customerPhone"
         );
 
 
-    const comment =
-        getInputValue(
+    const commentInput =
+        document.getElementById(
             "customerComment"
         );
 
 
-    /* =====================================================
+    const submitButton =
+        document.getElementById(
+            "submitOrderButton"
+        );
+
+
+    const name =
+        nameInput
+            ? nameInput.value.trim()
+            : "";
+
+
+    const phone =
+        phoneInput
+            ? phoneInput.value.trim()
+            : "";
+
+
+    const comment =
+        commentInput
+            ? commentInput.value.trim()
+            : "";
+
+
+    /* =========================
        VALIDATION
-    ===================================================== */
+    ========================= */
 
     if (!name) {
 
@@ -2124,19 +1762,11 @@ async function submitOrder() {
             "Введи своє ім'я."
         );
 
+        if (nameInput) {
 
-        const input =
-            document.getElementById(
-                "customerName"
-            );
-
-
-        if (input) {
-
-            input.focus();
+            nameInput.focus();
 
         }
-
 
         return;
 
@@ -2149,19 +1779,11 @@ async function submitOrder() {
             "Введи номер телефону."
         );
 
+        if (phoneInput) {
 
-        const input =
-            document.getElementById(
-                "customerPhone"
-            );
-
-
-        if (input) {
-
-            input.focus();
+            phoneInput.focus();
 
         }
-
 
         return;
 
@@ -2169,7 +1791,6 @@ async function submitOrder() {
 
 
     if (
-        !Array.isArray(cart) ||
         cart.length === 0
     ) {
 
@@ -2177,174 +1798,107 @@ async function submitOrder() {
             "Кошик порожній."
         );
 
+        closeCheckout();
+
         return;
 
     }
 
 
-    /* =====================================================
-       PREPARE PRODUCTS
-    ===================================================== */
+    /* =========================
+       ITEMS
+    ========================= */
 
     const orderItems =
         cart
-            .map(
-                item => {
+            .map(item => {
 
-                    const product =
-                        products.find(
-                            product =>
-                                product.id ===
-                                item.id
-                        );
-
-
-                    if (!product) {
-
-                        return null;
-
-                    }
+                const product =
+                    products.find(
+                        p =>
+                            p.id ===
+                            item.id
+                    );
 
 
-                    return {
+                if (!product) {
 
-                        product:
-                            product.brand +
-                            " — " +
-                            product.name,
-
-                        quantity:
-                            Number(
-                                item.quantity || 1
-                            ),
-
-                        price:
-                            Number(
-                                product.price || 0
-                            )
-
-                    };
+                    return null;
 
                 }
-            )
-            .filter(
-                item =>
-                    item !== null
-            );
 
 
-    if (
-        orderItems.length === 0
-    ) {
+                return (
 
-        alert(
-            "Не вдалося визначити товари в кошику."
-        );
+                    product.brand +
+                    " — " +
+                    product.name +
+                    " × " +
+                    item.quantity +
+                    " (" +
+                    formatPrice(
+                        product.price
+                    ) +
+                    ")"
 
-        return;
+                );
 
-    }
+            })
+            .filter(Boolean)
+            .join("\n");
 
 
-    /* =====================================================
+    /* =========================
+       QUANTITY
+    ========================= */
+
+    const totalQuantity =
+        getCartCount();
+
+
+    /* =========================
        TOTAL
-    ===================================================== */
+    ========================= */
 
-    const total =
+    const totalPrice =
         getCartTotal();
 
 
-    /* =====================================================
-       ORDER DATA
-    ===================================================== */
+    /* =========================
+       DATA
+    ========================= */
 
-    const order = {
+    const orderData = {
 
-        name:
+        user:
             name,
 
         phone:
             phone,
 
-        comment:
-            comment,
-
         items:
             orderItems,
 
-        total:
-            total
+        totalQuantity:
+            totalQuantity,
+
+        totalPrice:
+            totalPrice,
+
+        comment:
+            comment
 
     };
 
 
-    /* =====================================================
-       FIND SUBMIT BUTTON
-    ===================================================== */
-
-    const checkoutOverlay =
-        document.getElementById(
-            "checkoutOverlay"
-        );
-
-
-    let submitButton =
-        null;
-
-
-    if (checkoutOverlay) {
-
-        const buttons =
-            checkoutOverlay
-                .querySelectorAll(
-                    "button"
-                );
-
-
-        buttons.forEach(
-            button => {
-
-                const text =
-                    (
-                        button.textContent ||
-                        ""
-                    ).toLowerCase();
-
-
-                if (
-                    text.includes(
-                        "замов"
-                    ) ||
-                    text.includes(
-                        "підтверд"
-                    )
-                ) {
-
-                    submitButton =
-                        button;
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       DISABLE BUTTON
-    ===================================================== */
+    /* =========================
+       BUTTON STATE
+    ========================= */
 
     if (submitButton) {
 
         submitButton.disabled =
             true;
-
-
-        submitButton.dataset
-            .originalText =
-                submitButton.textContent;
-
 
         submitButton.textContent =
             "Відправляємо...";
@@ -2352,27 +1906,24 @@ async function submitOrder() {
     }
 
 
-    /* =====================================================
-       SEND TO GOOGLE APPS SCRIPT
-    ===================================================== */
-
     try {
+
+        /*
+         * ВАЖЛИВО:
+         *
+         * text/plain використовується,
+         * щоб не робити CORS preflight.
+         */
 
         const response =
             await fetch(
-                API_URL,
+                GOOGLE_SCRIPT_URL,
                 {
 
                     method:
                         "POST",
 
                     headers: {
-
-                        /*
-                         * text/plain використовується
-                         * спеціально, щоб браузер
-                         * не робив зайвий CORS preflight.
-                         */
 
                         "Content-Type":
                             "text/plain;charset=utf-8"
@@ -2381,53 +1932,30 @@ async function submitOrder() {
 
                     body:
                         JSON.stringify(
-                            order
+                            orderData
                         )
 
                 }
             );
 
 
-        /* =================================================
-           READ RESPONSE
-        ================================================= */
-
-        const responseText =
-            await response.text();
-
-
-        let result;
-
-
-        try {
-
-            result =
-                JSON.parse(
-                    responseText
-                );
-
-        } catch (jsonError) {
-
-            console.error(
-                "Google Apps Script response:",
-                responseText
-            );
-
+        if (!response.ok) {
 
             throw new Error(
-                "Сервер повернув некоректну відповідь."
+                "Сервер повернув помилку: " +
+                response.status
             );
 
         }
 
 
-        /* =================================================
-           CHECK SERVER RESULT
-        ================================================= */
+        const result =
+            await response.json();
+
 
         if (
             !result ||
-            result.success !== true
+            !result.success
         ) {
 
             throw new Error(
@@ -2444,9 +1972,9 @@ async function submitOrder() {
         }
 
 
-        /* =================================================
+        /* =========================
            TELEGRAM HAPTIC
-        ================================================= */
+        ========================= */
 
         if (tg) {
 
@@ -2462,66 +1990,44 @@ async function submitOrder() {
         }
 
 
-        /* =================================================
-           ORDER NUMBER
-        ================================================= */
+        /* =========================
+           SUCCESS
+        ========================= */
 
         const orderNumber =
-            result.orderNumber;
+            result.orderNumber
+                ? " №" +
+                  result.orderNumber
+                : "";
 
-
-        /* =================================================
-           SUCCESS
-        ================================================= */
 
         alert(
 
-            "Дякуємо за замовлення! 🎉\n\n" +
-
-            "Номер замовлення: #" +
-
-            orderNumber
+            "Замовлення" +
+            orderNumber +
+            " прийнято! ❤️\n\n" +
+            "Ми зв'яжемося з тобою для підтвердження."
 
         );
 
 
-        /* =================================================
+        /* =========================
            CLEAR CART
-        ================================================= */
+        ========================= */
 
         cart = [];
 
 
         saveStorage();
 
-
         updateCartCounter();
-
 
         renderCart();
 
 
-        /* =================================================
+        /* =========================
            CLEAR FORM
-        ================================================= */
-
-        const nameInput =
-            document.getElementById(
-                "customerName"
-            );
-
-
-        const phoneInput =
-            document.getElementById(
-                "customerPhone"
-            );
-
-
-        const commentInput =
-            document.getElementById(
-                "customerComment"
-            );
-
+        ========================= */
 
         if (nameInput) {
 
@@ -2547,10 +2053,6 @@ async function submitOrder() {
         }
 
 
-        /* =================================================
-           CLOSE CHECKOUT
-        ================================================= */
-
         closeCheckout();
 
 
@@ -2565,34 +2067,19 @@ async function submitOrder() {
         alert(
 
             "Не вдалося відправити замовлення.\n\n" +
-
-            "Перевір підключення та спробуй ще раз."
+            "Перевір підключення до сервера та спробуй ще раз."
 
         );
 
-
     } finally {
-
-        /* =================================================
-           ENABLE BUTTON
-        ================================================= */
 
         if (submitButton) {
 
             submitButton.disabled =
                 false;
 
-
-            if (
-                submitButton.dataset
-                    .originalText
-            ) {
-
-                submitButton.textContent =
-                    submitButton.dataset
-                        .originalText;
-
-            }
+            submitButton.textContent =
+                "Замовити";
 
         }
 
@@ -2601,11 +2088,13 @@ async function submitOrder() {
 }
 
 
-/* =========================================================
+/* =====================================================
    FAVORITES
-========================================================= */
+===================================================== */
 
-function toggleFavorite(productId) {
+function toggleFavorite(
+    productId
+) {
 
     if (
         favorites.includes(
@@ -2616,8 +2105,7 @@ function toggleFavorite(productId) {
         favorites =
             favorites.filter(
                 id =>
-                    id !==
-                    productId
+                    id !== productId
             );
 
     } else {
@@ -2636,9 +2124,9 @@ function toggleFavorite(productId) {
 }
 
 
-/* =========================================================
+/* =====================================================
    SHOW FAVORITES
-========================================================= */
+===================================================== */
 
 function showFavorites() {
 
@@ -2662,9 +2150,9 @@ function showFavorites() {
 }
 
 
-/* =========================================================
+/* =====================================================
    CLOSE FAVORITES
-========================================================= */
+===================================================== */
 
 function closeFavorites() {
 
@@ -2685,17 +2173,15 @@ function closeFavorites() {
 }
 
 
-/* =========================================================
+/* =====================================================
    FAVORITES OVERLAY
-========================================================= */
+===================================================== */
 
 function closeFavoritesByOverlay(
     event
 ) {
 
     if (
-        event &&
-        event.target &&
         event.target.id ===
         "favoritesOverlay"
     ) {
@@ -2707,9 +2193,9 @@ function closeFavoritesByOverlay(
 }
 
 
-/* =========================================================
+/* =====================================================
    RENDER FAVORITES
-========================================================= */
+===================================================== */
 
 function renderFavorites() {
 
@@ -2745,12 +2231,9 @@ function renderFavorites() {
 
         container.innerHTML = `
 
-            <div
-                class="cart-empty"
-                style="grid-column:1/-1"
-            >
+            <div class="cart-empty">
 
-                <div>
+                <div class="cart-empty-icon">
                     ♡
                 </div>
 
@@ -2766,7 +2249,6 @@ function renderFavorites() {
             </div>
 
         `;
-
 
         return;
 
@@ -2788,9 +2270,9 @@ function renderFavorites() {
 }
 
 
-/* =========================================================
+/* =====================================================
    PROFILE
-========================================================= */
+===================================================== */
 
 function showProfile() {
 
@@ -2842,9 +2324,9 @@ function showProfile() {
 }
 
 
-/* =========================================================
+/* =====================================================
    CLOSE PROFILE
-========================================================= */
+===================================================== */
 
 function closeProfile() {
 
@@ -2865,17 +2347,15 @@ function closeProfile() {
 }
 
 
-/* =========================================================
+/* =====================================================
    PROFILE OVERLAY
-========================================================= */
+===================================================== */
 
 function closeProfileByOverlay(
     event
 ) {
 
     if (
-        event &&
-        event.target &&
         event.target.id ===
         "profileOverlay"
     ) {
@@ -2887,28 +2367,26 @@ function closeProfileByOverlay(
 }
 
 
-/* =========================================================
+/* =====================================================
    HOME
-========================================================= */
+===================================================== */
 
 function goHome() {
 
     window.scrollTo({
 
-        top:
-            0,
+        top: 0,
 
-        behavior:
-            "smooth"
+        behavior: "smooth"
 
     });
 
 }
 
 
-/* =========================================================
-   SCROLL TO CATALOG
-========================================================= */
+/* =====================================================
+   CATALOG
+===================================================== */
 
 function scrollToCatalog() {
 
@@ -2927,20 +2405,18 @@ function scrollToCatalog() {
 
     catalog.scrollIntoView({
 
-        behavior:
-            "smooth",
+        behavior: "smooth",
 
-        block:
-            "start"
+        block: "start"
 
     });
 
 }
 
 
-/* =========================================================
+/* =====================================================
    RESET FILTERS
-========================================================= */
+===================================================== */
 
 function resetFilters() {
 
@@ -2979,13 +2455,38 @@ function resetFilters() {
 }
 
 
-/* =========================================================
+/* =====================================================
+   ESCAPE MODALS
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            closeCart();
+
+            closeCheckout();
+
+            closeFavorites();
+
+            closeProfile();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
    INITIALIZE
-========================================================= */
+===================================================== */
 
 function init() {
-
-    getDOMElements();
 
     loadStorage();
 
@@ -3006,22 +2507,11 @@ function init() {
 }
 
 
-/* =========================================================
+/* =====================================================
    START
-========================================================= */
+===================================================== */
 
-if (
-    document.readyState ===
-    "loading"
-) {
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        init
-    );
-
-} else {
-
-    init();
-
-}
+document.addEventListener(
+    "DOMContentLoaded",
+    init
+);
