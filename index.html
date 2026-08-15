@@ -1,871 +1,229 @@
 <!DOCTYPE html>
 <html lang="uk">
-
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudRoyal — Vapor Store</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --bg-color: #0a0a0c;
+      --card-bg: #121218;
+      --accent-color: #a855f7;
+      --accent-glow: rgba(168, 85, 247, 0.4);
+      --text-color: #ffffff;
+      --text-dim: #a1a1aa;
+    }
 
-    <meta charset="UTF-8">
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: 80px; }
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    >
+    /* Header */
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 15px 20px; background: rgba(18, 18, 24, 0.8);
+      backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+    }
+    .logo { font-size: 20px; font-weight: 800; color: #fff; text-shadow: 0 0 10px var(--accent-glow); }
+    .logo span { color: var(--accent-color); }
+    .cart-btn {
+      position: relative; background: var(--accent-color); border: none;
+      color: #fff; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer;
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
 
-    <meta
-        name="theme-color"
-        content="#08080d"
-    >
+    /* Hero / Catalog */
+    .container { padding: 20px; }
+    h1 { margin-bottom: 15px; font-size: 22px; text-shadow: 0 0 8px var(--accent-glow); }
+    
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+    .card {
+      background: var(--card-bg); border-radius: 12px; padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.2s;
+    }
+    .card:hover { border-color: var(--accent-color); box-shadow: 0 0 10px var(--accent-glow); }
+    .card-title { font-size: 15px; margin: 8px 0 4px; font-weight: 600; }
+    .card-price { color: var(--accent-color); font-weight: bold; margin-bottom: 8px; }
+    .add-btn {
+      width: 100%; background: transparent; border: 1px solid var(--accent-color);
+      color: #fff; padding: 6px; border-radius: 8px; cursor: pointer; font-weight: bold;
+    }
+    .add-btn:active { background: var(--accent-color); }
 
-    <title>CloudRoyal</title>
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
-    <!-- Telegram Mini App -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
+    /* Modal / Cart */
+    .modal {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+      z-index: 1000; justify-content: center; align-items: flex-end;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+      background: var(--card-bg); width: 100%; max-height: 80vh; overflow-y: auto;
+      border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 20px;
+      border-top: 2px solid var(--accent-color);
+    }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .input-field {
+      width: 100%; padding: 10px; margin-top: 8px; background: #1a1a24;
+      border: 1px solid #333; color: #fff; border-radius: 8px; outline: none;
+    }
+    .input-field:focus { border-color: var(--accent-color); }
+    .submit-btn {
+      width: 100%; background: var(--accent-color); color: #fff; border: none;
+      padding: 12px; border-radius: 10px; font-weight: bold; margin-top: 15px; cursor: pointer;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+  </style>
 </head>
-
-
 <body>
 
+  <header>
+    <div class="logo">CLOUD<span>ROYAL</span></div>
+    <button class="cart-btn" onclick="toggleCart()">🛒 <span id="cart-count">0</span></button>
+  </header>
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
+  <div class="container">
+    <h1>Каталог</h1>
+    <div class="grid" id="catalog"></div>
+  </div>
 
-<header>
+  <!-- Modal Cart -->
+  <div class="modal" id="cart-modal">
+    <div class="modal-content">
+      <h2>Твоє Замовлення</h2>
+      <div id="cart-items" style="margin: 15px 0;"></div>
+      <p style="font-weight: bold;">Разом: <span id="cart-total" style="color: var(--accent-color);">0</span> грн</p>
+      
+      <input type="text" id="user-name" class="input-field" placeholder="Ваше ім'я або Telegram @username">
+      <input type="tel" id="user-phone" class="input-field" placeholder="Номер телефону">
+      <input type="text" id="user-comment" class="input-field" placeholder="Коментар (необов'язково)">
+      
+      <button class="submit-btn" onclick="submitOrder()">Оформити замовлення</button>
+      <button onclick="toggleCart()" style="width: 100%; background: transparent; border: none; color: var(--text-dim); margin-top: 10px; padding: 8px; cursor: pointer;">Закрити</button>
+    </div>
+  </div>
 
-    <h1>
-        CloudRoyal
-    </h1>
+  <script>
+    // ⚠️ СЮДИ ВСТАВ СВОЄ ПОСИЛАННЯ З GOOGLE APPS SCRIPT (ДЕПЛОЙ)
+    const GOOGLE_SCRIPT_URL = "ВСТАВ_СЮДИ_WEB_APP_URL";
 
-    <p>
-        Безнікотинова продукція
-    </p>
+    const products = [
+      { id: 1, name: "Chaser Black 30ml", price: 280 },
+      { id: 2, name: "Elfliq Salt 30ml", price: 320 },
+      { id: 3, name: "XROS 3 Mini Pod", price: 790 },
+      { id: 4, name: "Ursa Nano S Pod", price: 650 },
+      { id: 5, name: "Картридж Vaporesso 0.6 Ohm", price: 110 }
+    ];
 
-</header>
+    let cart = {};
 
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
-<main>
-
-
-    <!-- =================================================
-         HERO
-    ================================================== -->
-
-    <section class="banner">
-
-        <h2>
-            CloudRoyal
-        </h2>
-
-        <p>
-            Обери свій смак та замовляй у декілька кліків
-        </p>
-
-        <button
-            type="button"
-            onclick="scrollToCatalog()"
-        >
-            Відкрити каталог
-        </button>
-
-    </section>
-
-
-    <!-- =================================================
-         CATEGORIES
-    ================================================== -->
-
-    <section class="categories-section">
-
-        <div class="section-label">
-            КАТЕГОРІЇ
+    function renderCatalog() {
+      const catalog = document.getElementById("catalog");
+      catalog.innerHTML = products.map(p => `
+        <div class="card">
+          <div class="card-title">${p.name}</div>
+          <div class="card-price">${p.price} грн</div>
+          <button class="add-btn" onclick="addToCart(${p.id})">+ Додати</button>
         </div>
+      `).join('');
+    }
 
-        <h2>
-            Що шукаєш?
-        </h2>
+    function addToCart(id) {
+      cart[id] = (cart[id] || 0) + 1;
+      updateCartUI();
+    }
 
+    function updateCartUI() {
+      const totalCount = Object.values(cart).reduce((a, b) => a + b, 0);
+      document.getElementById("cart-count").innerText = totalCount;
 
-        <div class="category-grid">
+      let itemsHtml = "";
+      let totalPrice = 0;
 
+      for (let id in cart) {
+        const item = products.find(p => p.id == id);
+        const qty = cart[id];
+        const itemTotal = item.price * qty;
+        totalPrice += itemTotal;
 
-            <button
-                type="button"
-                class="category-card active"
-                onclick="openCategory('liquid')"
-            >
-
-                <span class="category-icon">
-                    💧
-                </span>
-
-                <span class="category-name">
-                    Рідини
-                </span>
-
-                <span class="category-description">
-                    Смаки та мікси
-                </span>
-
-            </button>
-
-
-            <button
-                type="button"
-                class="category-card"
-                onclick="openCategory('pod')"
-            >
-
-                <span class="category-icon">
-                    ⚡
-                </span>
-
-                <span class="category-name">
-                    POD-системи
-                </span>
-
-                <span class="category-description">
-                    Пристрої
-                </span>
-
-            </button>
-
-
-            <button
-                type="button"
-                class="category-card"
-                onclick="openCategory('cartridge')"
-            >
-
-                <span class="category-icon">
-                    ◉
-                </span>
-
-                <span class="category-name">
-                    Картриджі
-                </span>
-
-                <span class="category-description">
-                    Аксесуари
-                </span>
-
-            </button>
-
-
-        </div>
-
-    </section>
-
-
-    <!-- =================================================
-         CATALOG
-    ================================================== -->
-
-    <section
-        class="products-section"
-        id="catalog"
-    >
-
-
-        <div class="section-label">
-            РІДИНИ
-        </div>
-
-
-        <div class="catalog-heading">
-
+        itemsHtml += `
+          <div class="cart-item">
             <div>
-
-                <h2 id="catalogTitle">
-                    Обери свій смак
-                </h2>
-
-                <span
-                    id="productsCount"
-                    class="products-count"
-                >
-                    0 товарів
-                </span>
-
+              <div><b>${item.name}</b></div>
+              <div style="font-size: 12px; color: var(--text-dim);">${item.price} грн x ${qty} = ${itemTotal} грн</div>
             </div>
-
-        </div>
-
-
-        <!-- SEARCH -->
-
-        <div class="search">
-
-            <span class="search-icon">
-                🔍
-            </span>
-
-            <input
-                type="text"
-                id="search"
-                placeholder="Пошук товару або бренду..."
-                autocomplete="off"
-            >
-
-            <button
-                type="button"
-                id="clearSearch"
-                class="clear-search"
-                onclick="clearSearch()"
-                style="display:none"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <!-- FILTERS -->
-
-        <div class="filters">
-
-            <button
-                type="button"
-                class="filter-chip active"
-                data-filter="all"
-                onclick="setFilter('all')"
-            >
-                Усі
-            </button>
-
-            <button
-                type="button"
-                class="filter-chip"
-                data-filter="new"
-                onclick="setFilter('new')"
-            >
-                Новинки
-            </button>
-
-            <button
-                type="button"
-                class="filter-chip"
-                data-filter="popular"
-                onclick="setFilter('popular')"
-            >
-                Популярне
-            </button>
-
-            <button
-                type="button"
-                class="filter-chip"
-                data-filter="sale"
-                onclick="setFilter('sale')"
-            >
-                Знижки
-            </button>
-
-        </div>
-
-
-        <!-- BRANDS -->
-
-        <div class="brands-block">
-
-            <div class="brands-title">
-                Бренди
+            <div>
+              <button onclick="changeQty(${id}, -1)" style="padding: 2px 8px;">-</button>
+              <button onclick="changeQty(${id}, 1)" style="padding: 2px 8px;">+</button>
             </div>
-
-
-            <div
-                class="brands"
-                id="brands"
-            >
-
-                <button
-                    type="button"
-                    class="brand-chip active"
-                    data-brand="all"
-                    onclick="setBrand('all')"
-                >
-                    Всі
-                </button>
-
-                <button
-                    type="button"
-                    class="brand-chip"
-                    data-brand="CHASER"
-                    onclick="setBrand('CHASER')"
-                >
-                    CHASER
-                </button>
-
-                <button
-                    type="button"
-                    class="brand-chip"
-                    data-brand="MOOD DUCK"
-                    onclick="setBrand('MOOD DUCK')"
-                >
-                    MOOD DUCK
-                </button>
-
-                <button
-                    type="button"
-                    class="brand-chip"
-                    data-brand="PUNCH"
-                    onclick="setBrand('PUNCH')"
-                >
-                    PUNCH
-                </button>
-
-                <button
-                    type="button"
-                    class="brand-chip"
-                    data-brand="OCTOBAR"
-                    onclick="setBrand('OCTOBAR')"
-                >
-                    OCTOBAR
-                </button>
-
-                <button
-                    type="button"
-                    class="brand-chip"
-                    data-brand="FLAVORLAB"
-                    onclick="setBrand('FLAVORLAB')"
-                >
-                    FLAVORLAB
-                </button>
-
-                <button
-                    type="button"
-                    class="brand-chip"
-                    data-brand="LUCKY"
-                    onclick="setBrand('LUCKY')"
-                >
-                    LUCKY
-                </button>
-
-                <button
-                    type="button"
-                    class="brand-chip"
-                    data-brand="REFROST"
-                    onclick="setBrand('REFROST')"
-                >
-                    REFROST
-                </button>
-
-                <button
-                    type="button"
-                    class="brand-chip"
-                    data-brand="HYPE"
-                    onclick="setBrand('HYPE')"
-                >
-                    HYPE
-                </button>
-
-                <button
-                    type="button"
-                    class="brand-chip"
-                    data-brand="3GER"
-                    onclick="setBrand('3GER')"
-                >
-                    3GER
-                </button>
-
-                <button
-                    type="button"
-                    class="brand-chip"
-                    data-brand="ALCHEMIST"
-                    onclick="setBrand('ALCHEMIST')"
-                >
-                    ALCHEMIST
-                </button>
-
-                <button
-                    type="button"
-                    class="brand-chip"
-                    data-brand="INBOTTLE"
-                    onclick="setBrand('INBOTTLE')"
-                >
-                    INBOTTLE
-                </button>
-
-            </div>
-
-
-            <button
-                type="button"
-                id="showBrandsButton"
-                class="show-brands"
-                onclick="toggleBrands()"
-            >
-                Показати всі
-            </button>
-
-        </div>
-
-
-        <!-- PRODUCTS -->
-
-        <div
-            class="products"
-            id="products"
-        >
-        </div>
-
-
-        <!-- EMPTY -->
-
-        <div
-            id="emptyState"
-            class="empty-state"
-        >
-
-            <div class="empty-icon">
-                🔎
-            </div>
-
-            <h3>
-                Нічого не знайдено
-            </h3>
-
-            <p>
-                Спробуй змінити пошук або фільтри.
-            </p>
-
-            <button
-                type="button"
-                onclick="resetFilters()"
-            >
-                Скинути фільтри
-            </button>
-
-        </div>
-
-
-    </section>
-
-
-</main>
-
-
-<!-- =====================================================
-     BOTTOM NAVIGATION
-===================================================== -->
-
-<nav class="menu">
-
-
-    <button
-        type="button"
-        onclick="goHome()"
-    >
-
-        <span class="menu-icon">
-            ⌂
-        </span>
-
-        <span>
-            Головна
-        </span>
-
-    </button>
-
-
-    <button
-        type="button"
-        onclick="scrollToCatalog()"
-    >
-
-        <span class="menu-icon">
-            ◯
-        </span>
-
-        <span>
-            Каталог
-        </span>
-
-    </button>
-
-
-    <button
-        type="button"
-        onclick="showFavorites()"
-    >
-
-        <span class="menu-icon">
-            ♡
-        </span>
-
-        <span>
-            Обране
-        </span>
-
-    </button>
-
-
-    <button
-        type="button"
-        onclick="showCart()"
-    >
-
-        <span class="menu-icon">
-            🛒
-        </span>
-
-        <span>
-            Кошик
-        </span>
-
-        <span
-            id="navCartCount"
-            class="nav-cart-count"
-            style="display:none"
-        >
-            0
-        </span>
-
-    </button>
-
-
-    <button
-        type="button"
-        onclick="showProfile()"
-    >
-
-        <span class="menu-icon">
-            ♙
-        </span>
-
-        <span>
-            Профіль
-        </span>
-
-    </button>
-
-
-</nav>
-
-
-<!-- =====================================================
-     CART OVERLAY
-===================================================== -->
-
-<div
-    id="cartOverlay"
-    class="overlay"
-    onclick="closeCartByOverlay(event)"
->
-
-
-    <div class="modal cart-modal">
-
-
-        <button
-            type="button"
-            class="modal-close"
-            onclick="closeCart()"
-        >
-            ×
-        </button>
-
-
-        <div class="modal-label">
-            КОШИК
-        </div>
-
-
-        <h2>
-            Твоє замовлення
-        </h2>
-
-
-        <div
-            id="cartItems"
-            class="cart-items"
-        >
-        </div>
-
-
-        <div
-            id="cartEmpty"
-            class="cart-empty"
-        >
-
-            <div class="cart-empty-icon">
-                🛒
-            </div>
-
-            <h3>
-                Кошик порожній
-            </h3>
-
-            <p>
-                Додай товари з каталогу.
-            </p>
-
-        </div>
-
-
-        <div
-            id="cartFooter"
-            class="cart-footer"
-            style="display:none"
-        >
-
-            <div class="cart-total-row">
-
-                <span>
-                    Разом
-                </span>
-
-                <strong id="cartTotal">
-                    0 ₴
-                </strong>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="checkout-button"
-                onclick="openCheckout()"
-            >
-                Оформити замовлення
-            </button>
-
-        </div>
-
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     CHECKOUT OVERLAY
-===================================================== -->
-
-<div
-    id="checkoutOverlay"
-    class="overlay"
-    onclick="closeCheckoutByOverlay(event)"
->
-
-
-    <div class="modal checkout-modal">
-
-
-        <button
-            type="button"
-            class="modal-close"
-            onclick="closeCheckout()"
-        >
-            ×
-        </button>
-
-
-        <div class="modal-label">
-            ОФОРМЛЕННЯ
-        </div>
-
-
-        <h2>
-            Куди доставити?
-        </h2>
-
-
-        <p class="modal-description">
-            Залиш контактні дані, і ми зв'яжемося з тобою для підтвердження замовлення.
-        </p>
-
-
-        <div class="form-group">
-
-            <label for="customerName">
-                Ім'я
-            </label>
-
-            <input
-                type="text"
-                id="customerName"
-                placeholder="Твоє ім'я"
-                autocomplete="name"
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label for="customerPhone">
-                Номер телефону
-            </label>
-
-            <input
-                type="tel"
-                id="customerPhone"
-                placeholder="+380..."
-                autocomplete="tel"
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label for="customerComment">
-                Коментар
-                <span>
-                    необов'язково
-                </span>
-            </label>
-
-            <textarea
-                id="customerComment"
-                placeholder="Наприклад: зателефонувати після 18:00"
-                rows="4"
-            ></textarea>
-
-        </div>
-
-
-        <button
-            type="button"
-            id="submitOrderButton"
-            class="checkout-button"
-            onclick="submitOrder()"
-        >
-            Замовити
-        </button>
-
-
-        <button
-            type="button"
-            class="back-button"
-            onclick="closeCheckout()"
-        >
-            Назад
-        </button>
-
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     FAVORITES OVERLAY
-===================================================== -->
-
-<div
-    id="favoritesOverlay"
-    class="overlay"
-    onclick="closeFavoritesByOverlay(event)"
->
-
-
-    <div class="modal favorites-modal">
-
-
-        <button
-            type="button"
-            class="modal-close"
-            onclick="closeFavorites()"
-        >
-            ×
-        </button>
-
-
-        <div class="modal-label">
-            ОБРАНЕ
-        </div>
-
-
-        <h2>
-            Твої товари
-        </h2>
-
-
-        <div
-            id="favoriteProducts"
-            class="favorite-products"
-        >
-        </div>
-
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     PROFILE OVERLAY
-===================================================== -->
-
-<div
-    id="profileOverlay"
-    class="overlay"
-    onclick="closeProfileByOverlay(event)"
->
-
-
-    <div class="modal profile-modal">
-
-
-        <button
-            type="button"
-            class="modal-close"
-            onclick="closeProfile()"
-        >
-            ×
-        </button>
-
-
-        <div class="modal-label">
-            ПРОФІЛЬ
-        </div>
-
-
-        <div class="profile-avatar">
-            ♙
-        </div>
-
-
-        <h2 id="profileName">
-            Користувач
-        </h2>
-
-
-        <p>
-            Твій профіль CloudRoyal
-        </p>
-
-
-        <button
-            type="button"
-            class="back-button"
-            onclick="closeProfile()"
-        >
-            Закрити
-        </button>
-
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
-
-<script src="script.js"></script>
-
-
+          </div>
+        `;
+      }
+
+      document.getElementById("cart-items").innerHTML = itemsHtml || "Корзина порожня";
+      document.getElementById("cart-total").innerText = totalPrice;
+    }
+
+    function changeQty(id, delta) {
+      if (cart[id]) {
+        cart[id] += delta;
+        if (cart[id] <= 0) delete cart[id];
+      }
+      updateCartUI();
+    }
+
+    function toggleCart() {
+      document.getElementById("cart-modal").classList.toggle("active");
+    }
+
+    async function submitOrder() {
+      const name = document.getElementById("user-name").value.trim();
+      const phone = document.getElementById("user-phone").value.trim();
+      const comment = document.getElementById("user-comment").value.trim();
+
+      if (Object.keys(cart).length === 0) return alert("Корзина порожня!");
+      if (!name || !phone) return alert("Будь ласка, вкажіть ім'я та телефон!");
+
+      let itemsList = [];
+      let totalQty = 0;
+      let totalPrice = 0;
+
+      for (let id in cart) {
+        const item = products.find(p => p.id == id);
+        const qty = cart[id];
+        itemsList.push(`${item.name} (${qty} шт)`);
+        totalQty += qty;
+        totalPrice += item.price * qty;
+      }
+
+      const orderData = {
+        user: name,
+        phone: phone,
+        items: itemsList.join(", "),
+        totalQuantity: totalQty,
+        totalPrice: totalPrice,
+        comment: comment
+      };
+
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderData)
+        });
+
+        alert("Замовлення успішно відправлено!");
+        cart = {};
+        updateCartUI();
+        toggleCart();
+      } catch (err) {
+        alert("Помилка відправки, спробуйте ще раз");
+        console.error(err);
+      }
+    }
+
+    renderCatalog();
+  </script>
 </body>
-
 </html>
