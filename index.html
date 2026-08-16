@@ -3,45 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vape Shop Catalog</title>
+  <title>Каталог товарів</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header class="header">
-    <div class="container">
-      <h1 class="logo">VAPE SHOP</h1>
-    </div>
-  </header>
+  <div class="container">
+    <header class="header">
+      <p class="subtitle">КАТАЛОГ</p>
+      <h1>Обери категорію</h1>
 
-  <main class="container">
-    <!-- Фільтр за категоріями -->
-    <section class="filter-section">
-      <h3>Категорії:</h3>
-      <div class="chips-group">
-        <button class="chip active" data-category="all" onclick="setCategory('all')">Усі</button>
-        <button class="chip" data-category="pods" onclick="setCategory('pods')">POD-системи</button>
-        <button class="chip" data-category="cartridges" onclick="setCategory('cartridges')">Картриджі</button>
+      <!-- Категорії -->
+      <div class="categories">
+        <button class="cat-card active" data-category="all" onclick="setCategory('all')">
+          <div class="cat-icon">📦</div>
+          <div class="cat-info">
+            <h3>Усі товари</h3>
+            <p>Повний асортимент</p>
+          </div>
+        </button>
+
+        <button class="cat-card" data-category="liquids" onclick="setCategory('liquids')">
+          <div class="cat-icon">💧</div>
+          <div class="cat-info">
+            <h3>Рідини</h3>
+            <p>Смаки та бренди</p>
+          </div>
+        </button>
+
+        <button class="cat-card" data-category="pods" onclick="setCategory('pods')">
+          <div class="cat-icon">🔹</div>
+          <div class="cat-info">
+            <h3>POD-системи</h3>
+            <p>Пристрої</p>
+          </div>
+        </button>
+
+        <button class="cat-card" data-category="cartridges" onclick="setCategory('cartridges')">
+          <div class="cat-icon">🔲</div>
+          <div class="cat-info">
+            <h3>Картриджі</h3>
+            <p>Витратні матеріали</p>
+          </div>
+        </button>
       </div>
-    </section>
+    </header>
 
-    <!-- Фільтр за брендами -->
-    <section class="filter-section">
-      <h3>Бренди:</h3>
-      <div class="chips-group">
-        <button class="chip active" data-brand="all" onclick="setBrand('all')">Усі бренди</button>
-        <button class="chip" data-brand="VAPORESSO" onclick="setBrand('VAPORESSO')">VAPORESSO</button>
-        <button class="chip" data-brand="OXVA" onclick="setBrand('OXVA')">OXVA</button>
-        <button class="chip" data-brand="VOOPOO" onclick="setBrand('VOOPOO')">VOOPOO</button>
-        <button class="chip" data-brand="LOST VAPE" onclick="setBrand('LOST VAPE')">LOST VAPE</button>
+    <main class="catalog-section">
+      <div class="catalog-header">
+        <h2 id="category-title">Усі товари</h2>
+        <span id="products-count" class="products-count">0 товарів</span>
       </div>
-    </section>
 
-    <!-- Сітка товарів -->
-    <section id="products-grid" class="products-grid">
-      <!-- Товари рендеряться через JS -->
-    </section>
-  </main>
+      <!-- Пошук -->
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Пошук бренду або смаку...">
+      </div>
+
+      <!-- Фільтри-теги -->
+      <div class="tags-filter">
+        <button class="tag-btn active" data-tag="all" onclick="setTag('all')">Усі</button>
+        <button class="tag-btn" data-tag="new" onclick="setTag('new')">✨ Новинки</button>
+        <button class="tag-btn" data-tag="popular" onclick="setTag('popular')">🔥 Популярне</button>
+        <button class="tag-btn" data-tag="sale" onclick="setTag('sale')">🏷️ Знижки</button>
+      </div>
+
+      <!-- Фільтр за брендами -->
+      <div class="brands-filter" id="brands-container">
+        <button class="brand-btn active" data-brand="all" onclick="setBrand('all')">Всі бренди</button>
+        <button class="brand-btn" data-brand="CHASER" onclick="setBrand('CHASER')">CHASER</button>
+        <button class="brand-btn" data-brand="FLAVORLAB" onclick="setBrand('FLAVORLAB')">FLAVORLAB</button>
+        <button class="brand-btn" data-brand="OCTOBAR" onclick="setBrand('OCTOBAR')">OCTOBAR</button>
+        <button class="brand-btn" data-brand="MOOD DUCK" onclick="setBrand('MOOD DUCK')">MOOD DUCK</button>
+        <button class="brand-btn" data-brand="LUCKY" onclick="setBrand('LUCKY')">LUCKY</button>
+        <button class="brand-btn" data-brand="VAPORESSO" onclick="setBrand('VAPORESSO')">VAPORESSO</button>
+        <button class="brand-btn" data-brand="OXVA" onclick="setBrand('OXVA')">OXVA</button>
+      </div>
+
+      <!-- Сітка товарів -->
+      <div class="products-grid" id="products-grid"></div>
+    </main>
+  </div>
 
   <script src="script.js"></script>
 </body>
