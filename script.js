@@ -22,8 +22,8 @@ const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbz5JMG8qKeK5uRZMG40w2TfTVQ2ugAS0I4SoQcCyJCBavtgQ3QLishybC0h40LqUWsE/exec";
 
 // Укажите данные вашего бота и чата для уведомлений
-const TELEGRAM_BOT_TOKEN = "ВАШ_BOT_TOKEN"; 
-const TELEGRAM_CHAT_ID = "ВАШ_CHAT_ID";   
+const TELEGRAM_BOT_TOKEN = "8517426538:AAHt4jAR-AxVh_edaMxKWFpWDfyyxRFajFk"; 
+const TELEGRAM_CHAT_ID = "862669142";   
 
 
 /* =========================
