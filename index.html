@@ -3,88 +3,118 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Каталог товарів</title>
+  <title>CloudRoyal — Premium Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="container">
-    <header class="header">
-      <p class="subtitle">КАТАЛОГ</p>
-      <h1>Обери категорію</h1>
+  <!-- Верхня шапка -->
+  <header class="top-header">
+    <div class="logo-group">
+      <div class="logo-avatar">CR</div>
+      <div>
+        <div class="brand-title">CloudRoyal</div>
+        <div class="brand-sub">PREMIUM STORE</div>
+      </div>
+    </div>
+    <button class="cart-btn" aria-label="Кошик">
+      🛒
+    </button>
+  </header>
 
-      <!-- Категорії -->
-      <div class="categories">
-        <button class="cat-card active" data-category="all" onclick="setCategory('all')">
-          <div class="cat-icon">📦</div>
-          <div class="cat-info">
-            <h3>Усі товари</h3>
-            <p>Повний асортимент</p>
-          </div>
-        </button>
+  <main class="main-content">
+    
+    <!-- Главный баннер -->
+    <section class="hero-banner">
+      <span class="badge-tag">CLOUDROYAL</span>
+      <h1>Твій смак.<br>Твій вибір.</h1>
+      <p class="hero-text">Рідини, POD-системи та картриджі в одному місці.</p>
+      <a href="#catalog" class="btn-primary">
+        Перейти до каталогу <span>→</span>
+      </a>
+    </section>
 
-        <button class="cat-card" data-category="liquids" onclick="setCategory('liquids')">
-          <div class="cat-icon">💧</div>
-          <div class="cat-info">
+    <!-- Выбор категории -->
+    <section class="section-block">
+      <div class="section-label">КАТАЛОГ</div>
+      <h2 class="section-title">Обери категорію</h2>
+
+      <div class="category-cards">
+        <div class="cat-card active" onclick="setCategory('liquids', this)">
+          <div class="icon-box drop">💧</div>
+          <div class="cat-details">
             <h3>Рідини</h3>
             <p>Смаки та бренди</p>
           </div>
-        </button>
+          <span class="arrow">→</span>
+        </div>
 
-        <button class="cat-card" data-category="pods" onclick="setCategory('pods')">
-          <div class="cat-icon">🔹</div>
-          <div class="cat-info">
+        <div class="cat-card" onclick="setCategory('pods', this)">
+          <div class="icon-box rhombus">◇</div>
+          <div class="cat-details">
             <h3>POD-системи</h3>
             <p>Пристрої</p>
           </div>
-        </button>
+          <span class="arrow">→</span>
+        </div>
 
-        <button class="cat-card" data-category="cartridges" onclick="setCategory('cartridges')">
-          <div class="cat-icon">🔲</div>
-          <div class="cat-info">
+        <div class="cat-card" onclick="setCategory('cartridges', this)">
+          <div class="icon-box square">▢</div>
+          <div class="cat-details">
             <h3>Картриджі</h3>
             <p>Витратні матеріали</p>
           </div>
-        </button>
+          <span class="arrow">→</span>
+        </div>
       </div>
-    </header>
+    </section>
 
-    <main class="catalog-section">
-      <div class="catalog-header">
-        <h2 id="category-title">Усі товари</h2>
-        <span id="products-count" class="products-count">0 товарів</span>
+    <!-- Секция товаров -->
+    <section class="section-block" id="catalog">
+      <div class="section-header">
+        <div>
+          <div class="section-label" id="current-cat-label">РІДИНИ</div>
+          <h2 class="section-title" id="current-cat-title">Обери свій смак</h2>
+        </div>
+        <span class="products-count" id="products-count">0 товарів</span>
       </div>
 
-      <!-- Пошук -->
-      <div class="search-box">
+      <!-- Поиск -->
+      <div class="search-field">
         <span class="search-icon">🔍</span>
         <input type="text" id="search-input" placeholder="Пошук бренду або смаку...">
       </div>
 
-      <!-- Фільтри-теги -->
-      <div class="tags-filter">
-        <button class="tag-btn active" data-tag="all" onclick="setTag('all')">Усі</button>
-        <button class="tag-btn" data-tag="new" onclick="setTag('new')">✨ Новинки</button>
-        <button class="tag-btn" data-tag="popular" onclick="setTag('popular')">🔥 Популярне</button>
-        <button class="tag-btn" data-tag="sale" onclick="setTag('sale')">🏷️ Знижки</button>
+      <!-- Теги -->
+      <div class="filter-pills">
+        <button class="pill-btn active" onclick="setTag('all', this)">Усі</button>
+        <button class="pill-btn" onclick="setTag('new', this)">✦ Новинки</button>
+        <button class="pill-btn" onclick="setTag('popular', this)">Популярне</button>
+        <button class="pill-btn" onclick="setTag('sale', this)">— Знижки</button>
       </div>
 
-      <!-- Фільтр за брендами -->
-      <div class="brands-filter" id="brands-container">
-        <button class="brand-btn active" data-brand="all" onclick="setBrand('all')">Всі бренди</button>
-        <button class="brand-btn" data-brand="CHASER" onclick="setBrand('CHASER')">CHASER</button>
-        <button class="brand-btn" data-brand="FLAVORLAB" onclick="setBrand('FLAVORLAB')">FLAVORLAB</button>
-        <button class="brand-btn" data-brand="OCTOBAR" onclick="setBrand('OCTOBAR')">OCTOBAR</button>
-        <button class="brand-btn" data-brand="MOOD DUCK" onclick="setBrand('MOOD DUCK')">MOOD DUCK</button>
-        <button class="brand-btn" data-brand="LUCKY" onclick="setBrand('LUCKY')">LUCKY</button>
-        <button class="brand-btn" data-brand="VAPORESSO" onclick="setBrand('VAPORESSO')">VAPORESSO</button>
-        <button class="brand-btn" data-brand="OXVA" onclick="setBrand('OXVA')">OXVA</button>
+      <!-- Бренды -->
+      <div class="brands-bar">
+        <span class="brands-label">БРЕНДИ</span>
+        <div class="brands-scroll" id="brands-container">
+          <!-- Заполняется динамически -->
+        </div>
       </div>
 
-      <!-- Сітка товарів -->
+      <!-- СЕТКА КАРТОЧЕК ТОВАРОВ -->
       <div class="products-grid" id="products-grid"></div>
-    </main>
-  </div>
+    </section>
+
+  </main>
+
+  <!-- Нижняя панель навигации -->
+  <nav class="bottom-nav">
+    <button class="nav-item active">🏠</button>
+    <button class="nav-item">🔍</button>
+    <button class="nav-item">♡</button>
+    <button class="nav-item">🛒</button>
+    <button class="nav-item">👤</button>
+  </nav>
 
   <script src="script.js"></script>
 </body>
