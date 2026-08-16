@@ -1,910 +1,1220 @@
-/* =========================
-   TELEGRAM WEB APP
-========================= */
-
-const tg =
-    window.Telegram &&
-    window.Telegram.WebApp
-        ? window.Telegram.WebApp
-        : null;
-
-if (tg) {
-    tg.ready();
-    tg.expand();
-}
-
-
-/* =========================
-   CONFIG
-========================= */
-
-const GOOGLE_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbz5JMG8qKeK5uRZMG40w2TfTVQ2ugAS0I4SoQcCyJCBavtgQ3QLishybC0h40LqUWsE/exec";
-
-// Укажите данные вашего бота и чата для уведомлений
-const TELEGRAM_BOT_TOKEN = "8517426538:AAHt4jAR-AxVh_edaMxKWFpWDfyyxRFajFk"; 
-const TELEGRAM_CHAT_ID = "862669142";   
-
-
-/* =========================
-   PRODUCTS
-========================= */
-
 const products = [
+  // ================= POD-СИСТЕМИ =================
+  // --- VAPORESSO XROS 3 MINI ---
+  {
+    id: 1008,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 3 MINI — Black",
+    volume: "2 ml",
+    nicotine: null,
+    price: 720,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 1009,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 3 MINI — Space Grey",
+    volume: "2 ml",
+    nicotine: null,
+    price: 720,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 1010,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 3 MINI — Navy Blue",
+    volume: "2 ml",
+    nicotine: null,
+    price: 720,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
+  {
+    id: 1011,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 3 MINI — Sky Blue",
+    volume: "2 ml",
+    nicotine: null,
+    price: 720,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
+  {
+    id: 1012,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 3 MINI — Rose Pink",
+    volume: "2 ml",
+    nicotine: null,
+    price: 720,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
+  {
+    id: 1013,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 3 MINI — Ice Silver",
+    volume: "2 ml",
+    nicotine: null,
+    price: 720,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
+  {
+    id: 1014,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 3 MINI — Aqua Green",
+    volume: "2 ml",
+    nicotine: null,
+    price: 720,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
+  {
+    id: 1015,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 3 MINI — Lilac Purple",
+    volume: "2 ml",
+    nicotine: null,
+    price: 720,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
+  {
+    id: 1016,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 3 MINI — Phantom Green",
+    volume: "2 ml",
+    nicotine: null,
+    price: 720,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
 
-    {
-        id: 1,
-        category: "liquid",
-        brand: "CHASER",
-        name: "Classic Berry",
-        volume: "30 ml",
-        nicotine: "20 mg",
-        price: 350,
-        oldPrice: 400,
-        badge: "sale",
-        badgeText: "-13%",
-        popular: true,
-        new: true
-    },
+  // --- VAPORESSO XROS MINI ---
+  {
+    id: 1017,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS MINI — Space Grey",
+    volume: "2 ml",
+    nicotine: null,
+    price: 650,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 1018,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS MINI — Spring Green",
+    volume: "2 ml",
+    nicotine: null,
+    price: 650,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
 
-    {
-        id: 2,
-        category: "liquid",
-        brand: "MOOD DUCK",
-        name: "Sweet Apple",
-        volume: "30 ml",
-        nicotine: "20 mg",
-        price: 360,
-        oldPrice: null,
-        badge: "new",
-        badgeText: "NEW",
-        popular: true,
-        new: true
-    },
+  // --- VAPORESSO XROS 4 MINI ---
+  {
+    id: 1019,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 4 MINI — Black",
+    volume: "3 ml",
+    nicotine: null,
+    price: 820,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1020,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 4 MINI — Ice Blue",
+    volume: "3 ml",
+    nicotine: null,
+    price: 820,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1021,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 4 MINI — Ice Purple",
+    volume: "3 ml",
+    nicotine: null,
+    price: 820,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1022,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 4 MINI — Champagne Gold",
+    volume: "3 ml",
+    nicotine: null,
+    price: 820,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1023,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 4 MINI — Camo Silver",
+    volume: "3 ml",
+    nicotine: null,
+    price: 820,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1024,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 4 MINI — Camo Red",
+    volume: "3 ml",
+    nicotine: null,
+    price: 820,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1025,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 4 MINI — Camo Yellow",
+    volume: "3 ml",
+    nicotine: null,
+    price: 820,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: false,
+    new: true
+  },
 
-    {
-        id: 3,
-        category: "liquid",
-        brand: "PUNCH",
-        name: "Cherry Punch",
-        volume: "30 ml",
-        nicotine: "20 mg",
-        price: 370,
-        oldPrice: null,
-        badge: "new",
-        badgeText: "NEW",
-        popular: true,
-        new: true
-    },
+  // --- VAPORESSO XROS 5 MINI ---
+  {
+    id: 1026,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Black",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "sale",
+    badgeText: "-1%",
+    popular: true,
+    new: false
+  },
+  {
+    id: 1027,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Purple",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "sale",
+    badgeText: "-1%",
+    popular: false,
+    new: false
+  },
+  {
+    id: 1028,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Rose Red",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "sale",
+    badgeText: "-1%",
+    popular: false,
+    new: false
+  },
+  {
+    id: 1029,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Flowing Blue",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "sale",
+    badgeText: "-1%",
+    popular: true,
+    new: false
+  },
+  {
+    id: 1030,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Titanium Silver",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "sale",
+    badgeText: "-1%",
+    popular: false,
+    new: false
+  },
+  {
+    id: 1031,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Flowing Pink",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "sale",
+    badgeText: "-1%",
+    popular: false,
+    new: false
+  },
+  {
+    id: 1032,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Carbon Black",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "sale",
+    badgeText: "-1%",
+    popular: true,
+    new: false
+  },
+  {
+    id: 1033,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Pastel Crystal",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "sale",
+    badgeText: "-1%",
+    popular: false,
+    new: false
+  },
+  {
+    id: 1034,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Cool Black",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "new",
+    badgeText: "NEW",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1035,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Cool Pink",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "new",
+    badgeText: "NEW",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1036,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Retro Orange",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "sale",
+    badgeText: "-1%",
+    popular: false,
+    new: false
+  },
+  {
+    id: 1037,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Retro Pink",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "sale",
+    badgeText: "-1%",
+    popular: false,
+    new: false
+  },
+  {
+    id: 1038,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Mist Black",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "sale",
+    badgeText: "-1%",
+    popular: false,
+    new: false
+  },
+  {
+    id: 1039,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 MINI — Mist White",
+    volume: "3 ml",
+    nicotine: null,
+    price: 840,
+    oldPrice: 850,
+    badge: "sale",
+    badgeText: "-1%",
+    popular: false,
+    new: false
+  },
 
-    {
-        id: 4,
-        category: "liquid",
-        brand: "OCTOBAR",
-        name: "Tropical Mix",
-        volume: "30 ml",
-        nicotine: "20 mg",
-        price: 390,
-        oldPrice: 430,
-        badge: "sale",
-        badgeText: "-9%",
-        popular: true,
-        new: true
-    },
+  // --- VAPORESSO XROS 6 MINI ---
+  {
+    id: 1040,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 6 MINI — Brown",
+    volume: "3 ml",
+    nicotine: null,
+    price: 910,
+    oldPrice: 1000,
+    badge: "sale",
+    badgeText: "-9%",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1041,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 6 MINI — Titanium Black",
+    volume: "3 ml",
+    nicotine: null,
+    price: 910,
+    oldPrice: 1000,
+    badge: "sale",
+    badgeText: "-9%",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1042,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 6 MINI — Titanium Silver",
+    volume: "3 ml",
+    nicotine: null,
+    price: 910,
+    oldPrice: 1000,
+    badge: "sale",
+    badgeText: "-9%",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1043,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 6 MINI — Plume Pink",
+    volume: "3 ml",
+    nicotine: null,
+    price: 910,
+    oldPrice: 1000,
+    badge: "sale",
+    badgeText: "-9%",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1044,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 6 MINI — Plume Blue",
+    volume: "3 ml",
+    nicotine: null,
+    price: 910,
+    oldPrice: 1000,
+    badge: "sale",
+    badgeText: "-9%",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1045,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 6 MINI — Jelly Orange",
+    volume: "3 ml",
+    nicotine: null,
+    price: 910,
+    oldPrice: 1000,
+    badge: "sale",
+    badgeText: "-9%",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1046,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 6 MINI — Jelly Blue",
+    volume: "3 ml",
+    nicotine: null,
+    price: 910,
+    oldPrice: 1000,
+    badge: "sale",
+    badgeText: "-9%",
+    popular: false,
+    new: true
+  },
 
-    {
-        id: 5,
-        category: "liquid",
-        brand: "FLAVORLAB",
-        name: "Blueberry Ice",
-        volume: "30 ml",
-        nicotine: "20 mg",
-        price: 340,
-        oldPrice: null,
-        badge: null,
-        popular: true,
-        new: false
-    },
+  // --- VAPORESSO XROS 6 ---
+  {
+    id: 1047,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 6 — Silk Green",
+    volume: "3 ml",
+    nicotine: null,
+    price: 1300,
+    oldPrice: 1400,
+    badge: "sale",
+    badgeText: "-7%",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1048,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 6 — Silk Gray",
+    volume: "3 ml",
+    nicotine: null,
+    price: 1300,
+    oldPrice: 1400,
+    badge: "sale",
+    badgeText: "-7%",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1049,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 6 — Carbon Fiber Gray",
+    volume: "3 ml",
+    nicotine: null,
+    price: 1300,
+    oldPrice: 1400,
+    badge: "sale",
+    badgeText: "-7%",
+    popular: false,
+    new: true
+  },
 
-    {
-        id: 6,
-        category: "liquid",
-        brand: "LUCKY",
-        name: "Watermelon",
-        volume: "30 ml",
-        nicotine: "20 mg",
-        price: 330,
-        oldPrice: null,
-        badge: null,
-        popular: true,
-        new: false
-    },
+  // --- VAPORESSO XROS 5 NANO ---
+  {
+    id: 1050,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 NANO — Black Satin",
+    volume: "3 ml",
+    nicotine: null,
+    price: 1200,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1051,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 NANO — Yellow Satin",
+    volume: "3 ml",
+    nicotine: null,
+    price: 1200,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1052,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 NANO — Orange Leatherette",
+    volume: "3 ml",
+    nicotine: null,
+    price: 1200,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1053,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 NANO — Blue Leatherette",
+    volume: "3 ml",
+    nicotine: null,
+    price: 1200,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1054,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 NANO — Nacre",
+    volume: "3 ml",
+    nicotine: null,
+    price: 1200,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1055,
+    category: "pods",
+    brand: "VAPORESSO",
+    name: "VAPORESSO XROS 5 NANO — Color Burst",
+    volume: "3 ml",
+    nicotine: null,
+    price: 1200,
+    oldPrice: null,
+    badge: "new",
+    badgeText: "NEW",
+    popular: true,
+    new: true
+  },
 
-    {
-        id: 7,
-        category: "liquid",
-        brand: "REFROST",
-        name: "Frozen Berries",
-        volume: "30 ml",
-        nicotine: "20 mg",
-        price: 350,
-        oldPrice: 390,
-        badge: "sale",
-        badgeText: "-10%",
-        popular: false,
-        new: false
-    },
+  // --- OXVA NEXLIM GO ---
+  {
+    id: 1101,
+    category: "pods",
+    brand: "OXVA",
+    name: "OXVA NEXLIM GO — Rose Pink",
+    volume: "2 ml",
+    nicotine: null,
+    price: 650,
+    oldPrice: 700,
+    badge: "sale",
+    badgeText: "-7%",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1102,
+    category: "pods",
+    brand: "OXVA",
+    name: "OXVA NEXLIM GO — Starry Blue",
+    volume: "2 ml",
+    nicotine: null,
+    price: 650,
+    oldPrice: 700,
+    badge: "sale",
+    badgeText: "-7%",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1103,
+    category: "pods",
+    brand: "OXVA",
+    name: "OXVA NEXLIM GO — Sahara Brown",
+    volume: "2 ml",
+    nicotine: null,
+    price: 650,
+    oldPrice: 700,
+    badge: "sale",
+    badgeText: "-7%",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1104,
+    category: "pods",
+    brand: "OXVA",
+    name: "OXVA NEXLIM GO — Silky Black",
+    volume: "2 ml",
+    nicotine: null,
+    price: 650,
+    oldPrice: 700,
+    badge: "sale",
+    badgeText: "-7%",
+    popular: true,
+    new: true
+  },
+  {
+    id: 1105,
+    category: "pods",
+    brand: "OXVA",
+    name: "OXVA NEXLIM GO — Silky Coffee",
+    volume: "2 ml",
+    nicotine: null,
+    price: 650,
+    oldPrice: 700,
+    badge: "sale",
+    badgeText: "-7%",
+    popular: false,
+    new: true
+  },
+  {
+    id: 1106,
+    category: "pods",
+    brand: "OXVA",
+    name: "OXVA NEXLIM GO — Silky Purple",
+    volume: "2 ml",
+    nicotine: null,
+    price: 650,
+    oldPrice: 700,
+    badge: "sale",
+    badgeText: "-7%",
+    popular: false,
+    new: true
+  },
 
-    {
-        id: 8,
-        category: "liquid",
-        brand: "HYPE",
-        name: "Mango Passion",
-        volume: "30 ml",
-        nicotine: "20 mg",
-        price: 360,
-        oldPrice: null,
-        badge: null,
-        popular: true,
-        new: false
-    },
+  // ================= КАРАТРИДЖІ =================
+  // --- Cartridges: VAPORESSO XROS ---
+  {
+    id: 2001,
+    category: "cartridges",
+    brand: "VAPORESSO",
+    name: "Картридж VAPORESSO XROS — 0.4 Ohm (2 ml)",
+    volume: "2 ml",
+    resistance: "0.4 ohm",
+    nicotine: null,
+    price: 150,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 2002,
+    category: "cartridges",
+    brand: "VAPORESSO",
+    name: "Картридж VAPORESSO XROS — 0.6 Ohm (2 ml)",
+    volume: "2 ml",
+    resistance: "0.6 ohm",
+    nicotine: null,
+    price: 150,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 2003,
+    category: "cartridges",
+    brand: "VAPORESSO",
+    name: "Картридж VAPORESSO XROS — 0.8 Ohm (2 ml)",
+    volume: "2 ml",
+    resistance: "0.8 ohm",
+    nicotine: null,
+    price: 150,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 2004,
+    category: "cartridges",
+    brand: "VAPORESSO",
+    name: "Картридж VAPORESSO XROS — 0.4 Ohm (3 ml)",
+    volume: "3 ml",
+    resistance: "0.4 ohm",
+    nicotine: null,
+    price: 150,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
+  {
+    id: 2005,
+    category: "cartridges",
+    brand: "VAPORESSO",
+    name: "Картридж VAPORESSO XROS — 0.6 Ohm (3 ml)",
+    volume: "3 ml",
+    resistance: "0.6 ohm",
+    nicotine: null,
+    price: 150,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 2006,
+    category: "cartridges",
+    brand: "VAPORESSO",
+    name: "Картридж VAPORESSO XROS — 0.8 Ohm (3 ml)",
+    volume: "3 ml",
+    resistance: "0.8 ohm",
+    nicotine: null,
+    price: 150,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
 
-    {
-        id: 9,
-        category: "liquid",
-        brand: "3GER",
-        name: "Grape Soda",
-        volume: "30 ml",
-        nicotine: "20 mg",
-        price: 380,
-        oldPrice: null,
-        badge: null,
-        popular: false,
-        new: false
-    },
+  // --- Cartridges: OXVA NeXLIM ---
+  {
+    id: 2101,
+    category: "cartridges",
+    brand: "OXVA",
+    name: "Картридж OXVA NeXLIM — 0.6 Ohm (2 ml)",
+    volume: "2 ml",
+    resistance: "0.6 ohm",
+    nicotine: null,
+    price: 150,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 2102,
+    category: "cartridges",
+    brand: "OXVA",
+    name: "Картридж OXVA NeXLIM — 0.8 Ohm (2 ml)",
+    volume: "2 ml",
+    resistance: "0.8 ohm",
+    nicotine: null,
+    price: 150,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 2103,
+    category: "cartridges",
+    brand: "OXVA",
+    name: "Картридж OXVA NeXLIM — 0.6 Ohm (4 ml)",
+    volume: "4 ml",
+    resistance: "0.6 ohm",
+    nicotine: null,
+    price: 150,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
+  {
+    id: 2104,
+    category: "cartridges",
+    brand: "OXVA",
+    name: "Картридж OXVA NeXLIM — 0.8 Ohm (4 ml)",
+    volume: "4 ml",
+    resistance: "0.8 ohm",
+    nicotine: null,
+    price: 150,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
 
-    {
-        id: 10,
-        category: "liquid",
-        brand: "ALCHEMIST",
-        name: "Strawberry Cream",
-        volume: "30 ml",
-        nicotine: "20 mg",
-        price: 400,
-        oldPrice: 450,
-        badge: "sale",
-        badgeText: "-11%",
-        popular: true,
-        new: false
-    },
+  // --- Cartridges: VOOPOO ARGUS ---
+  {
+    id: 2201,
+    category: "cartridges",
+    brand: "VOOPOO",
+    name: "Картридж VOOPOO ARGUS — 0.4 Ohm",
+    volume: "2 ml",
+    resistance: "0.4 ohm",
+    nicotine: null,
+    price: 150,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 2202,
+    category: "cartridges",
+    brand: "VOOPOO",
+    name: "Картридж VOOPOO ARGUS — 0.7 Ohm",
+    volume: "2 ml",
+    resistance: "0.7 ohm",
+    nicotine: null,
+    price: 150,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
 
-    {
-        id: 11,
-        category: "liquid",
-        brand: "INBOTTLE",
-        name: "Lemon Lime",
-        volume: "30 ml",
-        nicotine: "20 mg",
-        price: 350,
-        oldPrice: null,
-        badge: null,
-        popular: false,
-        new: false
-    },
+  // --- Cartridges: VOOPOO VMATE ---
+  {
+    id: 2203,
+    category: "cartridges",
+    brand: "VOOPOO",
+    name: "Картридж VOOPOO VMATE — 0.7 Ohm (2 ml)",
+    volume: "2 ml",
+    resistance: "0.7 ohm",
+    nicotine: null,
+    price: 140,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 2204,
+    category: "cartridges",
+    brand: "VOOPOO",
+    name: "Картридж VOOPOO VMATE — 1.0 Ohm (2 ml)",
+    volume: "2 ml",
+    resistance: "1.0 ohm",
+    nicotine: null,
+    price: 140,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 2205,
+    category: "cartridges",
+    brand: "VOOPOO",
+    name: "Картридж VOOPOO VMATE — 1.2 Ohm (2 ml)",
+    volume: "2 ml",
+    resistance: "1.2 ohm",
+    nicotine: null,
+    price: 140,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
+  {
+    id: 2206,
+    category: "cartridges",
+    brand: "VOOPOO",
+    name: "Картридж VOOPOO VMATE — 0.7 Ohm (3 ml)",
+    volume: "3 ml",
+    resistance: "0.7 ohm",
+    nicotine: null,
+    price: 140,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 2207,
+    category: "cartridges",
+    brand: "VOOPOO",
+    name: "Картридж VOOPOO VMATE — 1.0 Ohm (3 ml)",
+    volume: "3 ml",
+    resistance: "1.0 ohm",
+    nicotine: null,
+    price: 140,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
+  {
+    id: 2208,
+    category: "cartridges",
+    brand: "VOOPOO",
+    name: "Картридж VOOPOO VMATE — 1.2 Ohm (3 ml)",
+    volume: "3 ml",
+    resistance: "1.2 ohm",
+    nicotine: null,
+    price: 140,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: false,
+    new: false
+  },
 
-    {
-        id: 101,
-        category: "pod",
-        brand: "CLOUDROYAL",
-        name: "POD System One",
-        volume: "Device",
-        nicotine: null,
-        price: 899,
-        oldPrice: 999,
-        badge: "sale",
-        badgeText: "-10%",
-        popular: true,
-        new: true
-    },
-
-    {
-        id: 102,
-        category: "pod",
-        brand: "CLOUDROYAL",
-        name: "POD System Pro",
-        volume: "Device",
-        nicotine: null,
-        price: 1199,
-        oldPrice: null,
-        badge: "new",
-        badgeText: "NEW",
-        popular: true,
-        new: true
-    },
-
-    {
-        id: 201,
-        category: "cartridge",
-        brand: "CLOUDROYAL",
-        name: "Картридж 2 ml",
-        volume: "2 ml",
-        nicotine: null,
-        price: 180,
-        oldPrice: null,
-        badge: null,
-        popular: true,
-        new: false
-    },
-
-    {
-        id: 202,
-        category: "cartridge",
-        brand: "CLOUDROYAL",
-        name: "Картридж Pro",
-        volume: "2 ml",
-        nicotine: null,
-        price: 220,
-        oldPrice: null,
-        badge: "new",
-        badgeText: "NEW",
-        popular: false,
-        new: true
-    }
-
+  // --- Cartridges: LOST VAPE Ursa ---
+  {
+    id: 2301,
+    category: "cartridges",
+    brand: "LOST VAPE",
+    name: "Картридж LOST VAPE Ursa V1/V2 — 0.6 Ohm (2.5 ml)",
+    volume: "2.5 ml",
+    resistance: "0.6 ohm",
+    nicotine: null,
+    price: 140,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  },
+  {
+    id: 2302,
+    category: "cartridges",
+    brand: "LOST VAPE",
+    name: "Картридж LOST VAPE Ursa V1/V2 — 0.8 Ohm (2.5 ml)",
+    volume: "2.5 ml",
+    resistance: "0.8 ohm",
+    nicotine: null,
+    price: 140,
+    oldPrice: null,
+    badge: null,
+    badgeText: null,
+    popular: true,
+    new: false
+  }
 ];
 
-
-/* =========================
-   STATE
-========================= */
-
-let currentCategory = "liquid";
-let currentFilter = "all";
+// Змінні стану фільтрації
+let currentCategory = "all";
+let currentTag = "all"; // all | new | popular | sale
 let currentBrand = "all";
-let searchValue = "";
-let cart = [];
-let favorites = [];
+let searchQuery = "";
 
-
-/* =========================
-   DOM
-========================= */
-
-const productsContainer = document.getElementById("products");
-const searchInput = document.getElementById("search");
-const clearSearchButton = document.getElementById("clearSearch");
-const productsCount = document.getElementById("productsCount");
-const emptyState = document.getElementById("emptyState");
-const catalogTitle = document.getElementById("catalogTitle");
-const cartCount = document.getElementById("cartCount");
-const navCartCount = document.getElementById("navCartCount");
-const cartItems = document.getElementById("cartItems");
-const cartTotal = document.getElementById("cartTotal");
-const cartEmpty = document.getElementById("cartEmpty");
-const cartFooter = document.getElementById("cartFooter");
-
-
-/* =========================
-   STORAGE
-========================= */
-
-function loadStorage() {
-    try {
-        const savedCart = localStorage.getItem("cloudroyal_cart");
-        const savedFavorites = localStorage.getItem("cloudroyal_favorites");
-
-        if (savedCart) {
-            cart = JSON.parse(savedCart);
-        }
-
-        if (savedFavorites) {
-            favorites = JSON.parse(savedFavorites);
-        }
-    } catch (error) {
-        cart = [];
-        favorites = [];
-    }
+// Зміна категорії (Рідини, POD-системи, Картриджі, Усі)
+function setCategory(category) {
+  currentCategory = category;
+  
+  document.querySelectorAll('[data-category]').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-category') === category);
+  });
+  
+  renderProducts();
 }
 
-function saveStorage() {
-    localStorage.setItem("cloudroyal_cart", JSON.stringify(cart));
-    localStorage.setItem("cloudroyal_favorites", JSON.stringify(favorites));
+// Зміна тегу (Усі, Новинки, Популярне, Знижки)
+function setTag(tag) {
+  currentTag = tag;
+
+  document.querySelectorAll('[data-tag]').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-tag') === tag);
+  });
+
+  renderProducts();
 }
 
-
-/* =========================
-   FORMAT PRICE
-========================= */
-
-function formatPrice(price) {
-    return Number(price).toLocaleString("uk-UA") + " ₴";
-}
-
-
-/* =========================
-   CATEGORY & FILTERS
-========================= */
-
-function openCategory(category) {
-    currentCategory = category;
-    currentFilter = "all";
-    currentBrand = "all";
-    searchValue = "";
-
-    if (searchInput) {
-        searchInput.value = "";
-    }
-
-    updateCategoryButtons();
-    updateFilterButtons();
-    updateBrandButtons();
-    updateCatalogTitle();
-    renderProducts();
-    scrollToCatalog();
-}
-
-function updateCategoryButtons() {
-    const buttons = document.querySelectorAll(".category-card");
-    buttons.forEach(button => button.classList.remove("active"));
-
-    const categoryMap = { liquid: 0, pod: 1, cartridge: 2 };
-    const index = categoryMap[currentCategory];
-
-    if (index !== undefined && buttons[index]) {
-        buttons[index].classList.add("active");
-    }
-}
-
-function updateCatalogTitle() {
-    if (!catalogTitle) return;
-
-    const titles = {
-        liquid: "Обери свій смак",
-        pod: "POD-системи",
-        cartridge: "Картриджі та аксесуари"
-    };
-
-    catalogTitle.textContent = titles[currentCategory] || "Каталог";
-
-    const labels = document.querySelector(".catalog-section .section-label");
-    if (labels) {
-        const labelsMap = {
-            liquid: "РІДИНИ",
-            pod: "POD-СИСТЕМИ",
-            cartridge: "КАРТРИДЖІ"
-        };
-        labels.textContent = labelsMap[currentCategory];
-    }
-}
-
-function setFilter(filter) {
-    currentFilter = filter;
-    updateFilterButtons();
-    renderProducts();
-}
-
-function updateFilterButtons() {
-    const buttons = document.querySelectorAll(".filter-chip");
-    buttons.forEach(button => {
-        button.classList.toggle("active", button.dataset.filter === currentFilter);
-    });
-}
-
+// Зміна бренду
 function setBrand(brand) {
-    currentBrand = brand;
-    updateBrandButtons();
-    renderProducts();
+  currentBrand = brand;
+
+  document.querySelectorAll('[data-brand]').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-brand') === brand);
+  });
+
+  renderProducts();
 }
 
-function updateBrandButtons() {
-    const buttons = document.querySelectorAll(".brand-chip");
-    buttons.forEach(button => {
-        button.classList.toggle("active", button.dataset.brand === currentBrand);
-    });
+// Пошук
+function handleSearch(query) {
+  searchQuery = query.toLowerCase().trim();
+  renderProducts();
 }
 
-function toggleBrands() {
-    const brands = document.getElementById("brands");
-    const button = document.getElementById("showBrandsButton");
-    if (!brands || !button) return;
-
-    const expanded = brands.classList.toggle("expanded");
-    button.textContent = expanded ? "Сховати" : "Показати всі";
-}
-
-
-/* =========================
-   SEARCH
-========================= */
-
-function setupSearch() {
-    if (!searchInput) return;
-
-    searchInput.addEventListener("input", function () {
-        searchValue = this.value.trim().toLowerCase();
-
-        if (clearSearchButton) {
-            clearSearchButton.style.display = searchValue ? "flex" : "none";
-        }
-
-        renderProducts();
-    });
-}
-
-function clearSearch() {
-    searchValue = "";
-
-    if (searchInput) {
-        searchInput.value = "";
-    }
-
-    if (clearSearchButton) {
-        clearSearchButton.style.display = "none";
-    }
-
-    renderProducts();
-}
-
-
-/* =========================
-   PRODUCTS
-========================= */
-
-function getFilteredProducts() {
-    return products.filter(product => {
-        if (product.category !== currentCategory) return false;
-        if (currentBrand !== "all" && product.brand !== currentBrand) return false;
-        if (currentFilter === "new" && !product.new) return false;
-        if (currentFilter === "popular" && !product.popular) return false;
-        if (currentFilter === "sale" && !product.oldPrice) return false;
-
-        if (searchValue) {
-            const text = (product.brand + " " + product.name + " " + product.volume).toLowerCase();
-            if (!text.includes(searchValue)) return false;
-        }
-
-        return true;
-    });
-}
-
+// Рендеринг товарів
 function renderProducts() {
-    if (!productsContainer) return;
+  const container = document.getElementById('products-grid');
+  const countElement = document.getElementById('products-count');
+  if (!container) return;
 
-    const filtered = getFilteredProducts();
-    productsContainer.innerHTML = "";
+  const filtered = products.filter(product => {
+    // Фільтр за категорією
+    const matchCategory = currentCategory === 'all' || product.category === currentCategory;
+    
+    // Фільтр за брендом
+    const matchBrand = currentBrand === 'all' || product.brand === currentBrand;
+    
+    // Фільтр за додатковим тегом (Новинки, Популярне, Знижки)
+    let matchTag = true;
+    if (currentTag === 'new') matchTag = product.new === true;
+    if (currentTag === 'popular') matchTag = product.popular === true;
+    if (currentTag === 'sale') matchTag = product.oldPrice !== null && product.oldPrice > product.price;
 
-    if (productsCount) {
-        productsCount.textContent = filtered.length + " " + pluralProducts(filtered.length);
-    }
+    // Фільтр за пошуковим запитом
+    const matchSearch = searchQuery === '' || 
+      product.name.toLowerCase().includes(searchQuery) || 
+      product.brand.toLowerCase().includes(searchQuery);
 
-    if (filtered.length === 0) {
-        if (emptyState) emptyState.classList.add("visible");
-        return;
-    }
+    return matchCategory && matchBrand && matchTag && matchSearch;
+  });
 
-    if (emptyState) emptyState.classList.remove("visible");
+  // Оновлення лічильника товарів
+  if (countElement) {
+    countElement.textContent = `${filtered.length} товари`;
+  }
 
-    filtered.forEach(product => {
-        productsContainer.appendChild(createProductCard(product));
-    });
-}
+  if (filtered.length === 0) {
+    container.innerHTML = '<p class="no-products">Товарів за вибраними фільтрами не знайдено.</p>';
+    return;
+  }
 
-function pluralProducts(number) {
-    if (number % 10 === 1 && number % 100 !== 11) return "товар";
-    if (number % 10 >= 2 && number % 10 <= 4 && (number % 100 < 10 || number % 100 >= 20)) return "товари";
-    return "товарів";
-}
+  container.innerHTML = filtered.map(p => {
+    const badgeHtml = p.badgeText 
+      ? `<span class="badge badge-${p.badge || 'default'}">${p.badgeText}</span>` 
+      : '';
+    
+    const oldPriceHtml = p.oldPrice 
+      ? `<span class="old-price">${p.oldPrice} ₴</span>` 
+      : '';
 
-function createProductCard(product) {
-    const card = document.createElement("article");
-    card.className = "product-card";
+    const resistanceHtml = p.resistance 
+      ? `<span class="tag">${p.resistance}</span>` 
+      : '';
 
-    let badgeHTML = "";
-    if (product.badge) {
-        const badgeClass = product.badge === "sale" ? "sale" : product.badge === "popular" ? "popular" : "";
-        badgeHTML = `<span class="product-badge ${badgeClass}">${product.badgeText || "NEW"}</span>`;
-    }
-
-    const favorite = favorites.includes(product.id);
-    const nicotineHTML = product.nicotine ? `<span>${product.nicotine}</span>` : "";
-    const oldPriceHTML = product.oldPrice
-        ? `<span class="old-price">${formatPrice(product.oldPrice)}</span>`
-        : `<span class="old-price">&nbsp;</span>`;
-
-    card.innerHTML = `
-        <div class="product-visual">
-            ${badgeHTML}
-            <button class="favorite-btn ${favorite ? "active" : ""}" onclick="toggleFavorite(${product.id})" aria-label="Обране">
-                ${favorite ? "♥" : "♡"}
-            </button>
-            <div class="product-placeholder">${product.brand}</div>
-        </div>
-
+    return `
+      <div class="product-card">
+        ${badgeHtml}
         <div class="product-info">
-            <div class="product-brand">${product.brand}</div>
-            <h3 class="product-name">${product.name}</h3>
-            <div class="product-meta">
-                <span>${product.volume}</span>
-                ${nicotineHTML}
+          <span class="product-brand">${p.brand}</span>
+          <h4 class="product-title">${p.name}</h4>
+          <div class="product-tags">
+            ${p.volume ? `<span class="tag">${p.volume}</span>` : ''}
+            ${resistanceHtml}
+          </div>
+          <div class="product-footer">
+            <div class="price-block">
+              ${oldPriceHtml}
+              <span class="price">${p.price} ₴</span>
             </div>
-            <div class="product-bottom">
-                <div class="price-box">
-                    ${oldPriceHTML}
-                    <strong class="price">${formatPrice(product.price)}</strong>
-                </div>
-                <button class="add-button" onclick="addToCart(${product.id})" aria-label="Додати до кошика">+</button>
-            </div>
+            <button class="buy-btn" onclick="addToCart(${p.id})">В кошик</button>
+          </div>
         </div>
+      </div>
     `;
-
-    return card;
+  }).join('');
 }
 
-
-/* =========================
-   CART LOGIC
-========================= */
-
-function addToCart(productId) {
-    const product = products.find(item => item.id === productId);
-    if (!product) return;
-
-    const existing = cart.find(item => item.id === productId);
-    if (existing) {
-        existing.quantity += 1;
-    } else {
-        cart.push({ id: productId, quantity: 1 });
-    }
-
-    saveStorage();
-    updateCartCounter();
-
-    if (tg) {
-        try { tg.HapticFeedback.impactOccurred("light"); } catch (e) {}
-    }
+function addToCart(id) {
+  const product = products.find(p => p.id === id);
+  if (product) {
+    alert(`Додано в кошик: ${product.name}`);
+  }
 }
 
-function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
-    saveStorage();
-    updateCartCounter();
-    renderCart();
-}
-
-function changeQuantity(productId, change) {
-    const item = cart.find(cartItem => cartItem.id === productId);
-    if (!item) return;
-
-    item.quantity += change;
-
-    if (item.quantity <= 0) {
-        removeFromCart(productId);
-        return;
-    }
-
-    saveStorage();
-    updateCartCounter();
-    renderCart();
-}
-
-function getCartCount() {
-    return cart.reduce((total, item) => total + item.quantity, 0);
-}
-
-function updateCartCounter() {
-    const count = getCartCount();
-
-    if (cartCount) {
-        cartCount.textContent = count;
-        cartCount.style.display = count > 0 ? "flex" : "none";
-    }
-
-    if (navCartCount) {
-        navCartCount.textContent = count;
-        navCartCount.style.display = count > 0 ? "flex" : "none";
-    }
-}
-
-function getCartTotal() {
-    return cart.reduce((total, item) => {
-        const product = products.find(p => p.id === item.id);
-        return product ? total + product.price * item.quantity : total;
-    }, 0);
-}
-
-
-/* =========================
-   MODALS
-========================= */
-
-function showCart() {
-    renderCart();
-    const overlay = document.getElementById("cartOverlay");
-    if (overlay) overlay.classList.add("open");
-}
-
-function closeCart() {
-    const overlay = document.getElementById("cartOverlay");
-    if (overlay) overlay.classList.remove("open");
-}
-
-function closeCartByOverlay(event) {
-    if (event.target.id === "cartOverlay") closeCart();
-}
-
-function renderCart() {
-    if (!cartItems) return;
-    cartItems.innerHTML = "";
-
-    if (cart.length === 0) {
-        if (cartEmpty) cartEmpty.style.display = "block";
-        if (cartFooter) cartFooter.style.display = "none";
-        return;
-    }
-
-    if (cartEmpty) cartEmpty.style.display = "none";
-    if (cartFooter) cartFooter.style.display = "block";
-
-    cart.forEach(item => {
-        const product = products.find(p => p.id === item.id);
-        if (!product) return;
-
-        const element = document.createElement("div");
-        element.className = "cart-item";
-
-        element.innerHTML = `
-            <div class="cart-item-image">${product.brand}</div>
-            <div class="cart-item-info">
-                <div class="cart-item-brand">${product.brand}</div>
-                <div class="cart-item-name">${product.name}</div>
-                <div class="cart-item-price">${formatPrice(product.price)}</div>
-            </div>
-            <div class="quantity">
-                <button onclick="changeQuantity(${product.id}, -1)">−</button>
-                <span>${item.quantity}</span>
-                <button onclick="changeQuantity(${product.id}, 1)">+</button>
-            </div>
-        `;
-
-        cartItems.appendChild(element);
-    });
-
-    if (cartTotal) cartTotal.textContent = formatPrice(getCartTotal());
-}
-
-function openCheckout() {
-    if (cart.length === 0) {
-        alert("Кошик порожній.");
-        return;
-    }
-
-    closeCart();
-    const overlay = document.getElementById("checkoutOverlay");
-    if (overlay) overlay.classList.add("open");
-}
-
-function closeCheckout() {
-    const overlay = document.getElementById("checkoutOverlay");
-    if (overlay) overlay.classList.remove("open");
-}
-
-function closeCheckoutByOverlay(event) {
-    if (event.target.id === "checkoutOverlay") closeCheckout();
-}
-
-
-/* =========================
-   SUBMIT ORDER (OPTIMIZED)
-========================= */
-
-function submitOrder() {
-    const nameInput = document.getElementById("customerName");
-    const phoneInput = document.getElementById("customerPhone");
-    const commentInput = document.getElementById("customerComment");
-
-    const name = nameInput ? nameInput.value.trim() : "";
-    const phone = phoneInput ? phoneInput.value.trim() : "";
-    const comment = commentInput ? commentInput.value.trim() : "";
-
-    if (!name) {
-        alert("Введи своє ім'я.");
-        if (nameInput) nameInput.focus();
-        return;
-    }
-
-    if (!phone) {
-        alert("Введи номер телефону.");
-        if (phoneInput) phoneInput.focus();
-        return;
-    }
-
-    if (cart.length === 0) {
-        alert("Кошик порожній.");
-        return;
-    }
-
-    const orderItems = cart.map(item => {
-        const product = products.find(p => p.id === item.id);
-        if (!product) return null;
-        return {
-            brand: product.brand,
-            name: product.name,
-            quantity: item.quantity,
-            price: product.price,
-            total: product.price * item.quantity
-        };
-    }).filter(Boolean);
-
-    const totalQuantity = orderItems.reduce((total, item) => total + item.quantity, 0);
-    const totalPriceFormatted = formatPrice(getCartTotal());
-
-    // 1. Сообщение для Telegram
-    const itemsTelegramText = orderItems
-        .map(i => `• <b>${i.brand} ${i.name}</b> × ${i.quantity} шт (${formatPrice(i.total)})`)
-        .join("\n");
-
-    const telegramMessage = 
-        `🛍 <b>НОВЕ ЗАМОВЛЕННЯ!</b>\n\n` +
-        `👤 <b>Клієнт:</b> ${name}\n` +
-        `📞 <b>Телефон:</b> ${phone}\n` +
-        `💬 <b>Коментар:</b> ${comment || "Немає"}\n\n` +
-        `📦 <b>Товари (${totalQuantity} шт):</b>\n${itemsTelegramText}\n\n` +
-        `💰 <b>Загальна сума:</b> ${totalPriceFormatted}`;
-
-    // 2. Данные для Google Sheets
-    const itemsGoogleText = orderItems
-        .map(i => `${i.brand} — ${i.name} × ${i.quantity} — ${formatPrice(i.total)}`)
-        .join("\n");
-
-    const orderData = {
-        user: name,
-        phone: phone,
-        items: itemsGoogleText,
-        totalQuantity: totalQuantity,
-        comment: comment || "Немає",
-        totalPrice: getCartTotal()
-    };
-
-    // Мгновенная реакция UI (пользователь не ждет сеть)
-    if (tg) {
-        try { tg.HapticFeedback.notificationOccurred("success"); } catch (e) {}
-    }
-
-    alert("Замовлення успішно відправлено! ❤️");
-
-    cart = [];
-    saveStorage();
-    updateCartCounter();
-    renderCart();
-    closeCheckout();
-
-    if (nameInput) nameInput.value = "";
-    if (phoneInput) phoneInput.value = "";
-    if (commentInput) commentInput.value = "";
-
-    // Фоновая отправка в Telegram
-    if (TELEGRAM_BOT_TOKEN !== "ВАШ_BOT_TOKEN" && TELEGRAM_CHAT_ID !== "ВАШ_CHAT_ID") {
-        fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: telegramMessage,
-                parse_mode: "HTML"
-            })
-        }).catch(err => console.error("TG Send Error:", err));
-    }
-
-    // Фоновая отправка в Google Таблицу
-    fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(orderData)
-    }).catch(err => console.error("Google Sheets Error:", err));
-}
-
-
-/* =========================
-   FAVORITES
-========================= */
-
-function toggleFavorite(productId) {
-    if (favorites.includes(productId)) {
-        favorites = favorites.filter(id => id !== productId);
-    } else {
-        favorites.push(productId);
-    }
-
-    saveStorage();
-    renderProducts();
-}
-
-function showFavorites() {
-    renderFavorites();
-    const overlay = document.getElementById("favoritesOverlay");
-    if (overlay) overlay.classList.add("open");
-}
-
-function closeFavorites() {
-    const overlay = document.getElementById("favoritesOverlay");
-    if (overlay) overlay.classList.remove("open");
-}
-
-function closeFavoritesByOverlay(event) {
-    if (event.target.id === "favoritesOverlay") closeFavorites();
-}
-
-function renderFavorites() {
-    const container = document.getElementById("favoriteProducts");
-    if (!container) return;
-
-    container.innerHTML = "";
-    const favoriteProducts = products.filter(product => favorites.includes(product.id));
-
-    if (favoriteProducts.length === 0) {
-        container.innerHTML = `
-            <div class="cart-empty" style="grid-column:1/-1">
-                <div>♡</div>
-                <h3>Обране порожнє</h3>
-                <p>Натискай ♡ на товарах, щоб додати їх сюди.</p>
-            </div>
-        `;
-        return;
-    }
-
-    favoriteProducts.forEach(product => {
-        container.appendChild(createProductCard(product));
-    });
-}
-
-
-/* =========================
-   PROFILE & NAVIGATION
-========================= */
-
-function showProfile() {
-    const overlay = document.getElementById("profileOverlay");
-    const profileName = document.getElementById("profileName");
-
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        const user = tg.initDataUnsafe.user;
-        if (profileName) profileName.textContent = user.first_name || "Користувач";
-    }
-
-    if (overlay) overlay.classList.add("open");
-}
-
-function closeProfile() {
-    const overlay = document.getElementById("profileOverlay");
-    if (overlay) overlay.classList.remove("open");
-}
-
-function closeProfileByOverlay(event) {
-    if (event.target.id === "profileOverlay") closeProfile();
-}
-
-function goHome() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function scrollToCatalog() {
-    const section = document.getElementById("catalog");
-    if (section) section.scrollIntoView({ behavior: "smooth" });
-}
-
-
-/* =========================
-   INIT
-========================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-    loadStorage();
-    setupSearch();
-    updateCategoryButtons();
-    updateFilterButtons();
-    updateBrandButtons();
-    updateCatalogTitle();
-    updateCartCounter();
-    renderProducts();
+// Ініціалізація слухачів та первинний рендер
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => handleSearch(e.target.value));
+  }
+
+  renderProducts();
 });
