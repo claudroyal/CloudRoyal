@@ -188,7 +188,6 @@ const products = [
         new: false
     },
 
-
     /* =========================
        POD SYSTEMS
     ========================= */
@@ -222,7 +221,6 @@ const products = [
         popular: true,
         new: true
     },
-
 
     /* =========================
        CARTRIDGES
@@ -395,7 +393,7 @@ function updateCatalogTitle() {
 
     catalogTitle.textContent = titles[currentCategory] || "Каталог";
 
-    const labels = document.querySelector(".products-section .section-label");
+    const labels = document.querySelector(".catalog-section .section-label");
 
     if (labels) {
         const labelsMap = {
@@ -1188,7 +1186,7 @@ function goHome() {
 ========================= */
 
 function scrollToCatalog() {
-    const section = document.querySelector(".products-section");
+    const section = document.getElementById("catalog");
     if (section) {
         section.scrollIntoView({ behavior: "smooth" });
     }
