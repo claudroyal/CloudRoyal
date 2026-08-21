@@ -14,10 +14,11 @@
   </header>
 
   <main class="container">
-    <!-- Картка товару відображається одразу -->
     <div class="product-card-container">
+      
+      <!-- Зображення та анімація заміна фото -->
       <div class="product-image-box">
-        <img id="modal-product-img" src="https://via.placeholder.com/300x300/121214/a855f7?text=Chaser+30ml" alt="CHASER FOR PODS 30ML">
+        <img id="product-main-image" class="product-main-image" src="" alt="Chaser For Pods 30ml">
         <span class="discount-badge">SALE</span>
       </div>
 
@@ -30,13 +31,13 @@
           <span class="old-price" id="modal-product-oldprice">320 грн</span>
         </div>
 
-        <!-- Вибір міцності -->
+        <!-- Перемикач міцності -->
         <div class="selector-group">
           <label class="selector-label">Фортеця (Міцність):</label>
           <div class="nicotine-grid" id="nicotine-selector"></div>
         </div>
 
-        <!-- Вибір смаків -->
+        <!-- Перемикач смаків -->
         <div class="selector-group">
           <label class="selector-label">Оберіть смак:</label>
           <div class="flavors-grid" id="flavors-selector"></div>
@@ -45,6 +46,7 @@
 
         <button class="add-to-cart-btn" onclick="addProductToCart()">Замовити</button>
       </div>
+
     </div>
   </main>
 
