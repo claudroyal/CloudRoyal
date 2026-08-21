@@ -1,7 +1,7 @@
 // --- НАЛАШТУВАННЯ ІНТЕГРАЦІЙ ---
 const TELEGRAM_BOT_TOKEN = "8517426538:AAHt4jAR-AxVh_edaMxKWFpWDfyyxRFajFk";
 const TELEGRAM_CHAT_ID = "862669142";
-const GOOGLE_SHEETS_WEBHOOK_URL = "ТВІЙ_GOOGLE_APPS_SCRIPT_URL";
+const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyqcu6aG8YtJVglbA-DMHbioawAGeMMCIKuKVQb2k0bznFrbgSuuzeBWulpScxQslNk/exec";
 
 // --- БАЗА ТОВАРІВ ---
 const products = [
