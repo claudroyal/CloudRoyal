@@ -3,7 +3,7 @@
 // ============================================================
 const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyqcu6aG8YtJVglbA-DMHbioawAGeMMCIKuKVQb2k0bznFrbgSuuzeBWulpScxQslNk/exec";
 
-// Об'єкт товару
+// Об'єкт товару з розширеним масивом смаків та унікальними зображеннями
 const product = {
   id: "chaser-30ml",
   name: "CHASER FOR PODS 30ML",
@@ -12,9 +12,15 @@ const product = {
   oldPrice: 320,
   nicotineOptions: ["50 мг", "65 мг"],
   flavors: [
-    { id: "cherry", name: "Вишня", emoji: "🍒", inStock: true },
-    { id: "watermelon-ice", name: "Кавун ментол", emoji: "❄️🍉", inStock: true },
-    { id: "mint", name: "М'ята", emoji: "🌿", inStock: false }
+    { id: "cherry", name: "Вишня", emoji: "🍒", inStock: true, image: "https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=400&q=80" },
+    { id: "strawberry", name: "Полуниця", emoji: "🍓", inStock: true, image: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=400&q=80" },
+    { id: "watermelon-ice", name: "Кавун ментол", emoji: "❄️🍉", inStock: true, image: "https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?auto=format&fit=crop&w=400&q=80" },
+    { id: "melon", name: "Диня", emoji: "🍈", inStock: true, image: "https://images.unsplash.com/photo-1571575173700-afb9492e6a50?auto=format&fit=crop&w=400&q=80" },
+    { id: "pomegranate", name: "Гранат", emoji: "🫐", inStock: true, image: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=400&q=80" },
+    { id: "mint", name: "М'ята", emoji: "🌿", inStock: true, image: "https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?auto=format&fit=crop&w=400&q=80" },
+    { id: "berries", name: "Ягоди", emoji: "🫐🍓", inStock: true, image: "https://images.unsplash.com/photo-1488900128323-21503983257e?auto=format&fit=crop&w=400&q=80" },
+    { id: "kiwi", name: "Ківі", emoji: "🥝", inStock: false, image: "https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?auto=format&fit=crop&w=400&q=80" },
+    { id: "lychee", name: "Личі", emoji: "🍇", inStock: false, image: "https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&w=400&q=80" }
   ]
 };
 
@@ -23,10 +29,10 @@ let selectedNicotine = product.nicotineOptions[0];
 let selectedFlavor = null;
 
 // ============================================================
-// МОДУЛЬ КАРТКИ ТОВАРУ
+// МОДУЛЬ ІНІЦІАЛІЗАЦІЇ ТА ДИНАМІКИ
 // ============================================================
 
-function initProductModal() {
+function initProductPage() {
   document.getElementById('modal-product-brand').innerText = product.brand;
   document.getElementById('modal-product-name').innerText = product.name;
   document.getElementById('modal-product-price').innerText = product.price + " грн";
@@ -62,21 +68,45 @@ function initProductModal() {
         btn.classList.add('active');
         selectedFlavor = flavor;
         document.getElementById('flavor-error').style.display = 'none';
+        
+        // Виклик плавного перемикання фото
+        updateProductImage(flavor.image);
       };
     }
     flavorContainer.appendChild(btn);
   });
 
-  // Автовибір першого доступного смаку
+  // Автовибір першого доступного смаку при завантаженні
   const firstAvailable = product.flavors.find(f => f.inStock);
   if (firstAvailable) {
     selectedFlavor = firstAvailable;
     const firstBtn = flavorContainer.querySelector('.flavor-chip:not(.out-of-stock)');
     if (firstBtn) firstBtn.classList.add('active');
+    
+    // Встановлюємо перше фото
+    const imgElement = document.getElementById('product-main-image');
+    imgElement.src = firstAvailable.image;
   }
 }
 
-// Додавання у кошик та відправка
+// Функція плавного оновлення зображення з ефектом fade-in/fade-out
+function updateProductImage(newSrc) {
+  const imgElement = document.getElementById('product-main-image');
+  
+  if (imgElement.src === newSrc) return;
+
+  imgElement.classList.add('fade-out');
+
+  setTimeout(() => {
+    imgElement.src = newSrc;
+    imgElement.classList.remove('fade-out');
+  }, 250);
+}
+
+// ============================================================
+// ОФОРМЛЕННЯ ЗАМОВЛЕННЯ
+// ============================================================
+
 async function addProductToCart() {
   const errorHint = document.getElementById('flavor-error');
   
@@ -87,25 +117,22 @@ async function addProductToCart() {
   
   errorHint.style.display = 'none';
 
-  const fullTitle = `${product.name} (${selectedFlavor.name} ${selectedFlavor.emoji}, ${selectedNicotine})`;
+  const fullTitle = `${product.name} — ${selectedFlavor.name} ${selectedFlavor.emoji} (${selectedNicotine})`;
 
   const orderData = {
     name: "Клієнт (Тест)",
     phone: "+380000000000",
     comment: "Замовлення з сайту",
     items: fullTitle,
+    itemImage: selectedFlavor.image, // Передача фото конкретного смаку
     totalPrice: product.price,
     totalQuantity: 1
   };
 
-  // Відправляємо в Google Таблицю
+  // Відправка в Google Таблицю
   await sendToGoogleSheets(orderData);
-  alert(`Дякуємо! Замовлення відправлено:\n${fullTitle}`);
+  alert(`Дякуємо! Товар додано:\n${fullTitle}`);
 }
-
-// ============================================================
-// ВІДПРАВКА В GOOGLE TABLES
-// ============================================================
 
 async function sendToGoogleSheets(orderData) {
   if (!GOOGLE_SHEETS_WEBHOOK_URL || GOOGLE_SHEETS_WEBHOOK_URL === "ТВІЙ_GOOGLE_APPS_SCRIPT_URL") {
@@ -128,5 +155,5 @@ async function sendToGoogleSheets(orderData) {
   }
 }
 
-// Автоматична ініціалізація після завантаження сторінки
-document.addEventListener('DOMContentLoaded', initProductModal);
+// Запуск після завантаження сторінки
+document.addEventListener('DOMContentLoaded', initProductPage);
