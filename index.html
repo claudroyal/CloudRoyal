@@ -17,7 +17,9 @@
         <div class="brand-sub">PREMIUM STORE</div>
       </div>
     </div>
-    <button class="cart-btn" onclick="alert('Кошик порожній')">🛒</button>
+    <button class="cart-btn" onclick="openCart()" aria-label="Кошик">
+      🛒 <span class="cart-count" id="header-cart-count">0</span>
+    </button>
   </header>
 
   <main class="main-content">
@@ -67,7 +69,7 @@
       </div>
     </section>
 
-    <!-- Секція товарів -->
+    <!-- Секція каталогу -->
     <section class="section-block" id="catalog">
       <div class="section-header">
         <div>
@@ -80,15 +82,15 @@
       <!-- Пошук -->
       <div class="search-field">
         <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" placeholder="Пошук бренду або смаку...">
+        <input type="text" id="search" placeholder="Пошук бренду або смаку...">
       </div>
 
-      <!-- Теги -->
+      <!-- Фільтри по тегах -->
       <div class="filter-pills">
         <button class="pill-btn active" onclick="selectTag('all', this)">Усі</button>
-        <button class="pill-btn" onclick="selectTag('new', this)">✦ Новинки</button>
-        <button class="pill-btn" onclick="selectTag('popular', this)">Популярне</button>
-        <button class="pill-btn" onclick="selectTag('sale', this)">— Знижки</button>
+        <button class="pill-btn" onclick="selectTag('NEW', this)">✦ Новинки</button>
+        <button class="pill-btn" onclick="selectTag('TOP', this)">Популярне</button>
+        <button class="pill-btn" onclick="selectTag('SALE', this)">— Знижки</button>
       </div>
 
       <!-- Бренди -->
@@ -97,7 +99,7 @@
         <div class="brands-scroll" id="brands-container"></div>
       </div>
 
-      <!-- КАРТКИ ТОВАРІВ -->
+      <!-- СІТКА ТОВАРІВ -->
       <div class="products-grid" id="products-grid"></div>
     </section>
 
@@ -105,12 +107,32 @@
 
   <!-- Нижнє меню -->
   <nav class="bottom-nav">
-    <button class="nav-item active">🏠</button>
-    <button class="nav-item">🔍</button>
-    <button class="nav-item">♡</button>
-    <button class="nav-item">🛒</button>
-    <button class="nav-item">👤</button>
+    <button class="nav-item active" onclick="switchTab('home', this)">🏠</button>
+    <button class="nav-item" onclick="focusSearch(this)">🔍</button>
+    <button class="nav-item" onclick="switchTab('fav', this)">♡</button>
+    <button class="nav-item cart-nav-btn" onclick="openCart(this)">
+      🛒 <span class="nav-cart-count" id="nav-cart-count">0</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('profile', this)">👤</button>
   </nav>
+
+  <!-- Модальне вікно кошика -->
+  <div class="cart-modal" id="cart-modal">
+    <div class="cart-content">
+      <div class="cart-header">
+        <h3>Ваш кошик</h3>
+        <button class="close-btn" onclick="closeCart()">✕</button>
+      </div>
+      <div class="cart-items" id="cart-items-list"></div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Сума:</span>
+          <span id="cart-total-price">0 ₴</span>
+        </div>
+        <button class="btn-primary" onclick="checkout()">Оформити замовлення</button>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
