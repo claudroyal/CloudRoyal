@@ -1,117 +1,324 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CloudRoyal — Premium Store</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
+    <meta name="theme-color" content="#09090d">
+    <title>CloudRoyal</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
+
 <body>
 
-  <!-- Шапка -->
-  <header class="top-header">
-    <div class="logo-group">
-      <div class="logo-avatar">CR</div>
-      <div>
-        <div class="brand-title">CloudRoyal</div>
-        <div class="brand-sub">PREMIUM STORE</div>
-      </div>
+    <div class="app">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-inner">
+                <div class="brand-logo">
+                    <div class="logo-mark">CR</div>
+                    <div class="logo-text">
+                        <strong>CloudRoyal</strong>
+                        <span>PREMIUM STORE</span>
+                    </div>
+                </div>
+
+                <button class="header-cart" onclick="showCart()" aria-label="Кошик">
+                    <span class="header-cart-icon" aria-hidden="true">🛒</span>
+                    <span id="cartCount" class="cart-count">0</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main>
+
+            <!-- HERO SECTION -->
+            <section class="hero">
+                <div class="hero-glow hero-glow-one"></div>
+                <div class="hero-glow hero-glow-two"></div>
+
+                <div class="hero-content">
+                    <div class="hero-label">CLOUDROYAL</div>
+                    <h1>
+                        Твій смак.<br>
+                        Твій вибір.
+                    </h1>
+                    <p>
+                        Рідини, POD-системи та картриджі в одном місці.
+                    </p>
+                    <button class="hero-button" onclick="scrollToCatalog()">
+                        <span>Перейти до каталогу</span>
+                        <span class="button-arrow" aria-hidden="true">→</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- CATEGORIES SECTION -->
+            <section class="category-section">
+                <div class="section-heading">
+                    <div>
+                        <span class="section-label">КАТАЛОГ</span>
+                        <h2>Обери категорію</h2>
+                    </div>
+                </div>
+
+                <div class="category-grid">
+                    <button class="category-card active" onclick="openCategory('liquid')">
+                        <div class="category-icon liquid-icon" aria-hidden="true">💧</div>
+                        <div class="category-content">
+                            <strong>Рідини</strong>
+                            <span>Смаки та бренди</span>
+                        </div>
+                        <span class="category-arrow" aria-hidden="true">→</span>
+                    </button>
+
+                    <button class="category-card" onclick="openCategory('pod')">
+                        <div class="category-icon pod-icon" aria-hidden="true">◈</div>
+                        <div class="category-content">
+                            <strong>POD-системи</strong>
+                            <span>Пристрої</span>
+                        </div>
+                        <span class="category-arrow" aria-hidden="true">→</span>
+                    </button>
+
+                    <button class="category-card" onclick="openCategory('cartridge')">
+                        <div class="category-icon cartridge-icon" aria-hidden="true">▣</div>
+                        <div class="category-content">
+                            <strong>Картриджі</strong>
+                            <span>Витратні матеріали</span>
+                        </div>
+                        <span class="category-arrow" aria-hidden="true">→</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- CATALOG SECTION -->
+            <section id="catalog" class="catalog-section">
+
+                <div class="catalog-header">
+                    <div>
+                        <span class="section-label">РІДИНИ</span>
+                        <h2 id="catalogTitle">Обери свій смак</h2>
+                    </div>
+                    <span id="productsCount" class="products-count">0 товарів</span>
+                </div>
+
+                <!-- SEARCH -->
+                <div class="search-box">
+                    <span class="search-icon" aria-hidden="true">⌕</span>
+                    <input type="text" id="search" placeholder="Пошук бренду або смаку..." autocomplete="off">
+                    <button id="clearSearch" class="clear-search" onclick="clearSearch()" aria-label="Очистити пошук">×</button>
+                </div>
+
+                <!-- FILTERS -->
+                <div class="filter-scroll">
+                    <button class="filter-chip active" data-filter="all" onclick="setFilter('all')">Усі</button>
+                    <button class="filter-chip" data-filter="new" onclick="setFilter('new')">✦ Новинки</button>
+                    <button class="filter-chip" data-filter="popular" onclick="setFilter('popular')">Популярне</button>
+                    <button class="filter-chip sale-chip" data-filter="sale" onclick="setFilter('sale')">− Знижки</button>
+                </div>
+
+                <!-- BRANDS -->
+                <div class="brands-section">
+                    <div class="brands-heading">
+                        <span>БРЕНДИ</span>
+                        <button id="showBrandsButton" onclick="toggleBrands()">Показати всі</button>
+                    </div>
+
+                    <div id="brands" class="brands-list">
+                        <button class="brand-chip active" data-brand="all" onclick="setBrand('all')">Всі</button>
+                        <button class="brand-chip" data-brand="CHASER" onclick="setBrand('CHASER')">CHASER</button>
+                        <button class="brand-chip" data-brand="MOOD DUCK" onclick="setBrand('MOOD DUCK')">MOOD DUCK</button>
+                        <button class="brand-chip" data-brand="PUNCH" onclick="setBrand('PUNCH')">PUNCH</button>
+                        <button class="brand-chip" data-brand="OCTOBAR" onclick="setBrand('OCTOBAR')">OCTOBAR</button>
+                        <button class="brand-chip" data-brand="FLAVORLAB" onclick="setBrand('FLAVORLAB')">FLAVORLAB</button>
+                        <button class="brand-chip" data-brand="LUCKY" onclick="setBrand('LUCKY')">LUCKY</button>
+                        <button class="brand-chip" data-brand="REFROST" onclick="setBrand('REFROST')">REFROST</button>
+                        <button class="brand-chip" data-brand="HYPE" onclick="setBrand('HYPE')">HYPE</button>
+                        <button class="brand-chip" data-brand="3GER" onclick="setBrand('3GER')">3GER</button>
+                        <button class="brand-chip" data-brand="ALCHEMIST" onclick="setBrand('ALCHEMIST')">ALCHEMIST</button>
+                        <button class="brand-chip" data-brand="INBOTTLE" onclick="setBrand('INBOTTLE')">INBOTTLE</button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTS GRID -->
+                <div id="products" class="products-grid"></div>
+
+                <!-- EMPTY STATE -->
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-icon" aria-hidden="true">⌕</div>
+                    <h3>Нічого не знайдено</h3>
+                    <p>Спробуй змінити пошук або фільтр.</p>
+                    <button onclick="resetFilters()">Скинути фільтри</button>
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="goHome()">
+                <span class="nav-icon" aria-hidden="true">⌂</span>
+                <span>Головна</span>
+            </button>
+
+            <button class="nav-item" onclick="scrollToCatalog()">
+                <span class="nav-icon" aria-hidden="true">◉</span>
+                <span>Каталог</span>
+            </button>
+
+            <button class="nav-item" onclick="showFavorites()">
+                <span class="nav-icon" aria-hidden="true">♡</span>
+                <span>Обране</span>
+            </button>
+
+            <button class="nav-item nav-cart-item" onclick="showCart()">
+                <span class="nav-icon" aria-hidden="true">🛒</span>
+                <span>Кошик</span>
+                <span id="navCartCount" class="nav-cart-count">0</span>
+            </button>
+
+            <button class="nav-item" onclick="showProfile()">
+                <span class="nav-icon" aria-hidden="true">◯</span>
+                <span>Профіль</span>
+            </button>
+        </nav>
+
+        <!-- MODAL OVERLAYS -->
+
+        <!-- CART OVERLAY -->
+        <div id="cartOverlay" class="modal-overlay" onclick="closeCartByOverlay(event)">
+            <div class="modal-sheet">
+                <div class="modal-handle"></div>
+                <div class="modal-header">
+                    <div>
+                        <span class="modal-kicker">CLOUDROYAL</span>
+                        <h2>Кошик</h2>
+                    </div>
+                    <button class="modal-close" onclick="closeCart()" aria-label="Закрити кошик">×</button>
+                </div>
+
+                <div id="cartEmpty" class="cart-empty">
+                    <div class="empty-cart-icon" aria-hidden="true">🛒</div>
+                    <h3>Кошик порожній</h3>
+                    <p>Додай товари з каталогу, і вони з'являться тут.</p>
+                    <button class="primary-button" onclick="closeCart(); scrollToCatalog();">Перейти до каталогу</button>
+                </div>
+
+                <div id="cartItems" class="cart-items"></div>
+
+                <div id="cartFooter" class="cart-footer">
+                    <div class="cart-total-row">
+                        <span>Разом</span>
+                        <strong id="cartTotal">0 ₴</strong>
+                    </div>
+                    <button class="checkout-button" onclick="openCheckout()">
+                        Оформити замовлення <span>→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHECKOUT OVERLAY -->
+        <div id="checkoutOverlay" class="modal-overlay" onclick="closeCheckoutByOverlay(event)">
+            <div class="modal-sheet checkout-sheet">
+                <div class="modal-handle"></div>
+                <div class="modal-header">
+                    <div>
+                        <span class="modal-kicker">ЗАМОВЛЕННЯ</span>
+                        <h2>Оформлення</h2>
+                    </div>
+                    <button class="modal-close" onclick="closeCheckout()" aria-label="Закрити оформлення">×</button>
+                </div>
+
+                <p class="modal-description">
+                    Залиш свої контакти — ми зв'яжемося з тобою для підтвердження замовлення.
+                </p>
+
+                <div class="form-group">
+                    <label for="customerName">Ім'я</label>
+                    <input type="text" id="customerName" placeholder="Як до тебе звертатись?">
+                </div>
+
+                <div class="form-group">
+                    <label for="customerPhone">Номер телефону</label>
+                    <input type="tel" id="customerPhone" placeholder="+380...">
+                </div>
+
+                <div class="form-group">
+                    <label for="customerComment">Коментар</label>
+                    <textarea id="customerComment" placeholder="Є побажання до замовлення?" rows="3"></textarea>
+                </div>
+
+                <button class="checkout-button large checkout-submit" onclick="submitOrder()">
+                    Підтвердити замовлення <span>→</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- FAVORITES OVERLAY -->
+        <div id="favoritesOverlay" class="modal-overlay" onclick="closeFavoritesByOverlay(event)">
+            <div class="modal-sheet favorites-sheet">
+                <div class="modal-handle"></div>
+                <div class="modal-header">
+                    <div>
+                        <span class="modal-kicker">CLOUDROYAL</span>
+                        <h2>Обране</h2>
+                    </div>
+                    <button class="modal-close" onclick="closeFavorites()" aria-label="Закрити обране">×</button>
+                </div>
+
+                <div id="favoriteProducts" class="favorites-grid"></div>
+            </div>
+        </div>
+
+        <!-- PROFILE OVERLAY -->
+        <div id="profileOverlay" class="modal-overlay" onclick="closeProfileByOverlay(event)">
+            <div class="modal-sheet profile-sheet">
+                <div class="modal-handle"></div>
+                <div class="modal-header">
+                    <div>
+                        <span class="modal-kicker">CLOUDROYAL</span>
+                        <h2>Профіль</h2>
+                    </div>
+                    <button class="modal-close" onclick="closeProfile()" aria-label="Закрити профіль">×</button>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-avatar" aria-hidden="true">◯</div>
+                    <div>
+                        <span>Вітаємо</span>
+                        <h3 id="profileName">Користувач</h3>
+                    </div>
+                </div>
+
+                <div class="profile-info">
+                    <div class="profile-info-row">
+                        <span aria-hidden="true">🛒</span>
+                        <div>
+                            <strong>Мої замовлення</strong>
+                            <small>Тут з'явиться історія замовлень</small>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <span aria-hidden="true">♡</span>
+                        <div>
+                            <strong>Обране</strong>
+                            <small>Збережені товари</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <button class="cart-btn" aria-label="Кошик">🛒</button>
-  </header>
 
-  <main class="main-content">
-    
-    <!-- Баннер -->
-    <section class="hero-banner">
-      <span class="badge-tag">CLOUDROYAL</span>
-      <h1>Твій смак.<br>Твій вибір.</h1>
-      <p class="hero-text">Рідини, POD-системи та картриджі в одному місці.</p>
-      <a href="#catalog" class="btn-primary">
-        Перейти до каталогу <span>→</span>
-      </a>
-    </section>
-
-    <!-- Вибір категорії -->
-    <section class="section-block">
-      <div class="section-label">КАТАЛОГ</div>
-      <h2 class="section-title">Обери категорію</h2>
-
-      <div class="category-cards">
-        <div class="cat-card active" onclick="selectCategory('liquids', this)">
-          <div class="icon-box">💧</div>
-          <div class="cat-details">
-            <h3>Рідини</h3>
-            <p>Смаки та бренди</p>
-          </div>
-          <span class="arrow">→</span>
-        </div>
-
-        <div class="cat-card" onclick="selectCategory('pods', this)">
-          <div class="icon-box">◇</div>
-          <div class="cat-details">
-            <h3>POD-системи</h3>
-            <p>Пристрої</p>
-          </div>
-          <span class="arrow">→</span>
-        </div>
-
-        <div class="cat-card" onclick="selectCategory('cartridges', this)">
-          <div class="icon-box">▢</div>
-          <div class="cat-details">
-            <h3>Картриджі</h3>
-            <p>Витратні матеріали</p>
-          </div>
-          <span class="arrow">→</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Секція товарів -->
-    <section class="section-block" id="catalog">
-      <div class="section-header">
-        <div>
-          <div class="section-label" id="current-cat-label">РІДИНИ</div>
-          <h2 class="section-title" id="current-cat-title">Обери свій смак</h2>
-        </div>
-        <span class="products-count" id="products-count">0 товарів</span>
-      </div>
-
-      <!-- Пошук -->
-      <div class="search-field">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" placeholder="Пошук бренду або смаку...">
-      </div>
-
-      <!-- Теги -->
-      <div class="filter-pills">
-        <button class="pill-btn active" onclick="selectTag('all', this)">Усі</button>
-        <button class="pill-btn" onclick="selectTag('new', this)">✦ Новинки</button>
-        <button class="pill-btn" onclick="selectTag('popular', this)">Популярне</button>
-        <button class="pill-btn" onclick="selectTag('sale', this)">— Знижки</button>
-      </div>
-
-      <!-- Бренди -->
-      <div class="brands-bar">
-        <span class="brands-label">БРЕНДИ</span>
-        <div class="brands-scroll" id="brands-container"></div>
-      </div>
-
-      <!-- КАРТКИ ТОВАРІВ -->
-      <div class="products-grid" id="products-grid"></div>
-    </section>
-
-  </main>
-
-  <!-- Нижнє меню -->
-  <nav class="bottom-nav">
-    <button class="nav-item active">🏠</button>
-    <button class="nav-item">🔍</button>
-    <button class="nav-item">♡</button>
-    <button class="nav-item">🛒</button>
-    <button class="nav-item">👤</button>
-  </nav>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
