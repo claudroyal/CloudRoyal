@@ -9,46 +9,88 @@
 </head>
 <body>
 
+  <!-- Шапка -->
   <header class="header">
     <div class="logo">CloudRoyal</div>
   </header>
 
   <main class="container">
-    <div class="product-card-container">
-      
-      <!-- Зображення та анімація заміна фото -->
-      <div class="product-image-box">
-        <img id="product-main-image" class="product-main-image" src="" alt="Chaser For Pods 30ml">
-        <span class="discount-badge">SALE</span>
-      </div>
-
-      <div class="product-info-box">
-        <span class="product-brand" id="modal-product-brand">CHASER</span>
-        <h2 class="product-title" id="modal-product-name">CHASER FOR PODS 30ML</h2>
-        
-        <div class="product-price-box">
-          <span class="current-price" id="modal-product-price">280 грн</span>
-          <span class="old-price" id="modal-product-oldprice">320 грн</span>
-        </div>
-
-        <!-- Перемикач міцності -->
-        <div class="selector-group">
-          <label class="selector-label">Фортеця (Міцність):</label>
-          <div class="nicotine-grid" id="nicotine-selector"></div>
-        </div>
-
-        <!-- Перемикач смаків -->
-        <div class="selector-group">
-          <label class="selector-label">Оберіть смак:</label>
-          <div class="flavors-grid" id="flavors-selector"></div>
-          <span id="flavor-error" class="error-hint" style="display: none;">Будь ласка, оберіть смак!</span>
-        </div>
-
-        <button class="add-to-cart-btn" onclick="addProductToCart()">Замовити</button>
-      </div>
-
-    </div>
+    <h1 class="page-title">Каталог товарів</h1>
+    <!-- Сітка товарів -->
+    <div class="products-grid" id="products-catalog"></div>
   </main>
+
+  <!-- Плаваюча кнопка кошика -->
+  <div id="cart-bar" class="cart-bar" style="display: none;" onclick="openCartModal()">
+    <div class="cart-bar-info">
+      <span class="cart-count-badge" id="cart-count">0</span>
+      <span>Кошик</span>
+    </div>
+    <div class="cart-bar-price" id="cart-total-bar">0 грн</div>
+  </div>
+
+  <!-- Модальне вікно картки товару -->
+  <div id="product-modal" class="cloudroyal-modal" style="display: none;">
+    <div class="modal-content">
+      <button class="close-modal-btn" onclick="closeProductModal()">&times;</button>
+      
+      <div class="product-card-container">
+        <div class="product-image-box">
+          <img id="modal-product-img" class="product-main-image" src="" alt="Товар">
+          <span class="discount-badge">SALE</span>
+        </div>
+
+        <div class="product-info-box">
+          <span class="product-brand" id="modal-product-brand"></span>
+          <h2 class="product-title" id="modal-product-name"></h2>
+          
+          <div class="product-price-box">
+            <span class="current-price" id="modal-product-price"></span>
+            <span class="old-price" id="modal-product-oldprice"></span>
+          </div>
+
+          <div class="selector-group" id="nicotine-group">
+            <label class="selector-label">Міцність:</label>
+            <div class="nicotine-grid" id="nicotine-selector"></div>
+          </div>
+
+          <div class="selector-group" id="flavor-group">
+            <label class="selector-label">Оберіть смак:</label>
+            <div class="flavors-grid" id="flavors-selector"></div>
+            <span id="flavor-error" class="error-hint" style="display: none;">Будь ласка, оберіть смак!</span>
+          </div>
+
+          <button class="add-to-cart-btn" onclick="addToCartFromModal()">Додати в кошик</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальне вікно кошика та оформлення -->
+  <div id="cart-modal" class="cloudroyal-modal" style="display: none;">
+    <div class="modal-content cart-modal-content">
+      <button class="close-modal-btn" onclick="closeCartModal()">&times;</button>
+      <h2 class="modal-title">Ваше замовлення</h2>
+
+      <div id="cart-items-list" class="cart-items-list">
+        <!-- Позиції кошика генеруються через JS -->
+      </div>
+
+      <div class="cart-summary">
+        <span>Разом до сплати:</span>
+        <span id="cart-modal-total" class="cart-total-price">0 грн</span>
+      </div>
+
+      <form id="order-form" onsubmit="submitOrder(event)" class="order-form">
+        <h3>Дані для доставки</h3>
+        <input type="text" id="user-name" placeholder="Ваше ім'я" required>
+        <input type="tel" id="user-phone" placeholder="Номер телефону (+380...)" required>
+        <textarea id="user-comment" placeholder="Коментар до замовлення або адреса НП"></textarea>
+        
+        <button type="submit" class="add-to-cart-btn">Підтвердити замовлення</button>
+      </form>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
