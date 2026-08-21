@@ -1,6 +1,7 @@
 :root {
   --cr-bg: #0f0f11;
   --cr-card-bg: #18181b;
+  --cr-chip-bg: #1a1425;
   --cr-border: #27272a;
   --cr-primary: #a855f7;
   --cr-primary-hover: #9333ea;
@@ -31,69 +32,28 @@ body {
 }
 
 .container {
-  padding: 20px;
+  padding: 24px 16px;
   display: flex;
   justify-content: center;
 }
 
-.open-card-btn {
-  background: var(--cr-primary);
-  color: #fff;
-  border: none;
-  padding: 14px 24px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
-  transition: all 0.2s;
-}
-
-.open-card-btn:hover {
-  background: var(--cr-primary-hover);
-}
-
-/* Модальне вікно CloudRoyal Dark Premium */
-.cloudroyal-modal {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
+.product-card-container {
   background: var(--cr-card-bg);
   border: 1px solid var(--cr-border);
   border-radius: 16px;
-  width: 90%;
-  max-width: 700px;
+  width: 100%;
+  max-width: 850px;
   padding: 24px;
-  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
-.close-modal-btn {
-  position: absolute;
-  top: 15px; right: 20px;
-  background: none; border: none;
-  color: var(--cr-text-muted);
-  font-size: 28px; cursor: pointer;
-}
-
-.close-modal-btn:hover { color: var(--cr-text); }
-
-.product-card-container {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 20px;
-}
-
-@media(max-width: 650px) {
-  .product-card-container { grid-template-columns: 1fr; }
+@media(max-width: 700px) {
+  .product-card-container {
+    grid-template-columns: 1fr;
+  }
 }
 
 .product-image-box {
@@ -105,51 +65,88 @@ body {
   justify-content: center;
   position: relative;
   padding: 20px;
-  min-height: 200px;
+  min-height: 280px;
+  overflow: hidden;
 }
 
-.product-image-box img {
+.product-main-image {
   max-width: 100%;
-  height: auto;
+  max-height: 260px;
+  object-fit: contain;
+  transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.product-main-image.fade-out {
+  opacity: 0;
+  transform: scale(0.95);
 }
 
 .discount-badge {
   position: absolute;
-  top: 10px; left: 10px;
+  top: 12px;
+  left: 12px;
   background: #ef4444;
   color: #fff;
-  font-size: 11px; font-weight: 700;
-  padding: 4px 8px; border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
 }
 
 .product-brand {
-  font-size: 12px; font-weight: 600;
+  font-size: 12px;
+  font-weight: 600;
   color: var(--cr-primary);
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .product-title {
-  font-size: 20px; font-weight: 700;
-  margin: 4px 0 10px 0;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 4px 0 12px 0;
 }
 
 .product-price-box {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
-.current-price { font-size: 22px; font-weight: 700; }
-.old-price { font-size: 16px; color: var(--cr-text-muted); text-decoration: line-through; }
+.current-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--cr-text);
+}
 
-.selector-group { margin-bottom: 14px; }
-.selector-label { display: block; font-size: 13px; color: var(--cr-text-muted); margin-bottom: 8px; }
+.old-price {
+  font-size: 16px;
+  color: var(--cr-text-muted);
+  text-decoration: line-through;
+}
 
-.nicotine-grid, .flavors-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.selector-group {
+  margin-bottom: 18px;
+}
+
+.selector-label {
+  display: block;
+  font-size: 13px;
+  color: var(--cr-text-muted);
+  margin-bottom: 8px;
+}
+
+.nicotine-grid, .flavors-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
 .nicotine-chip, .flavor-chip {
-  background: var(--cr-bg);
+  background: var(--cr-chip-bg);
   border: 1px solid var(--cr-border);
   color: var(--cr-text);
   padding: 8px 14px;
@@ -161,6 +158,7 @@ body {
 
 .nicotine-chip:hover, .flavor-chip:not(.out-of-stock):hover {
   border-color: var(--cr-primary);
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.2);
 }
 
 .nicotine-chip.active, .flavor-chip.active {
@@ -175,21 +173,31 @@ body {
   text-decoration: line-through;
   cursor: not-allowed;
   pointer-events: none;
+  background: var(--cr-bg);
 }
 
-.error-hint { color: #ef4444; font-size: 12px; margin-top: 4px; display: block; }
+.error-hint {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 6px;
+  display: block;
+}
 
 .add-to-cart-btn {
   width: 100%;
   background: var(--cr-primary);
   color: #fff;
   border: none;
-  padding: 12px;
+  padding: 14px;
   border-radius: 10px;
-  font-weight: 600;
-  font-size: 15px;
+  font-weight: 700;
+  font-size: 16px;
   cursor: pointer;
-  margin-top: 8px;
+  transition: all 0.2s ease;
+  margin-top: 10px;
 }
 
-.add-to-cart-btn:hover { background: var(--cr-primary-hover); }
+.add-to-cart-btn:hover {
+  background: var(--cr-primary-hover);
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.4);
+}
