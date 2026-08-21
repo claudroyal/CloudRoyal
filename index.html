@@ -135,5 +135,68 @@
   </div>
 
   <script src="script.js"></script>
+  <!-- Модальне вікно кошика -->
+  <div class="modal-overlay" id="cart-modal" onclick="closeModalOnOverlay(event, 'cart-modal')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-header">
+        <h2>Ваш кошик</h2>
+        <button class="modal-close" onclick="closeModal('cart-modal')" aria-label="Закрити">✕</button>
+      </div>
+
+      <!-- Порожній кошик -->
+      <div class="cart-empty" id="cart-empty">
+        <div style="font-size: 40px; margin-bottom: 12px;">🛒</div>
+        <p>Ваш кошик порожній</p>
+      </div>
+
+      <!-- Список товарів -->
+      <div class="cart-items" id="cart-items-list" style="display: none;"></div>
+
+      <!-- Футер кошика -->
+      <div class="cart-footer" id="cart-footer" style="display: none;">
+        <div class="cart-total-row">
+          <span>До сплати:</span>
+          <span class="cart-total-price" id="cart-total-price">0 ₴</span>
+        </div>
+        <button class="checkout-button" onclick="goToCheckout()">Оформити замовлення</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальне вікно оформлення замовлення -->
+  <div class="modal-overlay" id="checkout-modal" onclick="closeModalOnOverlay(event, 'checkout-modal')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-header">
+        <h2>Оформлення замовлення</h2>
+        <button class="modal-close" onclick="closeModal('checkout-modal')" aria-label="Закрити">✕</button>
+      </div>
+
+      <form id="checkout-form" class="checkout-form" onsubmit="handleCheckoutSubmit(event)">
+        <div class="form-group">
+          <label for="customer-name">Ім’я та Прізвище</label>
+          <input type="text" id="customer-name" placeholder="Олександр Іванов" required>
+        </div>
+
+        <div class="form-group">
+          <label for="customer-phone">Номер телефону</label>
+          <input type="tel" id="customer-phone" placeholder="+380 (99) 000-00-00" required>
+        </div>
+
+        <div class="form-group">
+          <label for="customer-address">Місто та № відділення Нової Пошти</label>
+          <input type="text" id="customer-address" placeholder="Київ, Відділення №1" required>
+        </div>
+
+        <div class="checkout-summary">
+          <span>Разом:</span>
+          <strong id="checkout-total-price">0 ₴</strong>
+        </div>
+
+        <button type="submit" class="checkout-button">Підтвердити замовлення</button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
