@@ -2,13 +2,13 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CloudRoyal — Premium Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Шапка -->
+  <!-- Шапка сайту -->
   <header class="top-header">
     <div class="logo-group">
       <div class="logo-avatar">CR</div>
@@ -17,14 +17,15 @@
         <div class="brand-sub">PREMIUM STORE</div>
       </div>
     </div>
-    <button class="cart-btn" onclick="openCart()" aria-label="Кошик">
+    <button class="cart-btn" onclick="openModal('cart-modal')" aria-label="Кошик">
       🛒 <span class="cart-count" id="header-cart-count">0</span>
     </button>
   </header>
 
+  <!-- Основний контент -->
   <main class="main-content">
     
-    <!-- Головний баннер -->
+    <!-- Герой-баннер -->
     <section class="hero-banner">
       <span class="badge-tag">CLOUDROYAL</span>
       <h1>Твій смак.<br>Твій вибір.</h1>
@@ -34,7 +35,7 @@
       </a>
     </section>
 
-    <!-- Вибір категорії -->
+    <!-- Перемикач категорій -->
     <section class="section-block">
       <div class="section-label">КАТАЛОГ</div>
       <h2 class="section-title">Обери категорію</h2>
@@ -69,23 +70,23 @@
       </div>
     </section>
 
-    <!-- Секція каталогу -->
+    <!-- Секція каталогу товарів -->
     <section class="section-block" id="catalog">
       <div class="section-header">
         <div>
           <div class="section-label" id="current-cat-label">РІДИНИ</div>
           <h2 class="section-title" id="current-cat-title">Обери свій смак</h2>
         </div>
-        <span class="products-count" id="products-count">0 товарів</span>
+        <span class="products-count" id="products-count">3 товари</span>
       </div>
 
-      <!-- Пошук -->
+      <!-- Пошуковий рядок -->
       <div class="search-field">
         <span class="search-icon">🔍</span>
         <input type="text" id="search" placeholder="Пошук бренду або смаку...">
       </div>
 
-      <!-- Фільтри по тегах -->
+      <!-- Фільтри тегів -->
       <div class="filter-pills">
         <button class="pill-btn active" onclick="selectTag('all', this)">Усі</button>
         <button class="pill-btn" onclick="selectTag('NEW', this)">✦ Новинки</button>
@@ -93,48 +94,114 @@
         <button class="pill-btn" onclick="selectTag('SALE', this)">— Знижки</button>
       </div>
 
-      <!-- Бренди -->
+      <!-- Фільтр брендів -->
       <div class="brands-bar">
         <span class="brands-label">БРЕНДИ</span>
-        <div class="brands-scroll" id="brands-container"></div>
+        <div class="brands-scroll" id="brands-container">
+          <button class="brand-chip active" onclick="selectBrand('all', this)">Всі</button>
+          <button class="brand-chip" onclick="selectBrand('CHASER', this)">CHASER</button>
+          <button class="brand-chip" onclick="selectBrand('FLAVORLAB', this)">FLAVORLAB</button>
+          <button class="brand-chip" onclick="selectBrand('OCTOBAR', this)">OCTOBAR</button>
+        </div>
       </div>
 
-      <!-- СІТКА ТОВАРІВ -->
-      <div class="products-grid" id="products-grid"></div>
+      <!-- Сітка товарів -->
+      <div class="products-grid" id="products-grid">
+        
+        <!-- Демо-картка 1 -->
+        <div class="product-card">
+          <div class="product-visual">
+            <span class="product-badge badge-sale">SALE</span>
+            <button class="favorite-btn" onclick="toggleFavorite(1, this)" aria-label="Обране">♡</button>
+          </div>
+          <div class="product-info">
+            <div class="product-brand">CHASER</div>
+            <div class="product-name">Chaser For Pods Triple Berry</div>
+            <div class="product-meta">
+              <span class="meta-tag">30 ml</span>
+              <span class="meta-tag">50 мг</span>
+            </div>
+            <div class="product-footer">
+              <div class="price-container">
+                <span class="old-price">320 ₴</span>
+                <div class="price">280 ₴</div>
+              </div>
+              <button class="add-button" onclick="addToCart(1)" aria-label="Додати в кошик">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Демо-картка 2 -->
+        <div class="product-card">
+          <div class="product-visual">
+            <span class="product-badge badge-new">NEW</span>
+            <button class="favorite-btn" onclick="toggleFavorite(2, this)" aria-label="Обране">♡</button>
+          </div>
+          <div class="product-info">
+            <div class="product-brand">FLAVORLAB</div>
+            <div class="product-name">Flavorlab FL 350 Watermelon Ice</div>
+            <div class="product-meta">
+              <span class="meta-tag">30 ml</span>
+              <span class="meta-tag">50 мг</span>
+            </div>
+            <div class="product-footer">
+              <div class="price-container">
+                <span class="old-price">350 ₴</span>
+                <div class="price">320 ₴</div>
+              </div>
+              <button class="add-button" onclick="addToCart(2)" aria-label="Додати в кошик">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Демо-картка 3 -->
+        <div class="product-card">
+          <div class="product-visual">
+            <span class="product-badge badge-top">TOP</span>
+            <button class="favorite-btn" onclick="toggleFavorite(3, this)" aria-label="Обране">♡</button>
+          </div>
+          <div class="product-info">
+            <div class="product-brand">OCTOBAR</div>
+            <div class="product-name">Octobar Passion Fruit Ice</div>
+            <div class="product-meta">
+              <span class="meta-tag">30 ml</span>
+              <span class="meta-tag">50 мг</span>
+            </div>
+            <div class="product-footer">
+              <div class="price-container">
+                <div class="price">330 ₴</div>
+              </div>
+              <button class="add-button" onclick="addToCart(3)" aria-label="Додати в кошик">+</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </section>
 
   </main>
 
-  <!-- Нижнє меню -->
+  <!-- Фіксована нижня панель навігації -->
   <nav class="bottom-nav">
-    <button class="nav-item active" onclick="switchTab('home', this)">🏠</button>
-    <button class="nav-item" onclick="focusSearch(this)">🔍</button>
-    <button class="nav-item" onclick="switchTab('fav', this)">♡</button>
-    <button class="nav-item cart-nav-btn" onclick="openCart(this)">
-      🛒 <span class="nav-cart-count" id="nav-cart-count">0</span>
+    <button class="nav-item active" onclick="switchTab('home', this)">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Головна</span>
     </button>
-    <button class="nav-item" onclick="switchTab('profile', this)">👤</button>
+    <button class="nav-item" onclick="focusSearch(this)">
+      <span class="nav-icon">🔍</span>
+      <span class="nav-label">Каталог</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('fav', this)">
+      <span class="nav-icon">♡</span>
+      <span class="nav-label">Обране</span>
+    </button>
+    <button class="nav-item cart-nav-btn" onclick="openModal('cart-modal')">
+      <span class="nav-icon">🛒</span>
+      <span class="nav-label">Кошик</span>
+      <span class="nav-cart-count" id="nav-cart-count">0</span>
+    </button>
   </nav>
 
-  <!-- Модальне вікно кошика -->
-  <div class="cart-modal" id="cart-modal">
-    <div class="cart-content">
-      <div class="cart-header">
-        <h3>Ваш кошик</h3>
-        <button class="close-btn" onclick="closeCart()">✕</button>
-      </div>
-      <div class="cart-items" id="cart-items-list"></div>
-      <div class="cart-footer">
-        <div class="cart-total">
-          <span>Сума:</span>
-          <span id="cart-total-price">0 ₴</span>
-        </div>
-        <button class="btn-primary" onclick="checkout()">Оформити замовлення</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
   <!-- Модальне вікно кошика -->
   <div class="modal-overlay" id="cart-modal" onclick="closeModalOnOverlay(event, 'cart-modal')">
     <div class="modal-sheet">
@@ -144,16 +211,16 @@
         <button class="modal-close" onclick="closeModal('cart-modal')" aria-label="Закрити">✕</button>
       </div>
 
-      <!-- Порожній кошик -->
+      <!-- Стан порожнього кошика -->
       <div class="cart-empty" id="cart-empty">
         <div style="font-size: 40px; margin-bottom: 12px;">🛒</div>
         <p>Ваш кошик порожній</p>
       </div>
 
-      <!-- Список товарів -->
+      <!-- Динамічний список товарів -->
       <div class="cart-items" id="cart-items-list" style="display: none;"></div>
 
-      <!-- Футер кошика -->
+      <!-- Нижній блок кошика -->
       <div class="cart-footer" id="cart-footer" style="display: none;">
         <div class="cart-total-row">
           <span>До сплати:</span>
@@ -198,5 +265,7 @@
       </form>
     </div>
   </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
