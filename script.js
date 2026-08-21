@@ -1,69 +1,20 @@
+// --- НАЛАШТУВАННЯ ІНТЕГРАЦІЙ ---
+const TELEGRAM_BOT_TOKEN = "ТВІЙ_BOT_TOKEN";
+const TELEGRAM_CHAT_ID = "ТВІЙ_CHAT_ID";
+const GOOGLE_SHEETS_WEBHOOK_URL = "ТВІЙ_GOOGLE_APPS_SCRIPT_URL";
+
 // --- БАЗА ТОВАРІВ ---
 const products = [
-  {
-    id: 1,
-    name: "Chaser For Pods Triple Berry",
-    brand: "CHASER",
-    price: 280,
-    oldPrice: 320,
-    category: "liquids",
-    badge: "SALE",
-    meta: ["30 ml", "50 мг"]
-  },
-  {
-    id: 2,
-    name: "Flavorlab FL 350 Watermelon Ice",
-    brand: "FLAVORLAB",
-    price: 320,
-    oldPrice: 350,
-    category: "liquids",
-    badge: "SALE",
-    meta: ["30 ml", "50 мг"]
-  },
-  {
-    id: 3,
-    name: "Octobar Passion Fruit Ice",
-    brand: "OCTOBAR",
-    price: 330,
-    oldPrice: null,
-    category: "liquids",
-    badge: "NEW",
-    meta: ["30 ml", "50 мг"]
-  },
-  {
-    id: 4,
-    name: "Mood Duck Sour Apple",
-    brand: "MOOD DUCK",
-    price: 310,
-    oldPrice: null,
-    category: "liquids",
-    badge: "TOP",
-    meta: ["30 ml", "50 мг"]
-  },
-  {
-    id: 5,
-    name: "Vaporesso XROS 3 MINI Black",
-    brand: "VAPORESSO",
-    price: 720,
-    oldPrice: null,
-    category: "pods",
-    badge: "TOP",
-    meta: ["1000 mAh", "2 мл"]
-  },
-  {
-    id: 6,
-    name: "Картридж Vaporesso XROS 0.6 Ohm",
-    brand: "VAPORESSO",
-    price: 150,
-    oldPrice: null,
-    category: "cartridges",
-    badge: "TOP",
-    meta: ["3 мл", "0.6 Ом"]
-  }
+  { id: 1, name: "Chaser For Pods Triple Berry", brand: "CHASER", price: 280, oldPrice: 320, category: "liquids", badge: "SALE", meta: ["30 ml", "50 мг"] },
+  { id: 2, name: "Flavorlab FL 350 Watermelon Ice", brand: "FLAVORLAB", price: 320, oldPrice: 350, category: "liquids", badge: "SALE", meta: ["30 ml", "50 мг"] },
+  { id: 3, name: "Octobar Passion Fruit Ice", brand: "OCTOBAR", price: 330, oldPrice: null, category: "liquids", badge: "NEW", meta: ["30 ml", "50 мг"] },
+  { id: 4, name: "Mood Duck Sour Apple", brand: "MOOD DUCK", price: 310, oldPrice: null, category: "liquids", badge: "TOP", meta: ["30 ml", "50 мг"] },
+  { id: 5, name: "Vaporesso XROS 3 MINI Black", brand: "VAPORESSO", price: 720, oldPrice: null, category: "pods", badge: "TOP", meta: ["1000 mAh", "2 мл"] },
+  { id: 6, name: "Картридж Vaporesso XROS 0.6 Ohm", brand: "VAPORESSO", price: 150, oldPrice: null, category: "cartridges", badge: "TOP", meta: ["3 мл", "0.6 Ом"] }
 ];
 
 // --- ГЛОБАЛЬНИЙ СТАН ---
-let cart = []; // Об'єкти структури: { product, count }
+let cart = [];
 let favorites = [];
 let currentCategory = 'liquids';
 let currentTag = 'all';
@@ -76,7 +27,7 @@ const categoryMeta = {
   cartridges: { label: 'КАРТРИДЖІ', title: 'Обери картридж' }
 };
 
-// --- ІНІЦІАЛІЗАЦІЯ TELEGRAM WEB APP ---
+// --- TELEGRAM WEB APP ІНІЦІАЛІЗАЦІЯ ---
 const tg = window.Telegram?.WebApp;
 if (tg) {
   tg.ready();
@@ -155,13 +106,11 @@ function updateCartUI() {
   const totalCount = cart.reduce((sum, item) => sum + item.count, 0);
   const totalPrice = cart.reduce((sum, item) => sum + (item.product.price * item.count), 0);
 
-  // Оновлення банерів лічильника
   const headerCount = document.getElementById('header-cart-count');
   const navCount = document.getElementById('nav-cart-count');
   if (headerCount) headerCount.textContent = totalCount;
   if (navCount) navCount.textContent = totalCount;
 
-  // Елементи інтерфейсу модалки
   const cartEmpty = document.getElementById('cart-empty');
   const cartList = document.getElementById('cart-items-list');
   const cartFooter = document.getElementById('cart-footer');
@@ -199,9 +148,56 @@ function updateCartUI() {
   if (checkoutTotalPrice) checkoutTotalPrice.textContent = `${totalPrice} ₴`;
 }
 
-// --- ОБРОБКА ФОРМИ ---
-function handleCheckoutSubmit(event) {
+// --- ІНТЕГРАЦІЇ (TELEGRAM & GOOGLE SHEETS) ---
+async function sendToTelegram(orderData) {
+  if (TELEGRAM_BOT_TOKEN === "ТВІЙ_BOT_TOKEN") return;
+
+  const itemsList = orderData.items.map(i => `• <b>${i.name}</b> x${i.count} — ${i.price * i.count} ₴`).join('\n');
+  const message = `🛍 <b>НОВЕ ЗАМОВЛЕННЯ CloudRoyal</b>\n\n` +
+                  `👤 <b>Клієнт:</b> ${orderData.name}\n` +
+                  `📞 <b>Телефон:</b> ${orderData.phone}\n` +
+                  `📍 <b>Адреса:</b> ${orderData.address}\n\n` +
+                  `📦 <b>Товари:</b>\n${itemsList}\n\n` +
+                  `💰 <b>Загальна сума:</b> ${orderData.total} ₴`;
+
+  try {
+    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: message,
+        parse_mode: 'HTML'
+      })
+    });
+  } catch (err) {
+    console.error("Помилка відправки в Telegram:", err);
+  }
+}
+
+async function sendToGoogleSheets(orderData) {
+  if (GOOGLE_SHEETS_WEBHOOK_URL === "ТВІЙ_GOOGLE_APPS_SCRIPT_URL") return;
+
+  try {
+    await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData)
+    });
+  } catch (err) {
+    console.error("Помилка відправки в Google Таблицю:", err);
+  }
+}
+
+async function handleCheckoutSubmit(event) {
   event.preventDefault();
+
+  const submitBtn = document.getElementById('submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Надсилання...';
+  }
 
   const orderData = {
     name: document.getElementById('customer-name').value,
@@ -211,16 +207,27 @@ function handleCheckoutSubmit(event) {
     total: cart.reduce((sum, item) => sum + (item.product.price * item.count), 0)
   };
 
+  // Паралельне надсилання даних
+  await Promise.all([
+    sendToTelegram(orderData),
+    sendToGoogleSheets(orderData)
+  ]);
+
   if (tg) {
     tg.sendData(JSON.stringify(orderData));
-  } else {
-    alert(`Дякуємо за замовлення, ${orderData.name}! Сума: ${orderData.total} ₴`);
   }
+
+  alert(`Дякуємо за замовлення, ${orderData.name}! Наш менеджер вже обробляє його.`);
 
   cart = [];
   updateCartUI();
   closeModal('checkout-modal');
   document.getElementById('checkout-form').reset();
+
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Підтвердити замовлення';
+  }
 }
 
 // --- РЕНДЕР КАТАЛОГУ ---
@@ -257,7 +264,7 @@ function renderProducts() {
       <div class="product-card">
         <div class="product-visual">
           ${badgeHtml}
-          <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(${p.id}, this)" aria-label="Обране">
+          <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(${p.id})" aria-label="Обране">
             ${isFav ? '♥' : '♡'}
           </button>
         </div>
@@ -339,8 +346,6 @@ function switchTab(tab, btn) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else if (tab === 'fav') {
     alert(`В обраному товарів: ${favorites.length}`);
-  } else if (tab === 'profile') {
-    alert('Кабінет користувача');
   }
 }
 
@@ -353,7 +358,6 @@ function focusSearch(btn) {
   }
 }
 
-// --- ІНІЦІАЛІЗАЦІЯ ПІСЛЯ ЗАВАНТАЖЕННЯ ---
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('search');
   if (searchInput) {
