@@ -1,23 +1,143 @@
-// Масив товарів
 const products = [
   // --- РІДИНИ ---
-  { id: 1, category: "liquids", brand: "CHASER", name: "Chaser Black — Triple Berry", volume: "30 ml", price: 350, oldPrice: null, tag: "popular" },
-  { id: 2, category: "liquids", brand: "FLAVORLAB", name: "Flavorlab FL 350 — Watermelon Ice", volume: "30 ml", price: 320, oldPrice: 350, tag: "sale" },
-  { id: 3, category: "liquids", brand: "OCTOBAR", name: "Octobar Passion Fruit", volume: "30 ml", price: 330, oldPrice: null, tag: "new" },
-  { id: 4, category: "liquids", brand: "MOOD DUCK", name: "Mood Duck — Sour Apple", volume: "30 ml", price: 310, oldPrice: null, tag: null },
-  { id: 5, category: "liquids", brand: "PUNCH", name: "Punch Energy — Wild Peach", volume: "30 ml", price: 300, oldPrice: null, tag: "popular" },
+  {
+    id: 1,
+    name: "Chaser For Pods Triple Berry",
+    brand: "CHASER",
+    price: 280,
+    oldPrice: 320,
+    category: "liquids",
+    badge: "SALE",
+    meta: ["30 ml", "50 мг"]
+  },
+  {
+    id: 2,
+    name: "Flavorlab FL 350 Watermelon Ice",
+    brand: "FLAVORLAB",
+    price: 320,
+    oldPrice: 350,
+    category: "liquids",
+    badge: "SALE",
+    meta: ["30 ml", "50 мг"]
+  },
+  {
+    id: 3,
+    name: "Octobar Passion Fruit Ice",
+    brand: "OCTOBAR",
+    price: 330,
+    oldPrice: null,
+    category: "liquids",
+    badge: "NEW",
+    meta: ["30 ml", "50 мг"]
+  },
+  {
+    id: 4,
+    name: "Mood Duck Sour Apple",
+    brand: "MOOD DUCK",
+    price: 310,
+    oldPrice: null,
+    category: "liquids",
+    badge: "TOP",
+    meta: ["30 ml", "50 мг"]
+  },
+  {
+    id: 5,
+    name: "Punch Energy Wild Peach",
+    brand: "PUNCH",
+    price: 300,
+    oldPrice: null,
+    category: "liquids",
+    badge: null,
+    meta: ["30 ml", "50 мг"]
+  },
+  {
+    id: 6,
+    name: "Lucky Blueberry Sour Raspberry",
+    brand: "LUCKY",
+    price: 290,
+    oldPrice: 340,
+    category: "liquids",
+    badge: "SALE",
+    meta: ["30 ml", "50 мг"]
+  },
 
   // --- POD-СИСТЕМИ ---
-  { id: 6, category: "pods", brand: "VAPORESSO", name: "XROS 3 MINI — Black", volume: "2 ml", price: 720, oldPrice: null, tag: "popular" },
-  { id: 7, category: "pods", brand: "VAPORESSO", name: "XROS 3 MINI — Space Grey", volume: "2 ml", price: 720, oldPrice: null, tag: null },
-  { id: 8, category: "pods", brand: "VAPORESSO", name: "XROS 4 MINI — Black", volume: "3 ml", price: 820, oldPrice: null, tag: "new" },
-  { id: 9, category: "pods", brand: "OXVA", name: "OXVA XLIM GO — Blue", volume: "2 ml", price: 650, oldPrice: 700, tag: "sale" },
+  {
+    id: 7,
+    name: "Vaporesso XROS 3 MINI Black",
+    brand: "VAPORESSO",
+    price: 720,
+    oldPrice: null,
+    category: "pods",
+    badge: "TOP",
+    meta: ["1000 mAh", "2 мл"]
+  },
+  {
+    id: 8,
+    name: "Vaporesso XROS 4 MINI Space Grey",
+    brand: "VAPORESSO",
+    price: 820,
+    oldPrice: 900,
+    category: "pods",
+    badge: "NEW",
+    meta: ["1000 mAh", "3 мл"]
+  },
+  {
+    id: 9,
+    name: "OXVA XLIM GO Blue",
+    brand: "OXVA",
+    price: 650,
+    oldPrice: 700,
+    category: "pods",
+    badge: "SALE",
+    meta: ["1000 mAh", "2 мл"]
+  },
+  {
+    id: 10,
+    name: "Voopoo Vmate E2 Green",
+    brand: "VOOPOO",
+    price: 950,
+    oldPrice: null,
+    category: "pods",
+    badge: "NEW",
+    meta: ["1500 mAh", "3 мл"]
+  },
 
-  // --- КАРАТРИДЖІ ---
-  { id: 10, category: "cartridges", brand: "VAPORESSO", name: "Картридж XROS 0.6 Ohm", volume: "2 ml", price: 150, oldPrice: null, tag: "popular" },
-  { id: 11, category: "cartridges", brand: "OXVA", name: "Картридж XLIM 0.8 Ohm", volume: "2 ml", price: 150, oldPrice: null, tag: null }
+  // --- КАРТРИДЖІ ---
+  {
+    id: 11,
+    name: "Картридж Vaporesso XROS 0.6 Ohm",
+    brand: "VAPORESSO",
+    price: 150,
+    oldPrice: null,
+    category: "cartridges",
+    badge: "TOP",
+    meta: ["3 мл", "0.6 Ом"]
+  },
+  {
+    id: 12,
+    name: "Картридж OXVA XLIM V2 0.8 Ohm",
+    brand: "OXVA",
+    price: 150,
+    oldPrice: 170,
+    category: "cartridges",
+    badge: "SALE",
+    meta: ["2 мл", "0.8 Ом"]
+  },
+  {
+    id: 13,
+    name: "Картридж Voopoo Vmate Top Fill 0.7 Ohm",
+    brand: "VOOPOO",
+    price: 160,
+    oldPrice: null,
+    category: "cartridges",
+    badge: null,
+    meta: ["3 мл", "0.7 Ом"]
+  }
 ];
 
+let cart = [];
+let favorites = [];
 let currentCategory = 'liquids';
 let currentTag = 'all';
 let currentBrand = 'all';
@@ -29,46 +149,60 @@ const categoryMeta = {
   cartridges: { label: 'КАРТРИДЖІ', title: 'Обери картридж' }
 };
 
-// Функція вибору категорії
-function selectCategory(cat, btnElement) {
-  currentCategory = cat;
-  currentBrand = 'all';
+function renderProducts() {
+  const grid = document.getElementById('products-grid');
+  const countEl = document.getElementById('products-count');
+  if (!grid) return;
 
-  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
-  if (btnElement) {
-    btnElement.classList.add('active');
+  const filtered = products.filter(p => {
+    const matchCat = p.category === currentCategory;
+    const matchTag = currentTag === 'all' || p.badge === currentTag;
+    const matchBrand = currentBrand === 'all' || p.brand === currentBrand;
+    const matchSearch = searchQuery === '' || 
+      p.name.toLowerCase().includes(searchQuery) || 
+      p.brand.toLowerCase().includes(searchQuery);
+
+    return matchCat && matchTag && matchBrand && matchSearch;
+  });
+
+  if (countEl) countEl.textContent = `${filtered.length} товарів`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #6b7280; padding: 40px 0;">Товарів не знайдено</div>`;
+    return;
   }
 
-  const labelEl = document.getElementById('current-cat-label');
-  const titleEl = document.getElementById('current-cat-title');
-  if (labelEl) labelEl.textContent = categoryMeta[cat].label;
-  if (titleEl) titleEl.textContent = categoryMeta[cat].title;
+  grid.innerHTML = filtered.map(p => {
+    const isFav = favorites.includes(p.id);
+    const badgeHtml = p.badge ? `<span class="product-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : '';
+    const oldPriceHtml = p.oldPrice ? `<span class="old-price">${p.oldPrice} ₴</span>` : '';
+    const metaHtml = p.meta.map(m => `<span class="meta-tag">${m}</span>`).join(' ');
 
-  renderBrands();
-  renderProducts();
+    return `
+      <div class="product-card">
+        <div class="product-visual">
+          ${badgeHtml}
+          <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(${p.id}, this)" aria-label="Обране">
+            ${isFav ? '♥' : '♡'}
+          </button>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">${p.brand}</div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-meta">${metaHtml}</div>
+          <div class="product-footer">
+            <div class="price-container">
+              ${oldPriceHtml}
+              <div class="price">${p.price} ₴</div>
+            </div>
+            <button class="add-button" onclick="addToCart(${p.id})" aria-label="Додати в кошик">+</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
-// Функція вибору тегу (Новинки, Знижки і т.д.)
-function selectTag(tag, btnElement) {
-  currentTag = tag;
-  document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
-  if (btnElement) {
-    btnElement.classList.add('active');
-  }
-  renderProducts();
-}
-
-// Функція вибору бренду
-function selectBrand(brand, btnElement) {
-  currentBrand = brand;
-  document.querySelectorAll('.brand-chip').forEach(b => b.classList.remove('active'));
-  if (btnElement) {
-    btnElement.classList.add('active');
-  }
-  renderProducts();
-}
-
-// Відображення кнопок брендів
 function renderBrands() {
   const container = document.getElementById('brands-container');
   if (!container) return;
@@ -82,59 +216,156 @@ function renderBrands() {
   `).join('');
 }
 
-// Рендеринг карток товарів
-function renderProducts() {
-  const grid = document.getElementById('products-grid');
-  const countEl = document.getElementById('products-count');
-  if (!grid) return;
+function selectCategory(cat, element) {
+  currentCategory = cat;
+  currentBrand = 'all';
 
-  const filtered = products.filter(p => {
-    const matchCat = p.category === currentCategory;
-    const matchTag = currentTag === 'all' || p.tag === currentTag;
-    const matchBrand = currentBrand === 'all' || p.brand === currentBrand;
-    const matchSearch = searchQuery === '' || 
-      p.name.toLowerCase().includes(searchQuery) || 
-      p.brand.toLowerCase().includes(searchQuery);
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+  if (element) element.classList.add('active');
 
-    return matchCat && matchTag && matchBrand && matchSearch;
-  });
+  const labelEl = document.getElementById('current-cat-label');
+  const titleEl = document.getElementById('current-cat-title');
+  if (labelEl) labelEl.textContent = categoryMeta[cat].label;
+  if (titleEl) titleEl.textContent = categoryMeta[cat].title;
 
-  if (countEl) countEl.textContent = `${filtered.length} товарів`;
-
-  if (filtered.length === 0) {
-    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #6b7280; padding: 40px 0; font-size: 14px;">Товарів не знайдено</div>`;
-    return;
-  }
-
-  grid.innerHTML = filtered.map(p => {
-    let badge = '';
-    if (p.tag === 'new') badge = `<span class="badge badge-new">NEW</span>`;
-    if (p.tag === 'sale') badge = `<span class="badge badge-sale">SALE</span>`;
-    if (p.tag === 'popular') badge = `<span class="badge badge-popular">TOP</span>`;
-
-    return `
-      <div class="product-card">
-        ${badge}
-        <div>
-          <div class="p-brand">${p.brand}</div>
-          <div class="p-title">${p.name}</div>
-          <div class="p-spec">${p.volume}</div>
-        </div>
-        <div class="p-bottom">
-          <div class="p-price-box">
-            ${p.oldPrice ? `<span class="p-old-price">${p.oldPrice} ₴</span>` : ''}
-            <span class="p-price">${p.price} ₴</span>
-          </div>
-          <button class="btn-buy" onclick="alert('Додано в кошик: ${p.name.replace(/'/g, "\\'")}')">В кошик</button>
-        </div>
-      </div>
-    `;
-  }).join('');
+  renderBrands();
+  renderProducts();
 }
 
-// Ініціалізація після завантаження сторінки
+function selectTag(tag, element) {
+  currentTag = tag;
+  document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+  if (element) element.classList.add('active');
+  renderProducts();
+}
+
+function selectBrand(brand, element) {
+  currentBrand = brand;
+  document.querySelectorAll('.brand-chip').forEach(b => b.classList.remove('active'));
+  if (element) element.classList.add('active');
+  renderProducts();
+}
+
+function addToCart(id) {
+  const product = products.find(p => p.id === id);
+  if (product) {
+    cart.push(product);
+    updateCartCounters();
+    updateCartUI();
+  }
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  updateCartCounters();
+  updateCartUI();
+}
+
+function updateCartCounters() {
+  const count = cart.length;
+  const headerCount = document.getElementById('header-cart-count');
+  const navCount = document.getElementById('nav-cart-count');
+
+  if (headerCount) headerCount.textContent = count;
+  if (navCount) navCount.textContent = count;
+}
+
+function updateCartUI() {
+  const itemsContainer = document.getElementById('cart-items-list');
+  const totalPriceEl = document.getElementById('cart-total-price');
+
+  if (itemsContainer) {
+    if (cart.length === 0) {
+      itemsContainer.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 20px;">Кошик порожній</div>';
+    } else {
+      itemsContainer.innerHTML = cart.map((item, index) => `
+        <div class="cart-item">
+          <div>
+            <div class="cart-item-title">${item.name}</div>
+            <div style="font-size: 11px; color: #6b7280;">${item.brand}</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="cart-item-price">${item.price} ₴</span>
+            <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #ef4444; cursor: pointer;">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  if (totalPriceEl) {
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    totalPriceEl.textContent = `${total} ₴`;
+  }
+}
+
+function toggleFavorite(id, btn) {
+  const index = favorites.indexOf(id);
+  if (index === -1) {
+    favorites.push(id);
+  } else {
+    favorites.splice(index, 1);
+  }
+  renderProducts();
+}
+
+function openCart() {
+  const modal = document.getElementById('cart-modal');
+  if (modal) modal.classList.add('open');
+}
+
+function closeCart() {
+  const modal = document.getElementById('cart-modal');
+  if (modal) modal.classList.remove('open');
+}
+
+function checkout() {
+  if (cart.length === 0) {
+    alert('Ваш кошик порожній!');
+    return;
+  }
+  
+  if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.sendData(JSON.stringify(cart));
+  } else {
+    alert('Замовлення успішно оформлено!');
+  }
+
+  cart = [];
+  updateCartCounters();
+  updateCartUI();
+  closeCart();
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  if (tab === 'home') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else if (tab === 'fav') {
+    alert(`В обраному товарів: ${favorites.length}`);
+  } else if (tab === 'profile') {
+    alert('Профіль користувача');
+  }
+}
+
+function focusSearch(btn) {
+  switchTab('search', btn);
+  const input = document.getElementById('search');
+  if (input) {
+    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    input.focus();
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  const searchInput = document.getElementById('search-input');
+  if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+  }
+
+  const searchInput = document.getElementById('search');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       searchQuery = e.target.value.toLowerCase().trim();
@@ -144,4 +375,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderBrands();
   renderProducts();
+  updateCartCounters();
+  updateCartUI();
 });
