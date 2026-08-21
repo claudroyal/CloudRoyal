@@ -14,48 +14,39 @@
   </header>
 
   <main class="container">
-    <!-- Кнопка відкриття картки товару -->
-    <button class="open-card-btn" onclick="openProductModal()">Переглянути CHASER 30ML</button>
-  </main>
+    <!-- Картка товару відображається одразу -->
+    <div class="product-card-container">
+      <div class="product-image-box">
+        <img id="modal-product-img" src="https://via.placeholder.com/300x300/121214/a855f7?text=Chaser+30ml" alt="CHASER FOR PODS 30ML">
+        <span class="discount-badge">SALE</span>
+      </div>
 
-  <!-- Модальне вікно картки товару -->
-  <div id="product-modal" class="cloudroyal-modal" style="display: none;">
-    <div class="modal-content">
-      <button class="close-modal-btn" onclick="closeProductModal()">&times;</button>
-      
-      <div class="product-card-container">
-        <div class="product-image-box">
-          <img id="modal-product-img" src="https://via.placeholder.com/300x300/121214/a855f7?text=Chaser+30ml" alt="CHASER FOR PODS 30ML">
-          <span class="discount-badge">SALE</span>
+      <div class="product-info-box">
+        <span class="product-brand" id="modal-product-brand">CHASER</span>
+        <h2 class="product-title" id="modal-product-name">CHASER FOR PODS 30ML</h2>
+        
+        <div class="product-price-box">
+          <span class="current-price" id="modal-product-price">280 грн</span>
+          <span class="old-price" id="modal-product-oldprice">320 грн</span>
         </div>
 
-        <div class="product-info-box">
-          <span class="product-brand" id="modal-product-brand">CHASER</span>
-          <h2 class="product-title" id="modal-product-name">CHASER FOR PODS 30ML</h2>
-          
-          <div class="product-price-box">
-            <span class="current-price" id="modal-product-price">280 грн</span>
-            <span class="old-price" id="modal-product-oldprice">320 грн</span>
-          </div>
-
-          <!-- Вибір міцності -->
-          <div class="selector-group">
-            <label class="selector-label">Фортеця (Міцність):</label>
-            <div class="nicotine-grid" id="nicotine-selector"></div>
-          </div>
-
-          <!-- Вибір смаків -->
-          <div class="selector-group">
-            <label class="selector-label">Оберіть смак:</label>
-            <div class="flavors-grid" id="flavors-selector"></div>
-            <span id="flavor-error" class="error-hint" style="display: none;">Будь ласка, оберіть смак!</span>
-          </div>
-
-          <button class="add-to-cart-btn" onclick="addProductToCart()">Додати в кошик</button>
+        <!-- Вибір міцності -->
+        <div class="selector-group">
+          <label class="selector-label">Фортеця (Міцність):</label>
+          <div class="nicotine-grid" id="nicotine-selector"></div>
         </div>
+
+        <!-- Вибір смаків -->
+        <div class="selector-group">
+          <label class="selector-label">Оберіть смак:</label>
+          <div class="flavors-grid" id="flavors-selector"></div>
+          <span id="flavor-error" class="error-hint" style="display: none;">Будь ласка, оберіть смак!</span>
+        </div>
+
+        <button class="add-to-cart-btn" onclick="addProductToCart()">Замовити</button>
       </div>
     </div>
-  </div>
+  </main>
 
   <script src="script.js"></script>
 </body>
