@@ -2,189 +2,58 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CloudRoyal — Premium Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudRoyal Store</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 
-  <!-- Шапка -->
-  <header class="top-header">
-    <div class="logo-group">
-      <div class="logo-avatar">CR</div>
-      <div>
-        <div class="brand-title">CloudRoyal</div>
-        <div class="brand-sub">PREMIUM STORE</div>
-      </div>
-    </div>
-    <button class="cart-btn" onclick="openModal('cart-modal')" aria-label="Кошик">
-      🛒 <span class="cart-count" id="header-cart-count">0</span>
-    </button>
+  <header class="header">
+    <div class="logo">CloudRoyal</div>
   </header>
 
-  <!-- Головний контент -->
-  <main class="main-content">
-    
-    <!-- Баннер -->
-    <section class="hero-banner">
-      <span class="badge-tag">CLOUDROYAL</span>
-      <h1>Твій смак.<br>Твій вибір.</h1>
-      <p class="hero-text">Рідини, POD-системи та картриджі в одному місці.</p>
-      <a href="#catalog" class="btn-primary">
-        Перейти до каталогу <span>→</span>
-      </a>
-    </section>
-
-    <!-- Категорії -->
-    <section class="section-block">
-      <div class="section-label">КАТАЛОГ</div>
-      <h2 class="section-title">Обери категорію</h2>
-
-      <div class="category-cards">
-        <div class="cat-card active" onclick="selectCategory('liquids', this)">
-          <div class="icon-box">💧</div>
-          <div class="cat-details">
-            <h3>Рідини</h3>
-            <p>Смаки та бренди</p>
-          </div>
-          <span class="arrow">→</span>
-        </div>
-
-        <div class="cat-card" onclick="selectCategory('pods', this)">
-          <div class="icon-box">◇</div>
-          <div class="cat-details">
-            <h3>POD-системи</h3>
-            <p>Пристрої</p>
-          </div>
-          <span class="arrow">→</span>
-        </div>
-
-        <div class="cat-card" onclick="selectCategory('cartridges', this)">
-          <div class="icon-box">▢</div>
-          <div class="cat-details">
-            <h3>Картриджі</h3>
-            <p>Витратні матеріали</p>
-          </div>
-          <span class="arrow">→</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Каталог -->
-    <section class="section-block" id="catalog">
-      <div class="section-header">
-        <div>
-          <div class="section-label" id="current-cat-label">РІДИНИ</div>
-          <h2 class="section-title" id="current-cat-title">Обери свій смак</h2>
-        </div>
-        <span class="products-count" id="products-count">0 товарів</span>
-      </div>
-
-      <!-- Пошук -->
-      <div class="search-field">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="search" placeholder="Пошук бренду або смаку...">
-      </div>
-
-      <!-- Фільтри -->
-      <div class="filter-pills">
-        <button class="pill-btn active" onclick="selectTag('all', this)">Усі</button>
-        <button class="pill-btn" onclick="selectTag('NEW', this)">✦ Новинки</button>
-        <button class="pill-btn" onclick="selectTag('TOP', this)">Популярне</button>
-        <button class="pill-btn" onclick="selectTag('SALE', this)">— Знижки</button>
-      </div>
-
-      <!-- Бренди -->
-      <div class="brands-bar">
-        <span class="brands-label">БРЕНДИ</span>
-        <div class="brands-scroll" id="brands-container"></div>
-      </div>
-
-      <!-- Сітка товарів -->
-      <div class="products-grid" id="products-grid"></div>
-    </section>
-
+  <main class="container">
+    <!-- Кнопка відкриття картки товару -->
+    <button class="open-card-btn" onclick="openProductModal()">Переглянути CHASER 30ML</button>
   </main>
 
-  <!-- Нижня навігація -->
-  <nav class="bottom-nav">
-    <button class="nav-item active" onclick="switchTab('home', this)">
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label">Головна</span>
-    </button>
-    <button class="nav-item" onclick="focusSearch(this)">
-      <span class="nav-icon">🔍</span>
-      <span class="nav-label">Каталог</span>
-    </button>
-    <button class="nav-item" onclick="switchTab('fav', this)">
-      <span class="nav-icon">♡</span>
-      <span class="nav-label">Обране</span>
-    </button>
-    <button class="nav-item cart-nav-btn" onclick="openModal('cart-modal')">
-      <span class="nav-icon">🛒</span>
-      <span class="nav-label">Кошик</span>
-      <span class="nav-cart-count" id="nav-cart-count">0</span>
-    </button>
-  </nav>
+  <!-- Модальне вікно картки товару -->
+  <div id="product-modal" class="cloudroyal-modal" style="display: none;">
+    <div class="modal-content">
+      <button class="close-modal-btn" onclick="closeProductModal()">&times;</button>
+      
+      <div class="product-card-container">
+        <div class="product-image-box">
+          <img id="modal-product-img" src="https://via.placeholder.com/300x300/121214/a855f7?text=Chaser+30ml" alt="CHASER FOR PODS 30ML">
+          <span class="discount-badge">SALE</span>
+        </div>
 
-  <!-- Модальне вікно кошика -->
-  <div class="modal-overlay" id="cart-modal" onclick="closeModalOnOverlay(event, 'cart-modal')">
-    <div class="modal-sheet">
-      <div class="modal-handle"></div>
-      <div class="modal-header">
-        <h2>Ваш кошик</h2>
-        <button class="modal-close" onclick="closeModal('cart-modal')" aria-label="Закрити">✕</button>
+        <div class="product-info-box">
+          <span class="product-brand" id="modal-product-brand">CHASER</span>
+          <h2 class="product-title" id="modal-product-name">CHASER FOR PODS 30ML</h2>
+          
+          <div class="product-price-box">
+            <span class="current-price" id="modal-product-price">280 грн</span>
+            <span class="old-price" id="modal-product-oldprice">320 грн</span>
+          </div>
+
+          <!-- Вибір міцності -->
+          <div class="selector-group">
+            <label class="selector-label">Фортеця (Міцність):</label>
+            <div class="nicotine-grid" id="nicotine-selector"></div>
+          </div>
+
+          <!-- Вибір смаків -->
+          <div class="selector-group">
+            <label class="selector-label">Оберіть смак:</label>
+            <div class="flavors-grid" id="flavors-selector"></div>
+            <span id="flavor-error" class="error-hint" style="display: none;">Будь ласка, оберіть смак!</span>
+          </div>
+
+          <button class="add-to-cart-btn" onclick="addProductToCart()">Додати в кошик</button>
+        </div>
       </div>
-
-      <div class="cart-empty" id="cart-empty">
-        <div class="cart-empty-icon">🛒</div>
-        <p>Ваш кошик порожній</p>
-      </div>
-
-      <div class="cart-items" id="cart-items-list" style="display: none;"></div>
-
-      <div class="cart-footer" id="cart-footer" style="display: none;">
-        <div class="cart-total-row">
-          <span>До сплати:</span>
-          <span class="cart-total-price" id="cart-total-price">0 ₴</span>
-        </div>
-        <button class="checkout-button" onclick="goToCheckout()">Оформити замовлення</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Модальне вікно оформлення -->
-  <div class="modal-overlay" id="checkout-modal" onclick="closeModalOnOverlay(event, 'checkout-modal')">
-    <div class="modal-sheet">
-      <div class="modal-handle"></div>
-      <div class="modal-header">
-        <h2>Оформлення замовлення</h2>
-        <button class="modal-close" onclick="closeModal('checkout-modal')" aria-label="Закрити">✕</button>
-      </div>
-
-      <form id="checkout-form" class="checkout-form" onsubmit="handleCheckoutSubmit(event)">
-        <div class="form-group">
-          <label for="customer-name">Ім’я та Прізвище</label>
-          <input type="text" id="customer-name" placeholder="Олександр Іванов" required>
-        </div>
-
-        <div class="form-group">
-          <label for="customer-phone">Номер телефону</label>
-          <input type="tel" id="customer-phone" placeholder="+380 (99) 000-00-00" required>
-        </div>
-
-        <div class="form-group">
-          <label for="customer-address">Місто та № відділення Нової Пошти</label>
-          <input type="text" id="customer-address" placeholder="Київ, Відділення №1" required>
-        </div>
-
-        <div class="checkout-summary">
-          <span>Разом:</span>
-          <strong id="checkout-total-price">0 ₴</strong>
-        </div>
-
-        <button type="submit" class="checkout-button" id="submit-btn">Підтвердити замовлення</button>
-      </form>
     </div>
   </div>
 
