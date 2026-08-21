@@ -1,5 +1,5 @@
+// --- БАЗА ДАНИХ ТОВАРІВ ---
 const products = [
-  // --- РІДИНИ ---
   {
     id: 1,
     name: "Chaser For Pods Triple Berry",
@@ -52,18 +52,6 @@ const products = [
   },
   {
     id: 6,
-    name: "Lucky Blueberry Sour Raspberry",
-    brand: "LUCKY",
-    price: 290,
-    oldPrice: 340,
-    category: "liquids",
-    badge: "SALE",
-    meta: ["30 ml", "50 мг"]
-  },
-
-  // --- POD-СИСТЕМИ ---
-  {
-    id: 7,
     name: "Vaporesso XROS 3 MINI Black",
     brand: "VAPORESSO",
     price: 720,
@@ -73,7 +61,7 @@ const products = [
     meta: ["1000 mAh", "2 мл"]
   },
   {
-    id: 8,
+    id: 7,
     name: "Vaporesso XROS 4 MINI Space Grey",
     brand: "VAPORESSO",
     price: 820,
@@ -83,29 +71,7 @@ const products = [
     meta: ["1000 mAh", "3 мл"]
   },
   {
-    id: 9,
-    name: "OXVA XLIM GO Blue",
-    brand: "OXVA",
-    price: 650,
-    oldPrice: 700,
-    category: "pods",
-    badge: "SALE",
-    meta: ["1000 mAh", "2 мл"]
-  },
-  {
-    id: 10,
-    name: "Voopoo Vmate E2 Green",
-    brand: "VOOPOO",
-    price: 950,
-    oldPrice: null,
-    category: "pods",
-    badge: "NEW",
-    meta: ["1500 mAh", "3 мл"]
-  },
-
-  // --- КАРТРИДЖІ ---
-  {
-    id: 11,
+    id: 8,
     name: "Картридж Vaporesso XROS 0.6 Ohm",
     brand: "VAPORESSO",
     price: 150,
@@ -113,30 +79,11 @@ const products = [
     category: "cartridges",
     badge: "TOP",
     meta: ["3 мл", "0.6 Ом"]
-  },
-  {
-    id: 12,
-    name: "Картридж OXVA XLIM V2 0.8 Ohm",
-    brand: "OXVA",
-    price: 150,
-    oldPrice: 170,
-    category: "cartridges",
-    badge: "SALE",
-    meta: ["2 мл", "0.8 Ом"]
-  },
-  {
-    id: 13,
-    name: "Картридж Voopoo Vmate Top Fill 0.7 Ohm",
-    brand: "VOOPOO",
-    price: 160,
-    oldPrice: null,
-    category: "cartridges",
-    badge: null,
-    meta: ["3 мл", "0.7 Ом"]
   }
 ];
 
-let cart = [];
+// --- ГЛОБАЛЬНИЙ СТАН ---
+let cart = []; // Масив об'єктів вида { product, count }
 let favorites = [];
 let currentCategory = 'liquids';
 let currentTag = 'all';
@@ -149,6 +96,154 @@ const categoryMeta = {
   cartridges: { label: 'КАРТРИДЖІ', title: 'Обери картридж' }
 };
 
+// --- ІНІЦІАЛІЗАЦІЯ TELEGRAM WEB APP ---
+const tg = window.Telegram?.WebApp;
+if (tg) {
+  tg.ready();
+  tg.expand();
+  if (tg.setHeaderColor) tg.setHeaderColor('#08070d');
+  if (tg.setBackgroundColor) tg.setBackgroundColor('#08070d');
+}
+
+// --- УПРАВЛІННЯ МОДАЛЬНИМИ ВІКНАМИ ---
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+function closeModalOnOverlay(event, modalId) {
+  if (event.target.classList.contains('modal-overlay')) {
+    closeModal(modalId);
+  }
+}
+
+function goToCheckout() {
+  if (cart.length === 0) return;
+  closeModal('cart-modal');
+  openModal('checkout-modal');
+}
+
+// --- ЛОГІКА КОШИКА ---
+function addToCart(productId) {
+  const product = products.find(p => p.id === productId);
+  if (!product) return;
+
+  const existingItem = cart.find(item => item.product.id === productId);
+  if (existingItem) {
+    existingItem.count++;
+  } else {
+    cart.push({ product, count: 1 });
+  }
+
+  if (tg?.HapticFeedback) {
+    tg.HapticFeedback.impactOccurred('light');
+  }
+
+  updateCartUI();
+}
+
+function updateQuantity(productId, delta) {
+  const cartItem = cart.find(item => item.product.id === productId);
+  if (!cartItem) return;
+
+  cartItem.count += delta;
+
+  if (cartItem.count <= 0) {
+    cart = cart.filter(item => item.product.id !== productId);
+  }
+
+  updateCartUI();
+}
+
+function removeFromCart(productId) {
+  cart = cart.filter(item => item.product.id !== productId);
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const totalCount = cart.reduce((sum, item) => sum + item.count, 0);
+  const totalPrice = cart.reduce((sum, item) => sum + (item.product.price * item.count), 0);
+
+  // Оновлення лічильників
+  const headerCount = document.getElementById('header-cart-count');
+  const navCount = document.getElementById('nav-cart-count');
+  if (headerCount) headerCount.textContent = totalCount;
+  if (navCount) navCount.textContent = totalCount;
+
+  // Оновлення вмісту кошика
+  const cartEmpty = document.getElementById('cart-empty');
+  const cartList = document.getElementById('cart-items-list');
+  const cartFooter = document.getElementById('cart-footer');
+  const cartTotalPrice = document.getElementById('cart-total-price');
+  const checkoutTotalPrice = document.getElementById('checkout-total-price');
+
+  if (cart.length === 0) {
+    if (cartEmpty) cartEmpty.style.display = 'block';
+    if (cartList) cartList.style.display = 'none';
+    if (cartFooter) cartFooter.style.display = 'none';
+  } else {
+    if (cartEmpty) cartEmpty.style.display = 'none';
+    if (cartList) {
+      cartList.style.display = 'block';
+      cartList.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-brand">${item.product.brand}</div>
+            <div class="cart-item-title">${item.product.name}</div>
+            <div class="cart-item-price">${item.product.price} ₴</div>
+          </div>
+          <div class="cart-item-controls">
+            <button class="cart-qty-btn" onclick="updateQuantity(${item.product.id}, -1)">-</button>
+            <span class="cart-qty-val">${item.count}</span>
+            <button class="cart-qty-btn" onclick="updateQuantity(${item.product.id}, 1)">+</button>
+            <button class="cart-remove-btn" onclick="removeFromCart(${item.product.id})">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    if (cartFooter) cartFooter.style.display = 'block';
+  }
+
+  if (cartTotalPrice) cartTotalPrice.textContent = `${totalPrice} ₴`;
+  if (checkoutTotalPrice) checkoutTotalPrice.textContent = `${totalPrice} ₴`;
+}
+
+// --- ОБРОБКА ФОРМИ ЗАМОВЛЕННЯ ---
+function handleCheckoutSubmit(event) {
+  event.preventDefault();
+
+  const orderData = {
+    name: document.getElementById('customer-name').value,
+    phone: document.getElementById('customer-phone').value,
+    address: document.getElementById('customer-address').value,
+    items: cart.map(i => ({ id: i.product.id, name: i.product.name, count: i.count, price: i.product.price })),
+    total: cart.reduce((sum, item) => sum + (item.product.price * item.count), 0)
+  };
+
+  if (tg) {
+    tg.sendData(JSON.stringify(orderData));
+  } else {
+    alert(`Дякуємо за замовлення, ${orderData.name}! Сума: ${orderData.total} ₴`);
+  }
+
+  cart = [];
+  updateCartUI();
+  closeModal('checkout-modal');
+  document.getElementById('checkout-form').reset();
+}
+
+// --- КАТАЛОГ ТА ФІЛЬТРАЦІЯ ---
 function renderProducts() {
   const grid = document.getElementById('products-grid');
   const countEl = document.getElementById('products-count');
@@ -246,60 +341,7 @@ function selectBrand(brand, element) {
   renderProducts();
 }
 
-function addToCart(id) {
-  const product = products.find(p => p.id === id);
-  if (product) {
-    cart.push(product);
-    updateCartCounters();
-    updateCartUI();
-  }
-}
-
-function removeFromCart(index) {
-  cart.splice(index, 1);
-  updateCartCounters();
-  updateCartUI();
-}
-
-function updateCartCounters() {
-  const count = cart.length;
-  const headerCount = document.getElementById('header-cart-count');
-  const navCount = document.getElementById('nav-cart-count');
-
-  if (headerCount) headerCount.textContent = count;
-  if (navCount) navCount.textContent = count;
-}
-
-function updateCartUI() {
-  const itemsContainer = document.getElementById('cart-items-list');
-  const totalPriceEl = document.getElementById('cart-total-price');
-
-  if (itemsContainer) {
-    if (cart.length === 0) {
-      itemsContainer.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 20px;">Кошик порожній</div>';
-    } else {
-      itemsContainer.innerHTML = cart.map((item, index) => `
-        <div class="cart-item">
-          <div>
-            <div class="cart-item-title">${item.name}</div>
-            <div style="font-size: 11px; color: #6b7280;">${item.brand}</div>
-          </div>
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <span class="cart-item-price">${item.price} ₴</span>
-            <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #ef4444; cursor: pointer;">✕</button>
-          </div>
-        </div>
-      `).join('');
-    }
-  }
-
-  if (totalPriceEl) {
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-    totalPriceEl.textContent = `${total} ₴`;
-  }
-}
-
-function toggleFavorite(id, btn) {
+function toggleFavorite(id) {
   const index = favorites.indexOf(id);
   if (index === -1) {
     favorites.push(id);
@@ -309,34 +351,7 @@ function toggleFavorite(id, btn) {
   renderProducts();
 }
 
-function openCart() {
-  const modal = document.getElementById('cart-modal');
-  if (modal) modal.classList.add('open');
-}
-
-function closeCart() {
-  const modal = document.getElementById('cart-modal');
-  if (modal) modal.classList.remove('open');
-}
-
-function checkout() {
-  if (cart.length === 0) {
-    alert('Ваш кошик порожній!');
-    return;
-  }
-  
-  if (window.Telegram && window.Telegram.WebApp) {
-    window.Telegram.WebApp.sendData(JSON.stringify(cart));
-  } else {
-    alert('Замовлення успішно оформлено!');
-  }
-
-  cart = [];
-  updateCartCounters();
-  updateCartUI();
-  closeCart();
-}
-
+// --- НИЖНЯ ПАНЕЛЬ НАВІГАЦІЇ ---
 function switchTab(tab, btn) {
   document.querySelectorAll('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
@@ -346,7 +361,7 @@ function switchTab(tab, btn) {
   } else if (tab === 'fav') {
     alert(`В обраному товарів: ${favorites.length}`);
   } else if (tab === 'profile') {
-    alert('Профіль користувача');
+    alert('Кабінет користувача');
   }
 }
 
@@ -359,12 +374,8 @@ function focusSearch(btn) {
   }
 }
 
+// --- ІНІЦІАЛІЗАЦІЯ ---
 document.addEventListener('DOMContentLoaded', () => {
-  if (window.Telegram && window.Telegram.WebApp) {
-    window.Telegram.WebApp.ready();
-    window.Telegram.WebApp.expand();
-  }
-
   const searchInput = document.getElementById('search');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -373,8 +384,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Прив'язка кнопок відкриття кошика
+  const cartBtnHeader = document.querySelector('.cart-btn');
+  const cartBtnNav = document.querySelector('.cart-nav-btn');
+
+  if (cartBtnHeader) cartBtnHeader.addEventListener('click', () => openModal('cart-modal'));
+  if (cartBtnNav) cartBtnNav.addEventListener('click', () => openModal('cart-modal'));
+
   renderBrands();
   renderProducts();
-  updateCartCounters();
   updateCartUI();
 });
