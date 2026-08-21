@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <!-- Верхня шапка -->
+  <!-- Шапка -->
   <header class="top-header">
     <div class="logo-group">
       <div class="logo-avatar">CR</div>
@@ -17,14 +17,12 @@
         <div class="brand-sub">PREMIUM STORE</div>
       </div>
     </div>
-    <button class="cart-btn" aria-label="Кошик">
-      🛒
-    </button>
+    <button class="cart-btn" aria-label="Кошик">🛒</button>
   </header>
 
   <main class="main-content">
     
-    <!-- Главный баннер -->
+    <!-- Баннер -->
     <section class="hero-banner">
       <span class="badge-tag">CLOUDROYAL</span>
       <h1>Твій смак.<br>Твій вибір.</h1>
@@ -34,14 +32,14 @@
       </a>
     </section>
 
-    <!-- Выбор категории -->
+    <!-- Вибір категорії -->
     <section class="section-block">
       <div class="section-label">КАТАЛОГ</div>
       <h2 class="section-title">Обери категорію</h2>
 
       <div class="category-cards">
-        <div class="cat-card active" onclick="setCategory('liquids', this)">
-          <div class="icon-box drop">💧</div>
+        <div class="cat-card active" onclick="selectCategory('liquids', this)">
+          <div class="icon-box">💧</div>
           <div class="cat-details">
             <h3>Рідини</h3>
             <p>Смаки та бренди</p>
@@ -49,8 +47,8 @@
           <span class="arrow">→</span>
         </div>
 
-        <div class="cat-card" onclick="setCategory('pods', this)">
-          <div class="icon-box rhombus">◇</div>
+        <div class="cat-card" onclick="selectCategory('pods', this)">
+          <div class="icon-box">◇</div>
           <div class="cat-details">
             <h3>POD-системи</h3>
             <p>Пристрої</p>
@@ -58,8 +56,8 @@
           <span class="arrow">→</span>
         </div>
 
-        <div class="cat-card" onclick="setCategory('cartridges', this)">
-          <div class="icon-box square">▢</div>
+        <div class="cat-card" onclick="selectCategory('cartridges', this)">
+          <div class="icon-box">▢</div>
           <div class="cat-details">
             <h3>Картриджі</h3>
             <p>Витратні матеріали</p>
@@ -69,7 +67,7 @@
       </div>
     </section>
 
-    <!-- Секция товаров -->
+    <!-- Секція товарів -->
     <section class="section-block" id="catalog">
       <div class="section-header">
         <div>
@@ -79,7 +77,7 @@
         <span class="products-count" id="products-count">0 товарів</span>
       </div>
 
-      <!-- Поиск -->
+      <!-- Пошук -->
       <div class="search-field">
         <span class="search-icon">🔍</span>
         <input type="text" id="search-input" placeholder="Пошук бренду або смаку...">
@@ -87,27 +85,25 @@
 
       <!-- Теги -->
       <div class="filter-pills">
-        <button class="pill-btn active" onclick="setTag('all', this)">Усі</button>
-        <button class="pill-btn" onclick="setTag('new', this)">✦ Новинки</button>
-        <button class="pill-btn" onclick="setTag('popular', this)">Популярне</button>
-        <button class="pill-btn" onclick="setTag('sale', this)">— Знижки</button>
+        <button class="pill-btn active" onclick="selectTag('all', this)">Усі</button>
+        <button class="pill-btn" onclick="selectTag('new', this)">✦ Новинки</button>
+        <button class="pill-btn" onclick="selectTag('popular', this)">Популярне</button>
+        <button class="pill-btn" onclick="selectTag('sale', this)">— Знижки</button>
       </div>
 
-      <!-- Бренды -->
+      <!-- Бренди -->
       <div class="brands-bar">
         <span class="brands-label">БРЕНДИ</span>
-        <div class="brands-scroll" id="brands-container">
-          <!-- Заполняется динамически -->
-        </div>
+        <div class="brands-scroll" id="brands-container"></div>
       </div>
 
-      <!-- СЕТКА КАРТОЧЕК ТОВАРОВ -->
+      <!-- КАРТКИ ТОВАРІВ -->
       <div class="products-grid" id="products-grid"></div>
     </section>
 
   </main>
 
-  <!-- Нижняя панель навигации -->
+  <!-- Нижнє меню -->
   <nav class="bottom-nav">
     <button class="nav-item active">🏠</button>
     <button class="nav-item">🔍</button>
