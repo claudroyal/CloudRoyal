@@ -19,22 +19,12 @@ const product = {
 };
 
 // Змінні стану
-let cart = [];
 let selectedNicotine = product.nicotineOptions[0];
 let selectedFlavor = null;
 
 // ============================================================
 // МОДУЛЬ КАРТКИ ТОВАРУ
 // ============================================================
-
-function openProductModal() {
-  initProductModal();
-  document.getElementById('product-modal').style.display = 'flex';
-}
-
-function closeProductModal() {
-  document.getElementById('product-modal').style.display = 'none';
-}
 
 function initProductModal() {
   document.getElementById('modal-product-brand').innerText = product.brand;
@@ -97,23 +87,20 @@ async function addProductToCart() {
   
   errorHint.style.display = 'none';
 
-  // Формуємо повну назву товару із варіацією
   const fullTitle = `${product.name} (${selectedFlavor.name} ${selectedFlavor.emoji}, ${selectedNicotine})`;
 
   const orderData = {
-    name: "Клієнт", // Сюди можна підставити значення з форми
+    name: "Клієнт (Тест)",
     phone: "+380000000000",
-    comment: "Швидке замовлення",
+    comment: "Замовлення з сайту",
     items: fullTitle,
     totalPrice: product.price,
     totalQuantity: 1
   };
 
-  closeProductModal();
-
   // Відправляємо в Google Таблицю
   await sendToGoogleSheets(orderData);
-  alert(`Товар успішно додано та відправлено!\n${fullTitle}`);
+  alert(`Дякуємо! Замовлення відправлено:\n${fullTitle}`);
 }
 
 // ============================================================
@@ -129,7 +116,7 @@ async function sendToGoogleSheets(orderData) {
   try {
     await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
       method: 'POST',
-      mode: 'no-cors', // Критично для Google Apps Script
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -140,3 +127,6 @@ async function sendToGoogleSheets(orderData) {
     console.error("Помилка відправки в Google Таблицю:", err);
   }
 }
+
+// Автоматична ініціалізація після завантаження сторінки
+document.addEventListener('DOMContentLoaded', initProductModal);
