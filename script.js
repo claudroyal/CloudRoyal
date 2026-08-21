@@ -174,22 +174,30 @@ async function sendToTelegram(orderData) {
     console.error("Помилка відправки в Telegram:", err);
   }
 }
+// Переконайся, що змінна оголошена вище або на початку файлу:
+const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyqcu6aG8YtJVglbA-DMHbioawAGeMMCIKuKVQb2k0bznFrbgSuuzeBWulpScxQslNk/exec";
 
 async function sendToGoogleSheets(orderData) {
-  if (GOOGLE_SHEETS_WEBHOOK_URL === "ТВІЙ_GOOGLE_APPS_SCRIPT_URL") return;
+  // Зупиняємо функцію, ТІЛЬКИ якщо URL порожній або все ще містить дефолтну заглушку
+  if (!GOOGLE_SHEETS_WEBHOOK_URL || GOOGLE_SHEETS_WEBHOOK_URL === "ТВІЙ_GOOGLE_APPS_SCRIPT_URL") {
+    console.warn("URL для Google Sheets не вказано.");
+    return;
+  }
 
   try {
     await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      mode: 'no-cors', // Критично для Google Apps Script
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(orderData)
     });
+    console.log("Дані успішно відправлені в Google Sheets");
   } catch (err) {
     console.error("Помилка відправки в Google Таблицю:", err);
   }
 }
-
 async function handleCheckoutSubmit(event) {
   event.preventDefault();
 
