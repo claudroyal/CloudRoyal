@@ -1,184 +1,126 @@
-// --- НАЛАШТУВАННЯ ІНТЕГРАЦІЙ ---
-const TELEGRAM_BOT_TOKEN = "8517426538:AAHt4jAR-AxVh_edaMxKWFpWDfyyxRFajFk";
-const TELEGRAM_CHAT_ID = "862669142";
+// ============================================================
+// CLOUDROYAL CONFIG
+// ============================================================
 const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyqcu6aG8YtJVglbA-DMHbioawAGeMMCIKuKVQb2k0bznFrbgSuuzeBWulpScxQslNk/exec";
 
-// --- БАЗА ТОВАРІВ ---
-const products = [
-  { id: 1, name: "Chaser For Pods Triple Berry", brand: "CHASER", price: 280, oldPrice: 320, category: "liquids", badge: "SALE", meta: ["30 ml", "50 мг"] },
-  { id: 2, name: "Flavorlab FL 350 Watermelon Ice", brand: "FLAVORLAB", price: 320, oldPrice: 350, category: "liquids", badge: "SALE", meta: ["30 ml", "50 мг"] },
-  { id: 3, name: "Octobar Passion Fruit Ice", brand: "OCTOBAR", price: 330, oldPrice: null, category: "liquids", badge: "NEW", meta: ["30 ml", "50 мг"] },
-  { id: 4, name: "Mood Duck Sour Apple", brand: "MOOD DUCK", price: 310, oldPrice: null, category: "liquids", badge: "TOP", meta: ["30 ml", "50 мг"] },
-  { id: 5, name: "Vaporesso XROS 3 MINI Black", brand: "VAPORESSO", price: 720, oldPrice: null, category: "pods", badge: "TOP", meta: ["1000 mAh", "2 мл"] },
-  { id: 6, name: "Картридж Vaporesso XROS 0.6 Ohm", brand: "VAPORESSO", price: 150, oldPrice: null, category: "cartridges", badge: "TOP", meta: ["3 мл", "0.6 Ом"] }
-];
-
-// --- ГЛОБАЛЬНИЙ СТАН ---
-let cart = [];
-let favorites = [];
-let currentCategory = 'liquids';
-let currentTag = 'all';
-let currentBrand = 'all';
-let searchQuery = '';
-
-const categoryMeta = {
-  liquids: { label: 'РІДИНИ', title: 'Обери свій смак' },
-  pods: { label: 'POD-СИСТЕМИ', title: 'Обери свій пристрій' },
-  cartridges: { label: 'КАРТРИДЖІ', title: 'Обери картридж' }
+// Об'єкт товару
+const product = {
+  id: "chaser-30ml",
+  name: "CHASER FOR PODS 30ML",
+  brand: "CHASER",
+  price: 280,
+  oldPrice: 320,
+  nicotineOptions: ["50 мг", "65 мг"],
+  flavors: [
+    { id: "cherry", name: "Вишня", emoji: "🍒", inStock: true },
+    { id: "watermelon-ice", name: "Кавун ментол", emoji: "❄️🍉", inStock: true },
+    { id: "mint", name: "М'ята", emoji: "🌿", inStock: false }
+  ]
 };
 
-// --- TELEGRAM WEB APP ІНІЦІАЛІЗАЦІЯ ---
-const tg = window.Telegram?.WebApp;
-if (tg) {
-  tg.ready();
-  tg.expand();
-  if (tg.setHeaderColor) tg.setHeaderColor('#08070d');
-  if (tg.setBackgroundColor) tg.setBackgroundColor('#08070d');
+// Змінні стану
+let cart = [];
+let selectedNicotine = product.nicotineOptions[0];
+let selectedFlavor = null;
+
+// ============================================================
+// МОДУЛЬ КАРТКИ ТОВАРУ
+// ============================================================
+
+function openProductModal() {
+  initProductModal();
+  document.getElementById('product-modal').style.display = 'flex';
 }
 
-// --- УПРАВЛІННЯ МОДАЛЬНИМИ ВІКНАМИ ---
-function openModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) {
-    modal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
+function closeProductModal() {
+  document.getElementById('product-modal').style.display = 'none';
 }
 
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) {
-    modal.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-}
+function initProductModal() {
+  document.getElementById('modal-product-brand').innerText = product.brand;
+  document.getElementById('modal-product-name').innerText = product.name;
+  document.getElementById('modal-product-price').innerText = product.price + " грн";
+  document.getElementById('modal-product-oldprice').innerText = product.oldPrice + " грн";
 
-function closeModalOnOverlay(event, modalId) {
-  if (event.target.classList.contains('modal-overlay')) {
-    closeModal(modalId);
-  }
-}
+  // Рендер міцності
+  const nicContainer = document.getElementById('nicotine-selector');
+  nicContainer.innerHTML = '';
+  product.nicotineOptions.forEach((nic, index) => {
+    const btn = document.createElement('button');
+    btn.className = `nicotine-chip ${index === 0 ? 'active' : ''}`;
+    btn.innerText = nic;
+    btn.onclick = () => {
+      document.querySelectorAll('.nicotine-chip').forEach(el => el.classList.remove('active'));
+      btn.classList.add('active');
+      selectedNicotine = nic;
+    };
+    nicContainer.appendChild(btn);
+  });
 
-function goToCheckout() {
-  if (cart.length === 0) return;
-  closeModal('cart-modal');
-  openModal('checkout-modal');
-}
-
-// --- ЛОГІКА КОШИКА ---
-function addToCart(productId) {
-  const product = products.find(p => p.id === productId);
-  if (!product) return;
-
-  const existingItem = cart.find(item => item.product.id === productId);
-  if (existingItem) {
-    existingItem.count++;
-  } else {
-    cart.push({ product, count: 1 });
-  }
-
-  if (tg?.HapticFeedback) {
-    tg.HapticFeedback.impactOccurred('light');
-  }
-
-  updateCartUI();
-}
-
-function updateQuantity(productId, delta) {
-  const cartItem = cart.find(item => item.product.id === productId);
-  if (!cartItem) return;
-
-  cartItem.count += delta;
-
-  if (cartItem.count <= 0) {
-    cart = cart.filter(item => item.product.id !== productId);
-  }
-
-  updateCartUI();
-}
-
-function removeFromCart(productId) {
-  cart = cart.filter(item => item.product.id !== productId);
-  updateCartUI();
-}
-
-function updateCartUI() {
-  const totalCount = cart.reduce((sum, item) => sum + item.count, 0);
-  const totalPrice = cart.reduce((sum, item) => sum + (item.product.price * item.count), 0);
-
-  const headerCount = document.getElementById('header-cart-count');
-  const navCount = document.getElementById('nav-cart-count');
-  if (headerCount) headerCount.textContent = totalCount;
-  if (navCount) navCount.textContent = totalCount;
-
-  const cartEmpty = document.getElementById('cart-empty');
-  const cartList = document.getElementById('cart-items-list');
-  const cartFooter = document.getElementById('cart-footer');
-  const cartTotalPrice = document.getElementById('cart-total-price');
-  const checkoutTotalPrice = document.getElementById('checkout-total-price');
-
-  if (cart.length === 0) {
-    if (cartEmpty) cartEmpty.style.display = 'block';
-    if (cartList) cartList.style.display = 'none';
-    if (cartFooter) cartFooter.style.display = 'none';
-  } else {
-    if (cartEmpty) cartEmpty.style.display = 'none';
-    if (cartList) {
-      cartList.style.display = 'flex';
-      cartList.innerHTML = cart.map(item => `
-        <div class="cart-item">
-          <div class="cart-item-info">
-            <div class="cart-item-brand">${item.product.brand}</div>
-            <div class="cart-item-title">${item.product.name}</div>
-            <div class="cart-item-price">${item.product.price * item.count} ₴</div>
-          </div>
-          <div class="cart-item-controls">
-            <button class="cart-qty-btn" onclick="updateQuantity(${item.product.id}, -1)">-</button>
-            <span class="cart-qty-val">${item.count}</span>
-            <button class="cart-qty-btn" onclick="updateQuantity(${item.product.id}, 1)">+</button>
-            <button class="cart-remove-btn" onclick="removeFromCart(${item.product.id})">✕</button>
-          </div>
-        </div>
-      `).join('');
+  // Рендер смаків
+  const flavorContainer = document.getElementById('flavors-selector');
+  flavorContainer.innerHTML = '';
+  
+  product.flavors.forEach((flavor) => {
+    const btn = document.createElement('button');
+    btn.className = `flavor-chip ${!flavor.inStock ? 'out-of-stock' : ''}`;
+    btn.innerHTML = `${flavor.name} ${flavor.emoji}`;
+    
+    if (flavor.inStock) {
+      btn.onclick = () => {
+        document.querySelectorAll('.flavor-chip').forEach(el => el.classList.remove('active'));
+        btn.classList.add('active');
+        selectedFlavor = flavor;
+        document.getElementById('flavor-error').style.display = 'none';
+      };
     }
-    if (cartFooter) cartFooter.style.display = 'block';
-  }
+    flavorContainer.appendChild(btn);
+  });
 
-  if (cartTotalPrice) cartTotalPrice.textContent = `${totalPrice} ₴`;
-  if (checkoutTotalPrice) checkoutTotalPrice.textContent = `${totalPrice} ₴`;
-}
-
-// --- ІНТЕГРАЦІЇ (TELEGRAM & GOOGLE SHEETS) ---
-async function sendToTelegram(orderData) {
-  if (TELEGRAM_BOT_TOKEN === "ТВІЙ_BOT_TOKEN") return;
-
-  const itemsList = orderData.items.map(i => `• <b>${i.name}</b> x${i.count} — ${i.price * i.count} ₴`).join('\n');
-  const message = `🛍 <b>НОВЕ ЗАМОВЛЕННЯ CloudRoyal</b>\n\n` +
-                  `👤 <b>Клієнт:</b> ${orderData.name}\n` +
-                  `📞 <b>Телефон:</b> ${orderData.phone}\n` +
-                  `📍 <b>Адреса:</b> ${orderData.address}\n\n` +
-                  `📦 <b>Товари:</b>\n${itemsList}\n\n` +
-                  `💰 <b>Загальна сума:</b> ${orderData.total} ₴`;
-
-  try {
-    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: 'HTML'
-      })
-    });
-  } catch (err) {
-    console.error("Помилка відправки в Telegram:", err);
+  // Автовибір першого доступного смаку
+  const firstAvailable = product.flavors.find(f => f.inStock);
+  if (firstAvailable) {
+    selectedFlavor = firstAvailable;
+    const firstBtn = flavorContainer.querySelector('.flavor-chip:not(.out-of-stock)');
+    if (firstBtn) firstBtn.classList.add('active');
   }
 }
-// Переконайся, що змінна оголошена вище або на початку файлу:
-const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyqcu6aG8YtJVglbA-DMHbioawAGeMMCIKuKVQb2k0bznFrbgSuuzeBWulpScxQslNk/exec";
+
+// Додавання у кошик та відправка
+async function addProductToCart() {
+  const errorHint = document.getElementById('flavor-error');
+  
+  if (!selectedFlavor) {
+    errorHint.style.display = 'block';
+    return;
+  }
+  
+  errorHint.style.display = 'none';
+
+  // Формуємо повну назву товару із варіацією
+  const fullTitle = `${product.name} (${selectedFlavor.name} ${selectedFlavor.emoji}, ${selectedNicotine})`;
+
+  const orderData = {
+    name: "Клієнт", // Сюди можна підставити значення з форми
+    phone: "+380000000000",
+    comment: "Швидке замовлення",
+    items: fullTitle,
+    totalPrice: product.price,
+    totalQuantity: 1
+  };
+
+  closeProductModal();
+
+  // Відправляємо в Google Таблицю
+  await sendToGoogleSheets(orderData);
+  alert(`Товар успішно додано та відправлено!\n${fullTitle}`);
+}
+
+// ============================================================
+// ВІДПРАВКА В GOOGLE TABLES
+// ============================================================
 
 async function sendToGoogleSheets(orderData) {
-  // Зупиняємо функцію, ТІЛЬКИ якщо URL порожній або все ще містить дефолтну заглушку
   if (!GOOGLE_SHEETS_WEBHOOK_URL || GOOGLE_SHEETS_WEBHOOK_URL === "ТВІЙ_GOOGLE_APPS_SCRIPT_URL") {
     console.warn("URL для Google Sheets не вказано.");
     return;
@@ -198,184 +140,3 @@ async function sendToGoogleSheets(orderData) {
     console.error("Помилка відправки в Google Таблицю:", err);
   }
 }
-async function handleCheckoutSubmit(event) {
-  event.preventDefault();
-
-  const submitBtn = document.getElementById('submit-btn');
-  if (submitBtn) {
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Надсилання...';
-  }
-
-  const orderData = {
-    name: document.getElementById('customer-name').value,
-    phone: document.getElementById('customer-phone').value,
-    address: document.getElementById('customer-address').value,
-    items: cart.map(i => ({ id: i.product.id, name: i.product.name, count: i.count, price: i.product.price })),
-    total: cart.reduce((sum, item) => sum + (item.product.price * item.count), 0)
-  };
-
-  // Паралельне надсилання даних
-  await Promise.all([
-    sendToTelegram(orderData),
-    sendToGoogleSheets(orderData)
-  ]);
-
-  if (tg) {
-    tg.sendData(JSON.stringify(orderData));
-  }
-
-  alert(`Дякуємо за замовлення, ${orderData.name}! Наш менеджер вже обробляє його.`);
-
-  cart = [];
-  updateCartUI();
-  closeModal('checkout-modal');
-  document.getElementById('checkout-form').reset();
-
-  if (submitBtn) {
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Підтвердити замовлення';
-  }
-}
-
-// --- РЕНДЕР КАТАЛОГУ ---
-function renderProducts() {
-  const grid = document.getElementById('products-grid');
-  const countEl = document.getElementById('products-count');
-  if (!grid) return;
-
-  const filtered = products.filter(p => {
-    const matchCat = p.category === currentCategory;
-    const matchTag = currentTag === 'all' || p.badge === currentTag;
-    const matchBrand = currentBrand === 'all' || p.brand === currentBrand;
-    const matchSearch = searchQuery === '' || 
-      p.name.toLowerCase().includes(searchQuery) || 
-      p.brand.toLowerCase().includes(searchQuery);
-
-    return matchCat && matchTag && matchBrand && matchSearch;
-  });
-
-  if (countEl) countEl.textContent = `${filtered.length} товарів`;
-
-  if (filtered.length === 0) {
-    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 40px 0;">Товарів не знайдено</div>`;
-    return;
-  }
-
-  grid.innerHTML = filtered.map(p => {
-    const isFav = favorites.includes(p.id);
-    const badgeHtml = p.badge ? `<span class="product-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : '';
-    const oldPriceHtml = p.oldPrice ? `<span class="old-price">${p.oldPrice} ₴</span>` : '';
-    const metaHtml = p.meta.map(m => `<span class="meta-tag">${m}</span>`).join(' ');
-
-    return `
-      <div class="product-card">
-        <div class="product-visual">
-          ${badgeHtml}
-          <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(${p.id})" aria-label="Обране">
-            ${isFav ? '♥' : '♡'}
-          </button>
-        </div>
-        <div class="product-info">
-          <div class="product-brand">${p.brand}</div>
-          <div class="product-name">${p.name}</div>
-          <div class="product-meta">${metaHtml}</div>
-          <div class="product-footer">
-            <div class="price-container">
-              ${oldPriceHtml}
-              <div class="price">${p.price} ₴</div>
-            </div>
-            <button class="add-button" onclick="addToCart(${p.id})" aria-label="Додати в кошик">+</button>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function renderBrands() {
-  const container = document.getElementById('brands-container');
-  if (!container) return;
-
-  const catBrands = ['all', ...new Set(products.filter(p => p.category === currentCategory).map(p => p.brand))];
-
-  container.innerHTML = catBrands.map(b => `
-    <button class="brand-chip ${b === currentBrand ? 'active' : ''}" onclick="selectBrand('${b}', this)">
-      ${b === 'all' ? 'Всі' : b}
-    </button>
-  `).join('');
-}
-
-function selectCategory(cat, element) {
-  currentCategory = cat;
-  currentBrand = 'all';
-
-  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
-  if (element) element.classList.add('active');
-
-  const labelEl = document.getElementById('current-cat-label');
-  const titleEl = document.getElementById('current-cat-title');
-  if (labelEl) labelEl.textContent = categoryMeta[cat].label;
-  if (titleEl) titleEl.textContent = categoryMeta[cat].title;
-
-  renderBrands();
-  renderProducts();
-}
-
-function selectTag(tag, element) {
-  currentTag = tag;
-  document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
-  if (element) element.classList.add('active');
-  renderProducts();
-}
-
-function selectBrand(brand, element) {
-  currentBrand = brand;
-  document.querySelectorAll('.brand-chip').forEach(b => b.classList.remove('active'));
-  if (element) element.classList.add('active');
-  renderProducts();
-}
-
-function toggleFavorite(id) {
-  const index = favorites.indexOf(id);
-  if (index === -1) {
-    favorites.push(id);
-  } else {
-    favorites.splice(index, 1);
-  }
-  renderProducts();
-}
-
-function switchTab(tab, btn) {
-  document.querySelectorAll('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-
-  if (tab === 'home') {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  } else if (tab === 'fav') {
-    alert(`В обраному товарів: ${favorites.length}`);
-  }
-}
-
-function focusSearch(btn) {
-  switchTab('search', btn);
-  const input = document.getElementById('search');
-  if (input) {
-    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    input.focus();
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const searchInput = document.getElementById('search');
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      searchQuery = e.target.value.toLowerCase().trim();
-      renderProducts();
-    });
-  }
-
-  renderBrands();
-  renderProducts();
-  updateCartUI();
-});
