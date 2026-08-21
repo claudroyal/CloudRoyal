@@ -1,4 +1,4 @@
-// --- БАЗА ДАНИХ ТОВАРІВ ---
+// --- БАЗА ТОВАРІВ ---
 const products = [
   {
     id: 1,
@@ -42,16 +42,6 @@ const products = [
   },
   {
     id: 5,
-    name: "Punch Energy Wild Peach",
-    brand: "PUNCH",
-    price: 300,
-    oldPrice: null,
-    category: "liquids",
-    badge: null,
-    meta: ["30 ml", "50 мг"]
-  },
-  {
-    id: 6,
     name: "Vaporesso XROS 3 MINI Black",
     brand: "VAPORESSO",
     price: 720,
@@ -61,17 +51,7 @@ const products = [
     meta: ["1000 mAh", "2 мл"]
   },
   {
-    id: 7,
-    name: "Vaporesso XROS 4 MINI Space Grey",
-    brand: "VAPORESSO",
-    price: 820,
-    oldPrice: 900,
-    category: "pods",
-    badge: "NEW",
-    meta: ["1000 mAh", "3 мл"]
-  },
-  {
-    id: 8,
+    id: 6,
     name: "Картридж Vaporesso XROS 0.6 Ohm",
     brand: "VAPORESSO",
     price: 150,
@@ -83,7 +63,7 @@ const products = [
 ];
 
 // --- ГЛОБАЛЬНИЙ СТАН ---
-let cart = []; // Масив об'єктів вида { product, count }
+let cart = []; // Об'єкти структури: { product, count }
 let favorites = [];
 let currentCategory = 'liquids';
 let currentTag = 'all';
@@ -175,13 +155,13 @@ function updateCartUI() {
   const totalCount = cart.reduce((sum, item) => sum + item.count, 0);
   const totalPrice = cart.reduce((sum, item) => sum + (item.product.price * item.count), 0);
 
-  // Оновлення лічильників
+  // Оновлення банерів лічильника
   const headerCount = document.getElementById('header-cart-count');
   const navCount = document.getElementById('nav-cart-count');
   if (headerCount) headerCount.textContent = totalCount;
   if (navCount) navCount.textContent = totalCount;
 
-  // Оновлення вмісту кошика
+  // Елементи інтерфейсу модалки
   const cartEmpty = document.getElementById('cart-empty');
   const cartList = document.getElementById('cart-items-list');
   const cartFooter = document.getElementById('cart-footer');
@@ -195,13 +175,13 @@ function updateCartUI() {
   } else {
     if (cartEmpty) cartEmpty.style.display = 'none';
     if (cartList) {
-      cartList.style.display = 'block';
+      cartList.style.display = 'flex';
       cartList.innerHTML = cart.map(item => `
         <div class="cart-item">
           <div class="cart-item-info">
             <div class="cart-item-brand">${item.product.brand}</div>
             <div class="cart-item-title">${item.product.name}</div>
-            <div class="cart-item-price">${item.product.price} ₴</div>
+            <div class="cart-item-price">${item.product.price * item.count} ₴</div>
           </div>
           <div class="cart-item-controls">
             <button class="cart-qty-btn" onclick="updateQuantity(${item.product.id}, -1)">-</button>
@@ -219,7 +199,7 @@ function updateCartUI() {
   if (checkoutTotalPrice) checkoutTotalPrice.textContent = `${totalPrice} ₴`;
 }
 
-// --- ОБРОБКА ФОРМИ ЗАМОВЛЕННЯ ---
+// --- ОБРОБКА ФОРМИ ---
 function handleCheckoutSubmit(event) {
   event.preventDefault();
 
@@ -243,7 +223,7 @@ function handleCheckoutSubmit(event) {
   document.getElementById('checkout-form').reset();
 }
 
-// --- КАТАЛОГ ТА ФІЛЬТРАЦІЯ ---
+// --- РЕНДЕР КАТАЛОГУ ---
 function renderProducts() {
   const grid = document.getElementById('products-grid');
   const countEl = document.getElementById('products-count');
@@ -263,7 +243,7 @@ function renderProducts() {
   if (countEl) countEl.textContent = `${filtered.length} товарів`;
 
   if (filtered.length === 0) {
-    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #6b7280; padding: 40px 0;">Товарів не знайдено</div>`;
+    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 40px 0;">Товарів не знайдено</div>`;
     return;
   }
 
@@ -351,7 +331,6 @@ function toggleFavorite(id) {
   renderProducts();
 }
 
-// --- НИЖНЯ ПАНЕЛЬ НАВІГАЦІЇ ---
 function switchTab(tab, btn) {
   document.querySelectorAll('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
@@ -374,7 +353,7 @@ function focusSearch(btn) {
   }
 }
 
-// --- ІНІЦІАЛІЗАЦІЯ ---
+// --- ІНІЦІАЛІЗАЦІЯ ПІСЛЯ ЗАВАНТАЖЕННЯ ---
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('search');
   if (searchInput) {
@@ -383,13 +362,6 @@ document.addEventListener('DOMContentLoaded', () => {
       renderProducts();
     });
   }
-
-  // Прив'язка кнопок відкриття кошика
-  const cartBtnHeader = document.querySelector('.cart-btn');
-  const cartBtnNav = document.querySelector('.cart-nav-btn');
-
-  if (cartBtnHeader) cartBtnHeader.addEventListener('click', () => openModal('cart-modal'));
-  if (cartBtnNav) cartBtnNav.addEventListener('click', () => openModal('cart-modal'));
 
   renderBrands();
   renderProducts();
