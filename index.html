@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <!-- Шапка сайту -->
+  <!-- Шапка -->
   <header class="top-header">
     <div class="logo-group">
       <div class="logo-avatar">CR</div>
@@ -22,10 +22,10 @@
     </button>
   </header>
 
-  <!-- Основний контент -->
+  <!-- Контент -->
   <main class="main-content">
     
-    <!-- Герой-баннер -->
+    <!-- Баннер -->
     <section class="hero-banner">
       <span class="badge-tag">CLOUDROYAL</span>
       <h1>Твій смак.<br>Твій вибір.</h1>
@@ -35,7 +35,7 @@
       </a>
     </section>
 
-    <!-- Перемикач категорій -->
+    <!-- Вибір категорії -->
     <section class="section-block">
       <div class="section-label">КАТАЛОГ</div>
       <h2 class="section-title">Обери категорію</h2>
@@ -70,23 +70,23 @@
       </div>
     </section>
 
-    <!-- Секція каталогу товарів -->
+    <!-- Секція каталогу -->
     <section class="section-block" id="catalog">
       <div class="section-header">
         <div>
           <div class="section-label" id="current-cat-label">РІДИНИ</div>
           <h2 class="section-title" id="current-cat-title">Обери свій смак</h2>
         </div>
-        <span class="products-count" id="products-count">3 товари</span>
+        <span class="products-count" id="products-count">0 товарів</span>
       </div>
 
-      <!-- Пошуковий рядок -->
+      <!-- Пошук -->
       <div class="search-field">
         <span class="search-icon">🔍</span>
         <input type="text" id="search" placeholder="Пошук бренду або смаку...">
       </div>
 
-      <!-- Фільтри тегів -->
+      <!-- Фільтри -->
       <div class="filter-pills">
         <button class="pill-btn active" onclick="selectTag('all', this)">Усі</button>
         <button class="pill-btn" onclick="selectTag('NEW', this)">✦ Новинки</button>
@@ -94,94 +94,19 @@
         <button class="pill-btn" onclick="selectTag('SALE', this)">— Знижки</button>
       </div>
 
-      <!-- Фільтр брендів -->
+      <!-- Бренди -->
       <div class="brands-bar">
         <span class="brands-label">БРЕНДИ</span>
-        <div class="brands-scroll" id="brands-container">
-          <button class="brand-chip active" onclick="selectBrand('all', this)">Всі</button>
-          <button class="brand-chip" onclick="selectBrand('CHASER', this)">CHASER</button>
-          <button class="brand-chip" onclick="selectBrand('FLAVORLAB', this)">FLAVORLAB</button>
-          <button class="brand-chip" onclick="selectBrand('OCTOBAR', this)">OCTOBAR</button>
-        </div>
+        <div class="brands-scroll" id="brands-container"></div>
       </div>
 
       <!-- Сітка товарів -->
-      <div class="products-grid" id="products-grid">
-        
-        <!-- Демо-картка 1 -->
-        <div class="product-card">
-          <div class="product-visual">
-            <span class="product-badge badge-sale">SALE</span>
-            <button class="favorite-btn" onclick="toggleFavorite(1, this)" aria-label="Обране">♡</button>
-          </div>
-          <div class="product-info">
-            <div class="product-brand">CHASER</div>
-            <div class="product-name">Chaser For Pods Triple Berry</div>
-            <div class="product-meta">
-              <span class="meta-tag">30 ml</span>
-              <span class="meta-tag">50 мг</span>
-            </div>
-            <div class="product-footer">
-              <div class="price-container">
-                <span class="old-price">320 ₴</span>
-                <div class="price">280 ₴</div>
-              </div>
-              <button class="add-button" onclick="addToCart(1)" aria-label="Додати в кошик">+</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Демо-картка 2 -->
-        <div class="product-card">
-          <div class="product-visual">
-            <span class="product-badge badge-new">NEW</span>
-            <button class="favorite-btn" onclick="toggleFavorite(2, this)" aria-label="Обране">♡</button>
-          </div>
-          <div class="product-info">
-            <div class="product-brand">FLAVORLAB</div>
-            <div class="product-name">Flavorlab FL 350 Watermelon Ice</div>
-            <div class="product-meta">
-              <span class="meta-tag">30 ml</span>
-              <span class="meta-tag">50 мг</span>
-            </div>
-            <div class="product-footer">
-              <div class="price-container">
-                <span class="old-price">350 ₴</span>
-                <div class="price">320 ₴</div>
-              </div>
-              <button class="add-button" onclick="addToCart(2)" aria-label="Додати в кошик">+</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Демо-картка 3 -->
-        <div class="product-card">
-          <div class="product-visual">
-            <span class="product-badge badge-top">TOP</span>
-            <button class="favorite-btn" onclick="toggleFavorite(3, this)" aria-label="Обране">♡</button>
-          </div>
-          <div class="product-info">
-            <div class="product-brand">OCTOBAR</div>
-            <div class="product-name">Octobar Passion Fruit Ice</div>
-            <div class="product-meta">
-              <span class="meta-tag">30 ml</span>
-              <span class="meta-tag">50 мг</span>
-            </div>
-            <div class="product-footer">
-              <div class="price-container">
-                <div class="price">330 ₴</div>
-              </div>
-              <button class="add-button" onclick="addToCart(3)" aria-label="Додати в кошик">+</button>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      <div class="products-grid" id="products-grid"></div>
     </section>
 
   </main>
 
-  <!-- Фіксована нижня панель навігації -->
+  <!-- Нижня навігація -->
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('home', this)">
       <span class="nav-icon">🏠</span>
@@ -211,16 +136,13 @@
         <button class="modal-close" onclick="closeModal('cart-modal')" aria-label="Закрити">✕</button>
       </div>
 
-      <!-- Стан порожнього кошика -->
       <div class="cart-empty" id="cart-empty">
-        <div style="font-size: 40px; margin-bottom: 12px;">🛒</div>
+        <div class="cart-empty-icon">🛒</div>
         <p>Ваш кошик порожній</p>
       </div>
 
-      <!-- Динамічний список товарів -->
       <div class="cart-items" id="cart-items-list" style="display: none;"></div>
 
-      <!-- Нижній блок кошика -->
       <div class="cart-footer" id="cart-footer" style="display: none;">
         <div class="cart-total-row">
           <span>До сплати:</span>
@@ -231,7 +153,7 @@
     </div>
   </div>
 
-  <!-- Модальне вікно оформлення замовлення -->
+  <!-- Модальне вікно оформлення -->
   <div class="modal-overlay" id="checkout-modal" onclick="closeModalOnOverlay(event, 'checkout-modal')">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
