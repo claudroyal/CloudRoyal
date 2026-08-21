@@ -28,66 +28,79 @@ const categoryMeta = {
   cartridges: { label: 'КАРТРИДЖІ', title: 'Обери картридж' }
 };
 
-// Переключение категории
-function setCategory(cat, el) {
+// Зміна категорії
+window.setCategory = function(cat, el) {
   activeCategory = cat;
   activeBrand = 'all';
 
   document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
-  if (el) el.classList.add('active');
+  if (el) {
+    el.classList.add('active');
+  } else {
+    const target = document.querySelector(`.cat-card[onclick*="${cat}"]`);
+    if (target) target.classList.add('active');
+  }
 
-  document.getElementById('current-cat-label').textContent = categoryMeta[cat].label;
-  document.getElementById('current-cat-title').textContent = categoryMeta[cat].title;
+  const catLabel = document.getElementById('current-cat-label');
+  const catTitle = document.getElementById('current-cat-title');
+  if (catLabel) catLabel.textContent = categoryMeta[cat]?.label || 'КАТАЛОГ';
+  if (catTitle) catTitle.textContent = categoryMeta[cat]?.title || 'Товари';
 
   renderBrands();
   renderProducts();
-}
+};
 
-// Переключение тегов (Новинки/Популярное/Скидки)
-function setTag(tag, el) {
+// Зміна тегу (Новинки / Популярне / Знижки)
+window.setTag = function(tag, el) {
   activeTag = tag;
   document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
   if (el) el.classList.add('active');
   renderProducts();
-}
+};
 
-// Переключение бренда
-function setBrand(brand, el) {
+// Зміна бренду
+window.setBrand = function(brand, el) {
   activeBrand = brand;
   document.querySelectorAll('.brand-chip').forEach(b => b.classList.remove('active'));
   if (el) el.classList.add('active');
   renderProducts();
-}
+};
 
-// Отрисовка кнопкок брендов для выбранной категории
+// Отрисовка кнопок брендів
 function renderBrands() {
   const container = document.getElementById('brands-container');
+  if (!container) return;
+
   const catBrands = ['all', ...new Set(products.filter(p => p.category === activeCategory).map(p => p.brand))];
 
   container.innerHTML = catBrands.map(b => `
-    <button class="brand-chip ${b === activeBrand ? 'active' : ''}" onclick="setBrand('${b}', this)">
+    <button class="brand-chip ${b === activeBrand ? 'active' : ''}" onclick="window.setBrand('${b}', this)">
       ${b === 'all' ? 'Всі' : b}
     </button>
   `).join('');
 }
 
-// Отрисовка карточек
+// Отрисовка сітки товарів
 function renderProducts() {
   const grid = document.getElementById('products-grid');
-  
+  if (!grid) return;
+
   const filtered = products.filter(p => {
     const matchCat = p.category === activeCategory;
     const matchTag = activeTag === 'all' || p.tag === activeTag;
     const matchBrand = activeBrand === 'all' || p.brand === activeBrand;
-    const matchSearch = searchQuery === '' || p.name.toLowerCase().includes(searchQuery) || p.brand.toLowerCase().includes(searchQuery);
+    const matchSearch = searchQuery === '' || 
+      p.name.toLowerCase().includes(searchQuery) || 
+      p.brand.toLowerCase().includes(searchQuery);
 
     return matchCat && matchTag && matchBrand && matchSearch;
   });
 
-  document.getElementById('products-count').textContent = `${filtered.length} товарів`;
+  const countElem = document.getElementById('products-count');
+  if (countElem) countElem.textContent = `${filtered.length} товарів`;
 
   if (filtered.length === 0) {
-    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #6b7280; padding: 20px 0;">Нічого не знайдено</div>`;
+    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #6b7280; padding: 30px 0;">Нічого не знайдено</div>`;
     return;
   }
 
@@ -117,12 +130,15 @@ function renderProducts() {
   }).join('');
 }
 
-// Старт
+// Ініціалізація після завантаження сторінки
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('search-input').addEventListener('input', (e) => {
-    searchQuery = e.target.value.toLowerCase().trim();
-    renderProducts();
-  });
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      renderProducts();
+    });
+  }
 
   renderBrands();
   renderProducts();
