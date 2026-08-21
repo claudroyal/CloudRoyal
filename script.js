@@ -1,3 +1,4 @@
+// Масив товарів
 const products = [
   // --- РІДИНИ ---
   { id: 1, category: "liquids", brand: "CHASER", name: "Chaser Black — Triple Berry", volume: "30 ml", price: 350, oldPrice: null, tag: "popular" },
@@ -28,12 +29,15 @@ const categoryMeta = {
   cartridges: { label: 'КАРТРИДЖІ', title: 'Обери картридж' }
 };
 
-function selectCategory(cat, element) {
+// Функція вибору категорії
+function selectCategory(cat, btnElement) {
   currentCategory = cat;
   currentBrand = 'all';
 
   document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
-  if (element) element.classList.add('active');
+  if (btnElement) {
+    btnElement.classList.add('active');
+  }
 
   const labelEl = document.getElementById('current-cat-label');
   const titleEl = document.getElementById('current-cat-title');
@@ -44,20 +48,27 @@ function selectCategory(cat, element) {
   renderProducts();
 }
 
-function selectTag(tag, element) {
+// Функція вибору тегу (Новинки, Знижки і т.д.)
+function selectTag(tag, btnElement) {
   currentTag = tag;
   document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
-  if (element) element.classList.add('active');
+  if (btnElement) {
+    btnElement.classList.add('active');
+  }
   renderProducts();
 }
 
-function selectBrand(brand, element) {
+// Функція вибору бренду
+function selectBrand(brand, btnElement) {
   currentBrand = brand;
   document.querySelectorAll('.brand-chip').forEach(b => b.classList.remove('active'));
-  if (element) element.classList.add('active');
+  if (btnElement) {
+    btnElement.classList.add('active');
+  }
   renderProducts();
 }
 
+// Відображення кнопок брендів
 function renderBrands() {
   const container = document.getElementById('brands-container');
   if (!container) return;
@@ -71,6 +82,7 @@ function renderBrands() {
   `).join('');
 }
 
+// Рендеринг карток товарів
 function renderProducts() {
   const grid = document.getElementById('products-grid');
   const countEl = document.getElementById('products-count');
@@ -90,7 +102,7 @@ function renderProducts() {
   if (countEl) countEl.textContent = `${filtered.length} товарів`;
 
   if (filtered.length === 0) {
-    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #6b7280; padding: 30px 0;">Нічого не знайдено</div>`;
+    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #6b7280; padding: 40px 0; font-size: 14px;">Товарів не знайдено</div>`;
     return;
   }
 
@@ -113,13 +125,14 @@ function renderProducts() {
             ${p.oldPrice ? `<span class="p-old-price">${p.oldPrice} ₴</span>` : ''}
             <span class="p-price">${p.price} ₴</span>
           </div>
-          <button class="btn-buy" onclick="alert('Додано: ${p.name}')">В кошик</button>
+          <button class="btn-buy" onclick="alert('Додано в кошик: ${p.name.replace(/'/g, "\\'")}')">В кошик</button>
         </div>
       </div>
     `;
   }).join('');
 }
 
+// Ініціалізація після завантаження сторінки
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('search-input');
   if (searchInput) {
