@@ -3,159 +3,147 @@ const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyqcu
 // База товарів каталогу
 const productsData = [
   // ==========================================
-  // 1. ПОД-СИСТЕМИ VAPORESSO XROS
+  // 1. ПОД-СИСТЕМИ (PODS)
   // ==========================================
   {
-    id: "vaporesso-xros-6",
-    name: "Vaporesso XROS 6 Pod Kit",
+    id: "vaporesso-xros-series",
+    name: "Vaporesso XROS Pod Kit",
     brand: "VAPORESSO",
-    price: 1100,
-    oldPrice: 1250,
-    nicotineOptions: ["Стандарт"],
-    flavors: [
-      { id: "x6-black", name: "Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "x6-silver", name: "Silver", emoji: "⬜", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "x6-blue", name: "Blue", emoji: "🟦", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
-    ]
-  },
-  {
-    id: "vaporesso-xros-6-mini",
-    name: "Vaporesso XROS 6 Mini",
-    brand: "VAPORESSO",
-    price: 850,
-    oldPrice: 950,
-    nicotineOptions: ["Стандарт"],
-    flavors: [
-      { id: "x6m-black", name: "Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "x6m-purple", name: "Purple Gradient", emoji: "🟪", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
-    ]
-  },
-  {
-    id: "vaporesso-xros-5-nano",
-    name: "Vaporesso XROS 5 Nano",
-    brand: "VAPORESSO",
-    price: 1050,
-    oldPrice: 1200,
-    nicotineOptions: ["Стандарт"],
-    flavors: [
-      { id: "x5n-black", name: "Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "x5n-cyan", name: "Cyan", emoji: "🌐", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
-    ]
-  },
-  {
-    id: "vaporesso-xros-5-mini",
-    name: "Vaporesso XROS 5 Mini",
-    brand: "VAPORESSO",
-    price: 800,
+    price: 720,
     oldPrice: 900,
     nicotineOptions: ["Стандарт"],
     flavors: [
-      { id: "x5m-black", name: "Space Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "x5m-green", name: "Emerald Green", emoji: "🟩", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+      { id: "x3-mini-black", name: "XROS 3 MINI Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "x4-mini-grey", name: "XROS 4 MINI Space Grey", emoji: "🔘", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
     ]
   },
   {
-    id: "vaporesso-xros-4",
-    name: "Vaporesso XROS 4 Pod Kit",
-    brand: "VAPORESSO",
+    id: "oxva-xlim-go",
+    name: "OXVA XLIM GO Pod Kit",
+    brand: "OXVA",
+    price: 650,
+    oldPrice: 700,
+    nicotineOptions: ["1000 mAh"],
+    flavors: [
+      { id: "xlim-blue", name: "Blue", emoji: "🟦", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "voopoo-vmate-e2",
+    name: "Voopoo Vmate E2 Pod Kit",
+    brand: "VOOPOO",
     price: 950,
-    oldPrice: 1100,
-    nicotineOptions: ["Стандарт"],
+    oldPrice: null,
+    nicotineOptions: ["1500 mAh"],
     flavors: [
-      { id: "x4-black", name: "Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "x4-silver", name: "Silver", emoji: "⬜", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "x4-blue", name: "Blue", emoji: "🟦", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
-    ]
-  },
-  {
-    id: "vaporesso-xros-4-mini",
-    name: "Vaporesso XROS 4 Mini",
-    brand: "VAPORESSO",
-    price: 750,
-    oldPrice: 850,
-    nicotineOptions: ["Стандарт"],
-    flavors: [
-      { id: "x4m-black", name: "Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "x4m-pink", name: "Pink", emoji: "🌸", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
-    ]
-  },
-  {
-    id: "vaporesso-xros-3-mini",
-    name: "Vaporesso XROS 3 Mini",
-    brand: "VAPORESSO",
-    price: 690,
-    oldPrice: 800,
-    nicotineOptions: ["Стандарт"],
-    flavors: [
-      { id: "x3m-grey", name: "Space Grey", emoji: "🔘", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "x3m-blue", name: "Sky Blue", emoji: "🧢", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+      { id: "vmate-green", name: "Green", emoji: "🟩", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
     ]
   },
 
   // ==========================================
-  // 2. КАРАТРИДЖІ
+  // 2. КАРАТРИДЖІ (CARTRIDGES)
   // ==========================================
   {
-    id: "xros-cartridges",
-    name: "Картриджі Vaporesso XROS Series",
+    id: "vaporesso-xros-cartridge",
+    name: "Картридж Vaporesso XROS",
     brand: "VAPORESSO",
-    price: 130,
-    oldPrice: 150,
-    nicotineOptions: ["3 мл (Top Fill)", "2 мл"],
+    price: 150,
+    oldPrice: null,
+    nicotineOptions: ["3 мл"],
     flavors: [
-      { id: "res-04", name: "0.4 Ом Mesh", emoji: "⚡", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "res-06", name: "0.6 Ом Mesh", emoji: "⚡", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "res-08", name: "0.8 Ом Mesh", emoji: "⚡", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "res-10", name: "1.0 Ом Mesh", emoji: "⚡", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
-      { id: "res-12", name: "1.2 Ом Mesh", emoji: "⚡", inStock: false, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+      { id: "xros-06", name: "0.6 Ohm", emoji: "⚡", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "oxva-xlim-cartridge",
+    name: "Картридж OXVA XLIM V2",
+    brand: "OXVA",
+    price: 150,
+    oldPrice: 170,
+    nicotineOptions: ["2 мл"],
+    flavors: [
+      { id: "xlim-08", name: "0.8 Ohm", emoji: "⚡", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "voopoo-vmate-cartridge",
+    name: "Картридж Voopoo Vmate Top Fill",
+    brand: "VOOPOO",
+    price: 160,
+    oldPrice: null,
+    nicotineOptions: ["3 мл"],
+    flavors: [
+      { id: "vmate-07", name: "0.7 Ohm", emoji: "⚡", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
     ]
   },
 
   // ==========================================
-  // 3. РІДИНИ CHASER & ELF BAR
+  // 3. РІДИНИ (LIQUIDS)
   // ==========================================
   {
     id: "chaser-30ml",
-    name: "CHASER FOR PODS 30ML",
+    name: "Chaser For Pods 30ml",
     brand: "CHASER",
     price: 280,
     oldPrice: 320,
-    nicotineOptions: ["50 мг", "65 мг"],
+    nicotineOptions: ["50 мг"],
     flavors: [
-      { id: "cherry", name: "Вишня", emoji: "🍒", inStock: true, image: "https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=400&q=80" },
-      { id: "strawberry", name: "Полуниця", emoji: "🍓", inStock: true, image: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=400&q=80" },
-      { id: "watermelon-ice", name: "Кавун ментол", emoji: "❄️🍉", inStock: true, image: "https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?auto=format&fit=crop&w=400&q=80" },
-      { id: "melon", name: "Диня", emoji: "🍈", inStock: true, image: "https://images.unsplash.com/photo-1571575173700-afb9492e6a50?auto=format&fit=crop&w=400&q=80" },
-      { id: "pomegranate", name: "Гранат", emoji: "🫐", inStock: true, image: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=400&q=80" },
-      { id: "mint", name: "М'ята", emoji: "🌿", inStock: true, image: "https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?auto=format&fit=crop&w=400&q=80" },
-      { id: "berries", name: "Ягоди", emoji: "🫐🍓", inStock: true, image: "https://images.unsplash.com/photo-1488900128323-21503983257e?auto=format&fit=crop&w=400&q=80" },
-      { id: "kiwi", name: "Ківі", emoji: "🥝", inStock: false, image: "https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?auto=format&fit=crop&w=400&q=80" },
-      { id: "lychee", name: "Личі", emoji: "🍇", inStock: false, image: "https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&w=400&q=80" }
+      { id: "triple-berry", name: "Triple Berry", emoji: "🫐🍓", inStock: true, image: "https://images.unsplash.com/photo-1488900128323-21503983257e?auto=format&fit=crop&w=400&q=80" }
     ]
   },
   {
-    id: "chaser-mix-30ml",
-    name: "CHASER MIX 30ML",
-    brand: "CHASER",
-    price: 290,
-    oldPrice: 330,
-    nicotineOptions: ["50 мг", "65 мг"],
+    id: "flavorlab-fl350",
+    name: "Flavorlab FL 350 30ml",
+    brand: "FLAVORLAB",
+    price: 320,
+    oldPrice: 350,
+    nicotineOptions: ["50 мг"],
     flavors: [
-      { id: "basil-mint", name: "Базилік М'ята", emoji: "🌿🌱", inStock: true, image: "https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?auto=format&fit=crop&w=400&q=80" },
-      { id: "guava-peach", name: "Гуава Персик", emoji: "🍑🍑", inStock: true, image: "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=400&q=80" },
-      { id: "cola", name: "Кола", emoji: "🥤", inStock: true, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80" }
+      { id: "fl-watermelon-ice", name: "Watermelon Ice", emoji: "❄️🍉", inStock: true, image: "https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?auto=format&fit=crop&w=400&q=80" }
     ]
   },
   {
-    id: "elfbar-30ml",
-    name: "ELF BAR LIQUID 30ML",
-    brand: "ELF BAR",
+    id: "octobar-30ml",
+    name: "Octobar 30ml",
+    brand: "OCTOBAR",
+    price: 330,
+    oldPrice: null,
+    nicotineOptions: ["50 мг"],
+    flavors: [
+      { id: "passion-fruit-ice", name: "Passion Fruit Ice", emoji: "❄️🥭", inStock: true, image: "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "mood-duck-30ml",
+    name: "Mood Duck 30ml",
+    brand: "MOOD DUCK",
+    price: 310,
+    oldPrice: null,
+    nicotineOptions: ["50 мг"],
+    flavors: [
+      { id: "sour-apple", name: "Sour Apple", emoji: "🍏", inStock: true, image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "punch-energy-30ml",
+    name: "Punch Energy 30ml",
+    brand: "PUNCH",
+    price: 300,
+    oldPrice: null,
+    nicotineOptions: ["50 мг"],
+    flavors: [
+      { id: "wild-peach", name: "Wild Peach", emoji: "🍑", inStock: true, image: "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "lucky-30ml",
+    name: "Lucky 30ml",
+    brand: "LUCKY",
     price: 290,
     oldPrice: 340,
     nicotineOptions: ["50 мг"],
     flavors: [
-      { id: "apple", name: "Яблуко", emoji: "🍏", inStock: true, image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=400&q=80" },
-      { id: "mango", name: "Манго", emoji: "🥭", inStock: true, image: "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=400&q=80" }
+      { id: "blueberry-sour-raspberry", name: "Blueberry Sour Raspberry", emoji: "🫐🍇", inStock: true, image: "https://images.unsplash.com/photo-1488900128323-21503983257e?auto=format&fit=crop&w=400&q=80" }
     ]
   }
 ];
