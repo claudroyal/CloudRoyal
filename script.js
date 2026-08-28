@@ -2,6 +2,118 @@ const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyqcu
 
 // База товарів каталогу
 const productsData = [
+  // ==========================================
+  // 1. ПОД-СИСТЕМИ VAPORESSO XROS
+  // ==========================================
+  {
+    id: "vaporesso-xros-6",
+    name: "Vaporesso XROS 6 Pod Kit",
+    brand: "VAPORESSO",
+    price: 1100,
+    oldPrice: 1250,
+    nicotineOptions: ["Стандарт"],
+    flavors: [
+      { id: "x6-black", name: "Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "x6-silver", name: "Silver", emoji: "⬜", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "x6-blue", name: "Blue", emoji: "🟦", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "vaporesso-xros-6-mini",
+    name: "Vaporesso XROS 6 Mini",
+    brand: "VAPORESSO",
+    price: 850,
+    oldPrice: 950,
+    nicotineOptions: ["Стандарт"],
+    flavors: [
+      { id: "x6m-black", name: "Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "x6m-purple", name: "Purple Gradient", emoji: "🟪", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "vaporesso-xros-5-nano",
+    name: "Vaporesso XROS 5 Nano",
+    brand: "VAPORESSO",
+    price: 1050,
+    oldPrice: 1200,
+    nicotineOptions: ["Стандарт"],
+    flavors: [
+      { id: "x5n-black", name: "Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "x5n-cyan", name: "Cyan", emoji: "🌐", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "vaporesso-xros-5-mini",
+    name: "Vaporesso XROS 5 Mini",
+    brand: "VAPORESSO",
+    price: 800,
+    oldPrice: 900,
+    nicotineOptions: ["Стандарт"],
+    flavors: [
+      { id: "x5m-black", name: "Space Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "x5m-green", name: "Emerald Green", emoji: "🟩", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "vaporesso-xros-4",
+    name: "Vaporesso XROS 4 Pod Kit",
+    brand: "VAPORESSO",
+    price: 950,
+    oldPrice: 1100,
+    nicotineOptions: ["Стандарт"],
+    flavors: [
+      { id: "x4-black", name: "Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "x4-silver", name: "Silver", emoji: "⬜", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "x4-blue", name: "Blue", emoji: "🟦", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "vaporesso-xros-4-mini",
+    name: "Vaporesso XROS 4 Mini",
+    brand: "VAPORESSO",
+    price: 750,
+    oldPrice: 850,
+    nicotineOptions: ["Стандарт"],
+    flavors: [
+      { id: "x4m-black", name: "Black", emoji: "⬛", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "x4m-pink", name: "Pink", emoji: "🌸", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "vaporesso-xros-3-mini",
+    name: "Vaporesso XROS 3 Mini",
+    brand: "VAPORESSO",
+    price: 690,
+    oldPrice: 800,
+    nicotineOptions: ["Стандарт"],
+    flavors: [
+      { id: "x3m-grey", name: "Space Grey", emoji: "🔘", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "x3m-blue", name: "Sky Blue", emoji: "🧢", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+
+  // ==========================================
+  // 2. КАРАТРИДЖІ
+  // ==========================================
+  {
+    id: "xros-cartridges",
+    name: "Картриджі Vaporesso XROS Series",
+    brand: "VAPORESSO",
+    price: 130,
+    oldPrice: 150,
+    nicotineOptions: ["3 мл (Top Fill)", "2 мл"],
+    flavors: [
+      { id: "res-04", name: "0.4 Ом Mesh", emoji: "⚡", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "res-06", name: "0.6 Ом Mesh", emoji: "⚡", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "res-08", name: "0.8 Ом Mesh", emoji: "⚡", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "res-10", name: "1.0 Ом Mesh", emoji: "⚡", inStock: true, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" },
+      { id: "res-12", name: "1.2 Ом Mesh", emoji: "⚡", inStock: false, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+
+  // ==========================================
+  // 3. РІДИНИ CHASER & ELF BAR
+  // ==========================================
   {
     id: "chaser-30ml",
     name: "CHASER FOR PODS 30ML",
@@ -14,8 +126,24 @@ const productsData = [
       { id: "strawberry", name: "Полуниця", emoji: "🍓", inStock: true, image: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=400&q=80" },
       { id: "watermelon-ice", name: "Кавун ментол", emoji: "❄️🍉", inStock: true, image: "https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?auto=format&fit=crop&w=400&q=80" },
       { id: "melon", name: "Диня", emoji: "🍈", inStock: true, image: "https://images.unsplash.com/photo-1571575173700-afb9492e6a50?auto=format&fit=crop&w=400&q=80" },
+      { id: "pomegranate", name: "Гранат", emoji: "🫐", inStock: true, image: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=400&q=80" },
       { id: "mint", name: "М'ята", emoji: "🌿", inStock: true, image: "https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?auto=format&fit=crop&w=400&q=80" },
-      { id: "kiwi", name: "Ківі", emoji: "🥝", inStock: false, image: "https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?auto=format&fit=crop&w=400&q=80" }
+      { id: "berries", name: "Ягоди", emoji: "🫐🍓", inStock: true, image: "https://images.unsplash.com/photo-1488900128323-21503983257e?auto=format&fit=crop&w=400&q=80" },
+      { id: "kiwi", name: "Ківі", emoji: "🥝", inStock: false, image: "https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?auto=format&fit=crop&w=400&q=80" },
+      { id: "lychee", name: "Личі", emoji: "🍇", inStock: false, image: "https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&w=400&q=80" }
+    ]
+  },
+  {
+    id: "chaser-mix-30ml",
+    name: "CHASER MIX 30ML",
+    brand: "CHASER",
+    price: 290,
+    oldPrice: 330,
+    nicotineOptions: ["50 мг", "65 мг"],
+    flavors: [
+      { id: "basil-mint", name: "Базилік М'ята", emoji: "🌿🌱", inStock: true, image: "https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?auto=format&fit=crop&w=400&q=80" },
+      { id: "guava-peach", name: "Гуава Персик", emoji: "🍑🍑", inStock: true, image: "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=400&q=80" },
+      { id: "cola", name: "Кола", emoji: "🥤", inStock: true, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80" }
     ]
   },
   {
